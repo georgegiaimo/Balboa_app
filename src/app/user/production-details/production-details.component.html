@@ -1,0 +1,149 @@
+<div class="flex">
+    <app-sidemenu></app-sidemenu>
+    <main class="flex-1 p-8 bg-gray-100 h-screen overflow-y-auto">
+<div class="p-6 max-w-7xl mx-auto space-y-8">
+  
+  <nav class="flex items-center text-sm text-gray-500 mb-4 cursor-pointer">
+    <a (click)="gotoProductions()" class="hover:text-blue-600 transition-colors">Productions</a>
+    <span class="mx-2">/</span>
+    <span class="text-gray-900 font-medium">Production Details</span>
+  </nav>
+
+  <section class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <div class="px-6 py-5 border-b border-gray-200 bg-gray-50 flex justify-between items-center">
+      <h2 class="text-lg font-bold text-gray-900">{{ production.name }}</h2>
+      <span [class]="getStatusClass(production.status)" class="px-3 py-1 rounded-full text-xs font-semibold uppercase border">
+        {{ production.status }}
+      </span>
+    </div>
+    <div class="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-y-6 gap-x-8">
+      <div>
+        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider">Production Name</label>
+        <p class="mt-1 text-sm font-medium text-gray-900">{{ production.name }}</p>
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider">Organizational Unit</label>
+        <p class="mt-1 text-sm font-medium text-gray-900">{{ production.org_unit_path }}</p>
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider">Domain</label>
+        <p class="mt-1 text-sm font-medium text-gray-900">{{ production.domain }}</p>
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider">Total Users</label>
+        <p class="mt-1 text-sm font-medium text-gray-900">{{ users.length }}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="space-y-4">
+    <div class="flex items-center justify-between">
+      <h3 class="text-xl font-bold text-gray-900">Coordinators</h3>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200">
+          @for (coord of coordinators; track coord.email) {
+            <tr class="hover:bg-gray-50">
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ coord.first_name }}&nbsp;{{ coord.last_name }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{{ coord.email }}</td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span class="text-xs font-medium px-2 py-0.5 rounded-full border"
+                [class]="getStatusClass(coord.coordinator_assignment_status)"
+                >
+                  {{ coord.coordinator_assignment_status }}
+                </span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
+                <button class="text-blue-600 hover:text-blue-800 font-medium">Edit</button>
+              </td>
+            </tr>
+          }@empty {
+            <tr>
+              <td colspan="5" class="px-6 py-10 text-center text-sm text-gray-500">There are no coordinators assigned to this production.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="space-y-4">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <h3 class="text-xl font-bold text-gray-900">Users ({{ users.length }})</h3>
+      
+      <div class="relative w-full md:w-80">
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <svg class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </div>
+        <input 
+          type="text" 
+          [(ngModel)]="user_search_query"
+          (input)="filterUsers()"
+          placeholder="Search users..."
+          class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-blue-500 focus:border-blue-500"
+        >
+        @if (user_search_query && user_search_query.length > 0) {
+        <button (click)="clearSearch()" type="button"
+            class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
+            aria-label="Clear search">
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+        }
+      </div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Production Email</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Personal Email</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last login</th>
+            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200">
+          @for (user of users; track user.user_id) {
+            <tr class="hover:bg-gray-50">
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ user.first_name }}&nbsp;{{ user.last_name }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ user.production_email }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ user.personal_email }}</td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span class="text-xs font-medium px-2 py-0.5 rounded-full border"
+                [class]="getStatusClass(user.assignment_status)">
+                  {{ user.assignment_status }}
+                </span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ user.last_login_date }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
+                <button class="text-blue-600 hover:text-blue-800 font-medium" (click)="gotoUserDetails(user)">Details</button>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="5" class="px-6 py-10 text-center text-sm text-gray-500">No users found matching your search.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+
+</main>
+</div>

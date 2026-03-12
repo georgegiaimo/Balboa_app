@@ -1,0 +1,85 @@
+<div class="flex">
+    <app-sidemenu></app-sidemenu>
+    <main class="flex-1 p-8 bg-gray-100 h-screen overflow-y-auto">
+
+        <nav class="flex items-center text-sm text-gray-500 mb-4 cursor-pointer pb-4">
+            <a (click)="gotoAdmins()" class="hover:text-blue-600 transition-colors">Admins</a>
+            <span class="mx-2">/</span>
+            <span class="text-gray-900 font-medium">Edit Admin</span>
+        </nav>
+
+        <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900">{{admin_id > 0 ? 'Edit Admin':'Add Admin'}}</h1>
+            </div>
+
+        </div>
+        <div class="max-w-2xl mx-auto p-6 bg-white border border-slate-200 rounded-xl shadow-sm">
+            <!--<h2 class="text-xl font-semibold text-slate-800 mb-6">Add Admin User</h2>-->
+
+            <form [formGroup]="adminForm" (ngSubmit)="onSubmit()" class="space-y-6">
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">First Name</label>
+                        <input type="text" formControlName="first_name"
+                            class="w-full px-3 py-2 border rounded-md outline-none transition focus:ring-1"
+                            [ngClass]="isInvalid('first_name') ? 'border-red-500 focus:ring-red-500' : 'border-slate-300 focus:ring-blue-500'">
+
+                        <p *ngIf="hasError('first_name', 'required')" class="text-xs text-red-500 mt-1">First name is
+                            required.</p>
+                        <p *ngIf="hasError('first_name', 'minlength')" class="text-xs text-red-500 mt-1">Minimum 2
+                            characters required.</p>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Last Name</label>
+                        <input type="text" formControlName="last_name"
+                            class="w-full px-3 py-2 border rounded-md outline-none transition focus:ring-1"
+                            [ngClass]="isInvalid('last_name') ? 'border-red-500 focus:ring-red-500' : 'border-slate-300 focus:ring-blue-500'">
+
+                        <p *ngIf="hasError('last_name', 'required')" class="text-xs text-red-500 mt-1">Last name is
+                            required.</p>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Email Address</label>
+                    <input type="email" formControlName="email"
+                        class="w-full px-3 py-2 border rounded-md outline-none transition focus:ring-1"
+                        [ngClass]="isInvalid('email') ? 'border-red-500 focus:ring-red-500' : 'border-slate-300 focus:ring-blue-500'">
+
+                    <div *ngIf="isInvalid('email')" class="mt-1">
+                        <p *ngIf="hasError('email', 'required')" class="text-xs text-red-500">Email address cannot be
+                            empty.</p>
+                        <p *ngIf="hasError('email', 'email') || hasError('email', 'pattern')"
+                            class="text-xs text-red-500">Please provide a valid email format (e.g. name&#64;domain.com).
+                        </p>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">User Role</label>
+                    <select formControlName="role"
+                        class="w-full px-3 py-2 border border-slate-300 rounded-md bg-white outline-none focus:ring-1 focus:ring-blue-500">
+                        <option value="admin">admin</option>
+                        <option value="guest">guest</option>
+                    </select>
+                </div>
+
+                <div class="flex flex-col items-end space-y-2 pt-4 border-t border-slate-100">
+                    <button type="submit" [disabled]="adminForm.invalid"
+                        class="w-full md:w-auto px-8 py-2.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-md transition shadow-sm disabled:bg-slate-300 disabled:cursor-not-allowed">
+                        {{admin_id > 0 ? 'Save':'Add Admin'}}
+                    </button>
+                    <span *ngIf="adminForm.invalid && adminForm.touched"
+                        class="text-[10px] uppercase tracking-wider text-slate-400 font-bold">
+                        Please fix the errors above to continue
+                    </span>
+                </div>
+
+            </form>
+        </div>
+
+    </main>
+</div>

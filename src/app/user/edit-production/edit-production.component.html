@@ -1,0 +1,106 @@
+<div class="flex">
+    <app-sidemenu></app-sidemenu>
+    <main class="flex-1 p-8 bg-gray-100 h-screen overflow-y-auto">
+
+        <nav class="flex items-center text-sm text-gray-500 mb-4 cursor-pointer pb-4">
+            <a (click)="gotoProductions()" class="hover:text-blue-600 transition-colors">Productions</a>
+            <span class="mx-2">/</span>
+            <span class="text-gray-900 font-medium">Edit Production</span>
+        </nav>
+
+        <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900">{{production_id > 0 ? 'Edit Production':'Add Production'}}</h1>
+            </div>
+
+        </div>
+
+        <div class="max-w-2xl mx-auto p-8 bg-white border border-slate-200 rounded-2xl shadow-sm">
+
+    <form [formGroup]="productionForm" (ngSubmit)="onSubmit()" class="space-y-5">
+     
+        
+        <div class="grid grid-cols-1 gap-6">
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-2">Project Name</label>
+            <input type="text" formControlName="projectName" placeholder="e.g. Series Crew - Season 1"
+              class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
+              [ngClass]="{'border-red-500 ring-red-100': isInvalid('projectName')}">
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-2">Google Domain</label>
+            <select formControlName="domain" class="w-full px-4 py-2.5 rounded-lg border border-slate-300 bg-white focus:ring-2 focus:ring-blue-500 outline-none transition">
+              <option *ngFor="let d of domains" [value]="d">{{ d }}</option>
+            </select>
+          </div>
+        </div>
+
+         <div class="relative">
+            <label class="block text-sm font-semibold text-slate-700 mb-2">Coordinator</label>
+            <input type="text" formControlName="coordinator" (focus)="show_auto_complete_for_coordinators = true"
+                        (blur)="show_auto_complete_for_coordinators = false" placeholder="Search a coordinator..."
+                        class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition">
+
+                    <div *ngIf="show_auto_complete_for_coordinators"
+                        class="absolute z-10 w-full mt-1 bg-white border border-slate-200 rounded-lg shadow-lg max-h-48 overflow-y-auto">
+                        <div *ngFor="let option of filteredCoordinators$ | async" (mousedown)="selectCoordinator(option)"
+                            class="px-4 py-2 hover:bg-blue-50 cursor-pointer text-slate-700 transition">
+                            {{ option }}
+                        </div>
+                    </div>
+
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-2">Production Type</label>
+            <select formControlName="type" class="w-full px-4 py-2.5 rounded-lg border border-slate-300 bg-white focus:ring-2 focus:ring-blue-500 outline-none transition">
+              <option value="" disabled selected>Select type</option>
+              <option *ngFor="let t of types" [value]="t">{{ t }}</option>
+            </select>
+          </div>
+          
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-2">Projected End Date</label>
+            <input type="date" formControlName="endDate"
+              class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 outline-none transition">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 gap-6">
+          <div class="md:col-span-1">
+            <label class="block text-sm font-semibold text-slate-700 mb-2"># Episodes</label>
+            <input type="number" formControlName="episodes"
+              class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 outline-none transition">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 gap-6">
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-2">Primary Location</label>
+            <input type="text" formControlName="location" placeholder="City, State or Studio"
+              class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 outline-none transition">
+          </div>
+        </div>
+        
+
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-2">Production Notes</label>
+          <textarea formControlName="notes" rows="4" placeholder="Specific technical requirements or organizational details..."
+            class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 outline-none transition resize-none"></textarea>
+        </div>
+      
+
+      <div class="px-8 py-6 bg-slate-50 border-t border-slate-200 flex justify-end items-center gap-4">
+        <button type="button" class="px-6 py-2.5 text-sm font-medium text-slate-600 hover:text-slate-800 transition">
+          Cancel
+        </button>
+        <button type="submit" [disabled]="productionForm.invalid"
+          class="px-8 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-300 text-white text-sm font-bold rounded-lg shadow-md shadow-blue-200 transition-all active:scale-95">
+          Initialize Production
+        </button>
+      </div>
+    </form>
+  </div>
+</main>
+</div>

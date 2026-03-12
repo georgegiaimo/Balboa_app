@@ -1,0 +1,132 @@
+
+
+
+<div class="flex">
+  <app-sidemenu></app-sidemenu>
+  <main class="flex-1 p-8 bg-gray-100 h-screen overflow-y-auto">
+      
+    <header class="bg-white shadow-sm p-4 flex justify-between items-center">
+      <h1 class="text-xl font-semibold text-gray-800">Operations Overview</h1>
+      <div class="flex items-center space-x-4">
+        <span class="text-sm text-gray-500">Last updated: 2 mins ago</span>
+        <div class="w-10 h-10 rounded-full bg-gray-300"></div>
+      </div>
+    </header>
+
+    <div class="p-6 space-y-6">
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+          <p class="text-sm font-medium text-gray-500 uppercase">Active Users</p>
+          <p class="text-3xl font-bold text-gray-900">{{number_users}}</p>
+          <!--<p class="text-xs text-green-500 mt-2">↑ 12% from last month</p>-->
+        </div>
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+          <p class="text-sm font-medium text-gray-500 uppercase">Productions</p>
+          <p class="text-3xl font-bold text-gray-900">{{number_productions}}</p>
+          <!--<p class="text-xs text-blue-500 mt-2">8 Currently live</p>-->
+        </div>
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+          <p class="text-sm font-medium text-gray-500 uppercase">Estimated Cost</p>
+          <p class="text-3xl font-bold text-gray-900">${{(number_users*3).toLocaleString()}}</p>
+          <!--<p class="text-xs text-red-400 mt-2">Within budget</p>-->
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+          <h3 class="font-semibold text-gray-700 mb-4">Productions</h3>
+          <div class="h-96 flex items-center justify-center bg-gray-50 rounded-lg border-dashed border-2 border-gray-200">
+             <!--<span class="text-gray-400">Pie Chart: Production Status</span>-->
+             @if (productions){
+              <app-productions-chart [productions]="productions"></app-productions-chart>
+             }
+          </div>
+        </div>
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+          <h3 class="font-semibold text-gray-700 mb-4">Data</h3>
+          <div class="h-96 overflow-auto bg-gray-50 rounded-lg border-dashed border-2 border-gray-200">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-100 sticky top-0">
+                <tr>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider max-w-[200px]">Production</th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Domain</th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-center">Active Users</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-100">
+                @for (x of productions; track x.production_id){
+                <tr class="hover:bg-gray-50 transition-colors">
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 truncate max-w-[200px] cursor-pointer" (click)="gotoProduction(x)">{{x.name}}</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{x.domain}}</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-center">{{x.active_users}}</td>
+                </tr>
+                }
+              </tbody>
+            </table> 
+            <div class="text-center py-6">
+              <button class="items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700"
+              (click)="gotoProductions()">
+                See Details
+            </button>
+            </div>
+            <!--<span class="text-gray-400">Pie Chart: Domain Distribution</span>-->
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+          <h3 class="font-semibold text-gray-700 mb-4">By Domains</h3>
+          <div class="h-96 flex items-center justify-center bg-gray-50 rounded-lg border-dashed border-2 border-gray-200">
+             <!--<span class="text-gray-400">Pie Chart: Production Status</span>-->
+             @if (domains){
+              <app-domains-chart [domains]="domains"></app-domains-chart>
+             }
+          </div>
+        </div>
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+          <h3 class="font-semibold text-gray-700 mb-4">Data</h3>
+          <div class="h-96 overflow-auto bg-gray-50 rounded-lg border-dashed border-2 border-gray-200">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-100 sticky top-0">
+                <tr>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Domain</th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-center">Active Users</th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-center">Productions</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-100">
+                @for (x of domains; track x.domain){
+                <tr class="hover:bg-gray-50 transition-colors">
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 cursor-pointer" (click)="gotoDomainDetails(x)">{{x.domain}}</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-center">{{x.users}}</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-center">{{x.productions}}</td>
+                </tr>
+                }
+              </tbody>
+            </table> 
+            <div class="text-center py-6">
+              <button class="items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700">
+                See Details
+            </button>
+            </div>
+            <!--<span class="text-gray-400">Pie Chart: Domain Distribution</span>-->
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+        <h3 class="font-semibold text-gray-700 mb-4">Daily Users</h3>
+        <div class="h-80 flex items-center justify-center bg-gray-50 rounded-lg border-dashed border-2 border-gray-200">
+          @if(historical_data){ 
+          <app-user-historical-chart [data]="historical_data"></app-user-historical-chart> 
+          <!--<span class="text-gray-400">Bar Graph: Daily Traffic</span>-->
+          }
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+</div>

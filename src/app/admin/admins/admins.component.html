@@ -1,0 +1,91 @@
+<div class="flex">
+    <app-sidemenu></app-sidemenu>
+    <main class="flex-1 p-8 bg-gray-100 h-screen overflow-y-auto">
+
+        <div class="p-6 max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900">Admins</h1>
+                    <p class="text-sm text-gray-500">Manage and track who can access the application.</p>
+                </div>
+
+                <button type="button" (click)="gotoEditAdmin(0)"
+                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all">
+                    <svg class="-ml-1 mr-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    Add Admin
+                </button>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Name
+                                </th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Email
+                                </th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Role
+                                </th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Created
+                                </th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Last login
+                                </th>
+                                <th scope="col" class="relative px-6 py-3 ">
+                                    <span class="sr-only">Edit</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            @for (x of admins; track x.admin_id) {
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900">{{ x.first_name }}&nbsp;{{x.last_name}}</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900">{{ x.email }}</div>
+                                </td>
+                                
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span [class]="getRoleClass(x.role)"
+                                        class="px-2.5 py-0.5 rounded-full text-xs font-medium border">
+                                        {{ x.role }}
+                                    </span>
+                                </td>
+                                 <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900">{{ x.created_date }}</div>
+                                </td>
+                                 <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900">{{ x.last_login_date }}</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium cursor-pointer">
+                                    <a (click)="gotoEditAdmin(x.admin_id)" class="text-blue-600 hover:text-blue-900">Edit</a>
+                                </td>
+                            </tr>
+                            } @empty {
+                            <tr>
+                                <td colspan="3" class="px-6 py-10 text-center text-sm text-gray-500 italic">
+                                    No admins found. Click 'Add Admin' to create one.
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </main>
+</div>
