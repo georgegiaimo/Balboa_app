@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ChartConfiguration, ChartType } from 'chart.js';
 import { ReportsService } from '../../services/reports.service';
+import { BaseChartDirective } from 'ng2-charts'; // Import from ng2-charts
+import DatalabelsPlugin from 'chartjs-plugin-datalabels';
 
 @Component({
   selector: 'app-productions-chart',
@@ -13,6 +15,9 @@ export class ProductionsChartComponent implements OnInit {
   @Input() productions!:any[];
   
   public pieChartType: 'pie' = 'pie';
+
+  // Register the plugin here
+  public pieChartPlugins = [DatalabelsPlugin];
 
   public pieChartData: ChartConfiguration<'pie'>['data'] = {
     labels: [],
