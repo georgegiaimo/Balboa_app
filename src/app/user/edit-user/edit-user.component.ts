@@ -15,11 +15,11 @@ export class EditUserComponent implements OnInit {
   user_id!:number;
   
   // Example data for autocomplete
-  productions = ['Series Crew A', 'Series Crew B', 'Production Alpha', 'Directing Team', 'Editing Bay'];
+  productions = ['Production 1'];
   filteredProductions$: Observable<string[]> = of([]);
   showAutocomplete = false;
 
-  domains = ['secrew.com', 'theraloom.com', 'gmail.com'];
+  domains = ['crew-tv', 'seriescrew', 'mount22prod'];
 
   constructor(
     private fb: FormBuilder,
@@ -30,7 +30,7 @@ export class EditUserComponent implements OnInit {
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       personal_email: ['', [Validators.required, Validators.email]],
-      domain: ['secrew.com', Validators.required],
+      domain: ['crew-tv', Validators.required],
       production: ['', Validators.required],
       notes: ['']
     });
