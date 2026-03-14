@@ -60,6 +60,10 @@
                                 </th>
                                 <th scope="col"
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Personal Email
+                                </th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Assignment
                                 </th>
                                 <th scope="col"
@@ -79,13 +83,16 @@
                             @for (x of users; track x.user_id) {
                             <tr class="hover:bg-gray-50 transition-colors">
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm font-medium text-gray-900 truncate max-w-[200px]">{{ x.name }}</div>
+                                    <div class="text-sm font-medium text-gray-900 truncate max-w-[140px]">{{ x.name }}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm font-medium text-gray-900">{{ x.production_email }}</div>
+                                    <div class="text-sm font-medium text-gray-900  truncate max-w-[180px]">{{ x.production_email }}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm font-medium text-gray-900 truncate max-w-[200px]">{{ x.assignment ? x.assignment.name:'' }}</div>
+                                    <div class="text-sm font-medium text-gray-900 truncate max-w-[180px]">{{ x.personal_email }}</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900 truncate max-w-[180px]">{{ x.assignment ? x.assignment.name:'' }}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <span [class]="getStatusClass(x.assignment ? x.assignment.assignment_status:'')"

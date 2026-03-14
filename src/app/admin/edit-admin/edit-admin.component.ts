@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApisService } from '../../services/apis.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-edit-admin',
@@ -19,6 +20,7 @@ export class EditAdminComponent implements OnInit{
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
+    public authService: AuthService,
     public apisService: ApisService
   ) {
     this.adminForm = this.fb.group({
@@ -50,8 +52,6 @@ export class EditAdminComponent implements OnInit{
     });
   }
 
-  
-
   // Helper to check if a specific error exists
   hasError(controlName: string, errorName: string): boolean {
     const control = this.adminForm.get(controlName);
@@ -69,14 +69,20 @@ export class EditAdminComponent implements OnInit{
       console.log('Valid Submission:', this.adminForm.value);
 
       if (this.admin_id == 0){
-        this.apisService.AddAdmin(this.adminForm.value).subscribe(() => {
-          this.router.navigate(['a/admins']);
-        })
+        var object = JSON.parse(JSON.stringify(this.adminForm.value));
+        object.password = 'password123';
+        object.status = 'invited';
+        this.authService.SignUp(object).subscribe((response:any) => {
+          if (response.error){
+
+          }
+          else this.router.navigate(['a/admins']);
+        });
       }
       else {
         this.apisService.UpdateAdmin(this.adminForm.value).subscribe(() => {
           this.router.navigate(['a/admins']);
-        })
+        });
       }
 
     } else {

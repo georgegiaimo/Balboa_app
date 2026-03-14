@@ -37,6 +37,10 @@
                                 </th>
                                 <th scope="col"
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Status
+                                </th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Created
                                 </th>
                                 <th scope="col"
@@ -62,6 +66,12 @@
                                     <span [class]="getRoleClass(x.role)"
                                         class="px-2.5 py-0.5 rounded-full text-xs font-medium border">
                                         {{ x.role }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span [class]="getStatusClass(x.status)"
+                                        class="px-2.5 py-0.5 rounded-full text-xs font-medium border">
+                                        {{ x.status }}
                                     </span>
                                 </td>
                                  <td class="px-6 py-4 whitespace-nowrap">

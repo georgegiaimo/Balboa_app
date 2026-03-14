@@ -104,6 +104,14 @@ export class ApisService {
     ) 
   }
 
+  GetCoordinatorDetails(coordinator_id:number): Observable<any> {
+    return this.http.get<any>(this.baseurl + '/getCoordinatorDetails?id=' + coordinator_id, this.httpOptions)
+    .pipe(
+      retry(0),
+      catchError(this.errorHandl),
+    ) 
+  }
+
 
   // Error handling
   errorHandl(error:any) {

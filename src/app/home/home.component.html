@@ -1,0 +1,49 @@
+<nav class="fixed top-0 z-50 w-full px-6 py-4 transition-all duration-300 bg-white/10 backdrop-blur-md border-b border-white/20">
+  <div class="max-w-7xl mx-auto flex justify-between items-center">
+    <div class="text-white font-bold text-2xl tracking-tight">
+      Balboa Computer
+    </div>
+    <div>
+      <button 
+        (click)="gotoLogin()"
+        class="text-white border border-white/40 px-5 py-2 rounded-md font-medium hover:bg-white hover:text-gray-900 transition-colors">
+        Login
+      </button>
+    </div>
+  </div>
+</nav>
+
+<section class="relative h-screen w-full flex items-center justify-center overflow-hidden">
+  
+  <video 
+    autoplay 
+    muted 
+    loop 
+    playsinline 
+    poster="assets/images/hero-fallback.jpg"
+    class="absolute z-10 w-auto min-w-full min-h-full max-w-none object-cover">
+    <source src="assets/8783666-hd_1920_1080_30fps.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <div class="absolute z-20 top-0 left-0 w-full h-full bg-black/50"></div>
+
+  <div class="relative z-30 flex flex-col items-center text-center px-4">
+    <img 
+      src="assets/images/3b104128-bf2f-4804-8878-9a7a497f2475.png" 
+      alt="Theraloom Logo" 
+      class="w-48 md:w-64 mb-8 drop-shadow-2xl">
+    
+      <!--
+    <h1 class="text-white text-4xl md:text-6xl font-light mb-10 tracking-wide">
+      Clinical Assessments <span class="font-semibold">Reimagined</span>
+    </h1>
+    -->
+
+    <button 
+      (click)="gotoLogin()"
+      class="bg-blue-600 hover:bg-blue-700 text-white px-10 py-4 rounded-lg font-bold text-lg shadow-lg transform transition hover:-translate-y-1">
+      Login to Dashboard
+    </button>
+  </div>
+</section>

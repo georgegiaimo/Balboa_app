@@ -24,4 +24,8 @@ export class SidemenuComponent {
     this.router.navigate([route]);
   }
 
+  logOut(){
+    this.router.navigate(['']);
+  }
+
 }
