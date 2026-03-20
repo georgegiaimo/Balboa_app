@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-sidemenu',
@@ -12,6 +13,7 @@ export class SidemenuComponent {
   is_collapsed:boolean = false;
 
   constructor(
+    private authService: AuthService,
     private router:Router
   ){}
 
@@ -25,7 +27,8 @@ export class SidemenuComponent {
   }
 
   logOut(){
-    this.router.navigate(['']);
+    this.authService.handleLogout();
+    this.router.navigate([''],{ replaceUrl: true });
   }
 
 }

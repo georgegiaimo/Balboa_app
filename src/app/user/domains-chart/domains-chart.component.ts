@@ -1,6 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { ChartConfiguration, ChartType } from 'chart.js';
 import { ReportsService } from '../../services/reports.service';
+import { BaseChartDirective } from 'ng2-charts'; // Import from ng2-charts
+import DatalabelsPlugin from 'chartjs-plugin-datalabels';
 
 @Component({
   selector: 'app-domains-chart',
@@ -13,6 +15,9 @@ export class DomainsChartComponent {
   
   public pieChartType: 'pie' = 'pie';
 
+  // Register the plugin here
+  public pieChartPlugins = [DatalabelsPlugin];
+
   public pieChartData: ChartConfiguration<'pie'>['data'] = {
     labels: [],
     datasets: [{ data: [] }],
@@ -21,7 +26,21 @@ export class DomainsChartComponent {
   public pieChartOptions: ChartConfiguration<'pie'>['options'] = {
     responsive: true,
     maintainAspectRatio: false,
-    plugins: { legend: { 
+    plugins: { 
+    datalabels: {
+      color: '#ffffff', // Set the text color here (e.g., White)
+      font: {
+        weight: 'bold',
+        size: 14
+      },
+      // Optional: Formatter to add symbols or round numbers
+      /*
+      formatter: (value, ctx) => {
+        return value + '%'; 
+      },
+      */
+    },
+    legend: { 
       display: false,
       position: 'right' 
     } },

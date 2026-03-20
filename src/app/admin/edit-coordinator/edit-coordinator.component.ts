@@ -68,7 +68,7 @@ export class EditCoordinatorComponent {
 
   onSubmit() {
     if (this.coordinatorForm.valid) {
-      console.log('Form Data:', this.coordinatorForm.value);
+      //console.log('Form Data:', this.coordinatorForm.value);
     } else {
       this.coordinatorForm.markAllAsTouched();
     }

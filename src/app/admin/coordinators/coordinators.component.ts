@@ -28,6 +28,7 @@ export class CoordinatorsComponent {
     this.apisService.GetCoordinators().subscribe((response:any) => {
       this.coordinators = response.data;
       this.coordinators_o = JSON.parse(JSON.stringify(this.coordinators));
+      //console.log('coordinators', this.coordinators);
     })
   }
 
@@ -41,7 +42,7 @@ export class CoordinatorsComponent {
 
   getStatusClass(status: string): string {
     switch (status ? status.toLowerCase():'') {
-      case 'admin':
+      case 'active':
         return 'bg-green-100 text-green-800 border-green-200';
       case 'guest':
         return 'bg-yellow-100 text-yellow-800 border-yellow-200';

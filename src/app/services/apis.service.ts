@@ -112,6 +112,69 @@ export class ApisService {
     ) 
   }
 
+  GetHealth(): Observable<any> {
+    return this.http.get<any>(this.baseurl + '/getHealth', this.httpOptions)
+    .pipe(
+      retry(0),
+      catchError(this.errorHandl),
+    ) 
+  }
+
+  GetDuplicatedUsersByEmail(): Observable<any> {
+    return this.http.get<any>(this.baseurl + '/getDuplicatedUsersByEmail', this.httpOptions)
+    .pipe(
+      retry(0),
+      catchError(this.errorHandl),
+    ) 
+  }
+
+  GetDuplicatedUsersByName(): Observable<any> {
+    return this.http.get<any>(this.baseurl + '/getDuplicatedUsersByName', this.httpOptions)
+    .pipe(
+      retry(0),
+      catchError(this.errorHandl),
+    ) 
+  }
+
+  GetUnassignedUsers(): Observable<any> {
+    return this.http.get<any>(this.baseurl + '/getUnassignedUsers', this.httpOptions)
+    .pipe(
+      retry(0),
+      catchError(this.errorHandl),
+    ) 
+  }
+
+  GetInactiveUsers(): Observable<any> {
+    return this.http.get<any>(this.baseurl + '/getInactiveUsers', this.httpOptions)
+    .pipe(
+      retry(0),
+      catchError(this.errorHandl),
+    ) 
+  }
+
+  GetSimilarUsersByEmail(): Observable<any> {
+    return this.http.get<any>(this.baseurl + '/getSimilarByEmail', this.httpOptions)
+    .pipe(
+      retry(0),
+      catchError(this.errorHandl),
+    ) 
+  }
+
+  GetSimilarUsersByName(): Observable<any> {
+    return this.http.get<any>(this.baseurl + '/getSimilarByName', this.httpOptions)
+    .pipe(
+      retry(0),
+      catchError(this.errorHandl),
+    ) 
+  }
+
+  GetApproachingOneYear(): Observable<any> {
+    return this.http.get<any>(this.baseurl + '/getApproachingOneYear', this.httpOptions)
+    .pipe(
+      retry(0),
+      catchError(this.errorHandl),
+    ) 
+  }
 
   // Error handling
   errorHandl(error:any) {

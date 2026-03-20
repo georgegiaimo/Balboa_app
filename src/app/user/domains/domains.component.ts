@@ -21,7 +21,7 @@ export class DomainsComponent implements OnInit {
   ngOnInit(): void {
     this.reportsService.GetDashboardData().subscribe((response:any) => {
       this.domains = response.data.domains;
-      console.log('this.domains', this.domains, response);
+      //console.log('this.domains', this.domains, response);
     })
   }
 

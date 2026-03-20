@@ -14,6 +14,7 @@ export class UserDetailsComponent implements OnInit {
   user:any;
 
   assignments!:any[];
+  show_confirm_delete:boolean = false;
 
   constructor(
     public apisService: ApisService,
@@ -44,6 +45,10 @@ export class UserDetailsComponent implements OnInit {
 
   gotoProduction(production:any){
     this.router.navigate(['u/production-details/' + production.production_id]);
+  }
+
+  confirmDelete(){
+    this.show_confirm_delete = true;
   }
 
   getStatusClass(status: string): string {

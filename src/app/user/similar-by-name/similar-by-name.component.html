@@ -1,0 +1,76 @@
+<div class="flex">
+    <app-sidemenu></app-sidemenu>
+    <main class="flex-1 p-8 bg-gray-100 h-screen overflow-y-auto">
+
+        <nav class="flex items-center text-sm text-gray-500 mb-4 cursor-pointer pb-4">
+            <a (click)="gotoHealth()" class="hover:text-blue-600 transition-colors">Health</a>
+            <span class="mx-2">/</span>
+            <span class="text-gray-900 font-medium">Similar users by name</span>
+        </nav>
+
+        <div class="p-6 max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900">Similar Users By Name</h1>
+                    <p class="text-sm text-gray-500">These records share similar name which might be duplicates.</p>
+                </div>
+            </div>
+
+            @if(is_loading){
+            <div class="flex flex-col items-center gap-2">
+                <div class="size-10 animate-spin rounded-full border-4 border-gray-100 border-t-indigo-500 border-r-indigo-500">
+                </div>
+            
+                <span class="text-sm font-medium text-gray-600 animate-pulse">Please wait a moment...</span>
+            </div>
+            }
+            @else{
+
+             <p class="text-gray-500">{{similar_users.length}} duplicated users found.</p>
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            @for (x of similar_users; track x.user1.user_id){
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="px-6 py-4 whitespace-nowrap bg-green-100 border-b border-black">
+                                    <strong>User Id:</strong>&nbsp;{{x.user1.user_id}}<br>
+                                    <strong>Name:</strong>&nbsp;{{x.user1.first_name}}&nbsp;{{x.user1.last_name}}<br>
+                                    <strong>Production Email:</strong>&nbsp;{{x.user1.production_email}}<br>
+                                    <strong>Personal Email:</strong>&nbsp;{{x.user1.personal_email}}<br>
+                                    <strong>Assignments:</strong><br>
+                                    @for(y of x.user1.assignments; track y.production_id){
+                                        <div>{{y.name}}&nbsp;<span><strong>{{y.status}}</strong></span></div>
+                                    }
+                                    <button type="button" (click)="gotoUserDetails(x)"
+                                        class="rounded-md px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-all duration-200">
+                                        Edit
+                                    </button>
+                                </td>
+
+                                <td class="px-6 py-4 whitespace-nowrap bg-red-100 border-b border-black">
+                                    <strong>User Id:</strong>&nbsp;{{x.user2.user_id}}<br>
+                                    <strong>Name:</strong>&nbsp;{{x.user2.first_name}}&nbsp;{{x.user2.last_name}}<br>
+                                    <strong>Production Email:</strong>&nbsp;{{x.user2.production_email}}<br>
+                                    <strong>Personal Email:</strong>&nbsp;{{x.user2.personal_email}}<br>
+                                    <strong>Assignments:</strong><br>
+                                    @for(y of x.user2.assignments; track y.production_id){
+                                        <div>{{y.name}}&nbsp;<span><strong>{{y.status}}</strong></span></div>
+                                    }
+                                    <button type="button" (click)="gotoUserDetails(x)"
+                                        class="rounded-md px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-all duration-200">
+                                        Edit
+                                    </button>
+                                </td>
+                                
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+        </div>
+
+    </main>
+</div>

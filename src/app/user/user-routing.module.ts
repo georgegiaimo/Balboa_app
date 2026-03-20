@@ -10,19 +10,36 @@ import { DomainDetailsComponent } from './domain-details/domain-details.componen
 import { DomainsComponent } from './domains/domains.component';
 import { EditUserComponent } from './edit-user/edit-user.component';
 import { EditProductionComponent } from './edit-production/edit-production.component';
+import { HealthComponent } from './health/health.component';
+import { DuplicatesByNameComponent } from './duplicates-by-name/duplicates-by-name.component';
+import { DuplicatesByEmailComponent } from './duplicates-by-email/duplicates-by-email.component';
+import { UnassignedUsersComponent } from './unassigned-users/unassigned-users.component';
+import { InactiveUsersComponent } from './inactive-users/inactive-users.component';
+import { SimilarByEmailComponent } from './similar-by-email/similar-by-email.component';
+import { SimilarByNameComponent } from './similar-by-name/similar-by-name.component';
+import { authGuard } from '../auth.guards';
+import { ApproachingOneYearMarkComponent } from './approaching-one-year-mark/approaching-one-year-mark.component';
 
 
 const routes: Routes = [
-    {path: 'account', component: AccountComponent},
-    {path: 'dashboard', component: DashboardComponent},
-    {path: 'productions', component: ProductionsComponent},
-    {path: 'production-details/:production_id', component: ProductionDetailsComponent},
-    {path: 'user-details/:user_id', component: UserDetailsComponent},
-    {path: 'domain-details/:domain', component: DomainDetailsComponent},
-    {path: 'users', component: UsersComponent},
-    {path: 'domains', component: DomainsComponent},
-    {path: 'edit-user/:user_id', component: EditUserComponent},
-    {path: 'edit-production/:production_id', component: EditProductionComponent},
+    {path: 'account', component: AccountComponent, canActivate: [authGuard]},
+    {path: 'dashboard', component: DashboardComponent, canActivate: [authGuard]},
+    {path: 'productions', component: ProductionsComponent, canActivate: [authGuard]},
+    {path: 'production-details/:production_id', component: ProductionDetailsComponent, canActivate: [authGuard]},
+    {path: 'user-details/:user_id', component: UserDetailsComponent, canActivate: [authGuard]},
+    {path: 'domain-details/:domain', component: DomainDetailsComponent, canActivate: [authGuard]},
+    {path: 'users', component: UsersComponent, canActivate: [authGuard]},
+    {path: 'domains', component: DomainsComponent, canActivate: [authGuard]},
+    {path: 'health', component: HealthComponent, canActivate: [authGuard]},
+    {path: 'duplicates-by-name', component: DuplicatesByNameComponent, canActivate: [authGuard]},
+    {path: 'duplicates-by-email', component: DuplicatesByEmailComponent, canActivate: [authGuard]},
+    {path: 'unassigned-users', component: UnassignedUsersComponent, canActivate: [authGuard]},
+    {path: 'inactive-users', component: InactiveUsersComponent, canActivate: [authGuard]},
+    {path: 'similar-by-email', component: SimilarByEmailComponent, canActivate: [authGuard]},
+    {path: 'similar-by-name', component: SimilarByNameComponent, canActivate: [authGuard]},
+    {path: 'approaching-one-year', component: ApproachingOneYearMarkComponent, canActivate: [authGuard]},
+    {path: 'edit-user/:user_id', component: EditUserComponent, canActivate: [authGuard]},
+    {path: 'edit-production/:production_id', component: EditProductionComponent, canActivate: [authGuard]},
 ];
 
 @NgModule({
@@ -41,5 +58,13 @@ export const routingComponents = [
     DomainDetailsComponent,
     DomainsComponent,
     EditUserComponent,
-    EditProductionComponent
+    EditProductionComponent,
+    HealthComponent,
+    DuplicatesByEmailComponent,
+    DuplicatesByNameComponent,
+    UnassignedUsersComponent,
+    InactiveUsersComponent,
+    SimilarByEmailComponent,
+    SimilarByNameComponent,
+    ApproachingOneYearMarkComponent
 ]

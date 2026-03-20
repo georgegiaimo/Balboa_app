@@ -45,7 +45,7 @@ export class DashboardComponent implements OnInit {
       this.domains = response.data.domains;
       this.historical_data = response.data.historical_data;
 
-      console.log('historical data', this.historical_data);
+      //console.log('historical data', this.historical_data);
 
       //calculate number of users
       var users = 0;

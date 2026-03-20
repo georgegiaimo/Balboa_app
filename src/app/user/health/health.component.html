@@ -1,0 +1,156 @@
+<div class="flex">
+    <app-sidemenu></app-sidemenu>
+    <main class="flex-1 p-8 bg-gray-100 h-screen overflow-y-auto">
+        
+        <div class="p-6 max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900">Health</h1>
+                    <p class="text-sm text-gray-500">Monitor issues within the dataset.</p>
+                </div>
+            </div>
+ 
+            @if(is_loading){
+            <div class="flex flex-col items-center gap-2">
+                <div class="size-10 animate-spin rounded-full border-4 border-gray-100 border-t-indigo-500 border-r-indigo-500">
+                </div>
+            
+                <span class="text-sm font-medium text-gray-600 animate-pulse">Please wait a moment, checking dataset health ...</span>
+            </div>
+            }
+            @else{
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Test
+                                </th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Alerts
+                                </th>
+                                <th scope="col" class="relative px-6 py-3">
+                                    <span class="sr-only">Details</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            @if (health_response){
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900">Users duplicated by email</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <!--<div class="text-sm font-medium text-gray-900">{{ health_response.duplicated_users_by_email }}</div>-->
+                                    <span [class]="getClass(health_response.duplicated_users_by_email)"
+                                        class="px-2.5 py-0.5 rounded-full text-xs font-medium border">
+                                        {{ health_response.duplicated_users_by_email }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium cursor-pointer">
+                                    <a (click)="gotoUsersDuplicatedByEmail()" class="text-blue-600 hover:text-blue-900">Details</a>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900">Users duplicated by name</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <!--<div class="text-sm font-medium text-gray-900">{{ health_response.duplicated_users_by_name }}</div>-->
+                                    <span [class]="getClass(health_response.duplicated_users_by_name)"
+                                        class="px-2.5 py-0.5 rounded-full text-xs font-medium border">
+                                        {{ health_response.duplicated_users_by_name }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium cursor-pointer">
+                                    <a (click)="gotoUsersDuplicatedByName()" class="text-blue-600 hover:text-blue-900">Details</a>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900">Unassigned users</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <!--<div class="text-sm font-medium text-gray-900">{{ health_response.unassigned_users }}</div>-->
+                                    <span [class]="getClass(health_response.unassigned_users)"
+                                        class="px-2.5 py-0.5 rounded-full text-xs font-medium border">
+                                        {{ health_response.unassigned_users }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium cursor-pointer">
+                                    <a (click)="gotoUnassignedUsers()" class="text-blue-600 hover:text-blue-900">Details</a>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900">Users with last login more than a year ago</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <!--<div class="text-sm font-medium text-gray-900">{{ health_response.inactive_users }}</div> -->
+                                    <span [class]="getClass(health_response.inactive_users)"
+                                        class="px-2.5 py-0.5 rounded-full text-xs font-medium border">
+                                        {{ health_response.inactive_users }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium cursor-pointer">
+                                    <a (click)="gotoInactiveUsers()" class="text-blue-600 hover:text-blue-900">Details</a>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900">Potentially same user (by email)</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <!--<div class="text-sm font-medium text-gray-900">{{ health_response.inactive_users }}</div> -->
+                                    <span [class]="getClass(-1)"
+                                        class="px-2.5 py-0.5 rounded-full text-xs font-medium border">
+                                        See details
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium cursor-pointer">
+                                    <a (click)="gotoSimilarByEmail()" class="text-blue-600 hover:text-blue-900">Details</a>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900">Potentially same user (by name)</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <!--<div class="text-sm font-medium text-gray-900">{{ health_response.inactive_users }}</div> -->
+                                    <span [class]="getClass(-1)"
+                                        class="px-2.5 py-0.5 rounded-full text-xs font-medium border">
+                                       See details
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium cursor-pointer">
+                                    <a (click)="gotoSimilarByName()" class="text-blue-600 hover:text-blue-900">Details</a>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900">Users approaching one year mark</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <!--<div class="text-sm font-medium text-gray-900">{{ health_response.inactive_users }}</div> -->
+                                    <span [class]="getClass(health_response.approaching_one_year)"
+                                        class="px-2.5 py-0.5 rounded-full text-xs font-medium border">
+                                        {{ health_response.approaching_one_year }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium cursor-pointer">
+                                    <a (click)="gotoApproachingOneYear()" class="text-blue-600 hover:text-blue-900">Details</a>
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            }
+        </div>
+
+    </main>
+</div>

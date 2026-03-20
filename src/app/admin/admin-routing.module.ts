@@ -5,13 +5,14 @@ import { AdminsComponent } from './admins/admins.component';
 import { CoordinatorsComponent } from './coordinators/coordinators.component';
 import { EditCoordinatorComponent } from './edit-coordinator/edit-coordinator.component';
 import { CoordinatorDetailsComponent } from './coordinator-details/coordinator-details.component';
+import { authGuard } from '../auth.guards';
 
 const routes: Routes = [
-  {path: 'admins', component: AdminsComponent},  
-  {path: 'edit-admin/:admin_id', component: EditAdminComponent},
-  {path: 'coordinators', component: CoordinatorsComponent},
-  {path: 'coordinator-details/:coordinator_id', component: CoordinatorDetailsComponent},   
-  {path: 'edit-coordinator/:coordinator_id', component: EditCoordinatorComponent},
+  {path: 'admins', component: AdminsComponent, canActivate: [authGuard]},  
+  {path: 'edit-admin/:admin_id', component: EditAdminComponent, canActivate: [authGuard]},
+  {path: 'coordinators', component: CoordinatorsComponent, canActivate: [authGuard]},
+  {path: 'coordinator-details/:coordinator_id', component: CoordinatorDetailsComponent, canActivate: [authGuard]},   
+  {path: 'edit-coordinator/:coordinator_id', component: EditCoordinatorComponent, canActivate: [authGuard]},
 ];
 
 @NgModule({

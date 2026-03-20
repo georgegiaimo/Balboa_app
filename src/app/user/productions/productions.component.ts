@@ -29,7 +29,7 @@ export class ProductionsComponent implements OnInit {
     this.apisService.GetProductions().subscribe((data:any) => {
       this.productions = data.data;
 
-      console.log('this.productions', this.productions);
+      //console.log('this.productions', this.productions);
       
       this.productions.forEach((x:any) => {
         if (!x.status) x.status = 'unknown';
