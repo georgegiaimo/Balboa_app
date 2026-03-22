@@ -104,6 +104,14 @@ export class ApisService {
     ) 
   }
 
+  GetCoordinator(coordinator_id:number): Observable<any> {
+    return this.http.get<any>(this.baseurl + '/getCoordinator?id=' + coordinator_id, this.httpOptions)
+    .pipe(
+      retry(0),
+      catchError(this.errorHandl),
+    ) 
+  }
+
   GetCoordinatorDetails(coordinator_id:number): Observable<any> {
     return this.http.get<any>(this.baseurl + '/getCoordinatorDetails?id=' + coordinator_id, this.httpOptions)
     .pipe(
@@ -112,8 +120,48 @@ export class ApisService {
     ) 
   }
 
+  GetCoordinatorAssignment(coordinator_assignment_id:number): Observable<any> {
+    return this.http.get<any>(this.baseurl + '/getCoordinatorAssignment?id=' + coordinator_assignment_id, this.httpOptions)
+    .pipe(
+      retry(0),
+      catchError(this.errorHandl),
+    ) 
+  }
+
+  AddCoordinator(object:any): Observable<any> {
+    return this.http.post<any>(this.baseurl + '/addCoordinator', object, this.httpOptions)
+    .pipe(
+      retry(0),
+      catchError(this.errorHandl),
+    ) 
+  }
+
+  AddCoordinatorAssignment(object:any): Observable<any> {
+    return this.http.post<any>(this.baseurl + '/addCoordinatorAssignment', object, this.httpOptions)
+    .pipe(
+      retry(0),
+      catchError(this.errorHandl),
+    ) 
+  }
+
+  UpdateCoordinatorAssignment(object:any): Observable<any> {
+    return this.http.post<any>(this.baseurl + '/updateCoordinatorAssignment', object, this.httpOptions)
+    .pipe(
+      retry(0),
+      catchError(this.errorHandl),
+    ) 
+  }
+
   GetHealth(): Observable<any> {
     return this.http.get<any>(this.baseurl + '/getHealth', this.httpOptions)
+    .pipe(
+      retry(0),
+      catchError(this.errorHandl),
+    ) 
+  }
+
+  GetActivity(): Observable<any> {
+    return this.http.get<any>(this.baseurl + '/getActivity', this.httpOptions)
     .pipe(
       retry(0),
       catchError(this.errorHandl),

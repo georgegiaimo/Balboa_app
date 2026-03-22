@@ -24,6 +24,7 @@ export class AdminsComponent implements OnInit {
   loadAdmins(){
     this.apisService.GetAdmins().subscribe((response:any) => {
       this.admins = response.data;
+      console.log('this.admins', this.admins);
     })
   }
 

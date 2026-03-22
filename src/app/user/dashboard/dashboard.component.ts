@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ReportsService } from '../../services/reports.service';
 import { Router } from '@angular/router';
+import { CommonService } from '../../services/common.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,8 +19,11 @@ export class DashboardComponent implements OnInit {
   number_users!:number;
   number_productions!:number;
 
+  last_updated!:string;
+
   constructor(
     public reportsService: ReportsService,
+    public commonService: CommonService,
     private router: Router
   ){}
 
@@ -53,8 +57,10 @@ export class DashboardComponent implements OnInit {
         users += x.active_users;
       });
 
+      this.last_updated = this.commonService.getWhen(this.historical_data[this.historical_data.length-1].timestamp);
+
       this.number_users = users;
-      this.number_productions = this.productions.length;
+      this.number_productions = this.productions.filter((x:any) => { return x.status != 'removed'; }).length;
     })
   }
 

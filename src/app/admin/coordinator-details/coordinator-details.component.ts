@@ -48,6 +48,14 @@ export class CoordinatorDetailsComponent {
     this.router.navigate(['u/production-details/' + production.production_id]);
   }
 
+  gotoEditCoordinator(){
+    this.router.navigate(['a/edit-coordinator/' + this.coordinator_id]);
+  }
+
+  gotoEditCoordinatorAssignment(key:string){
+    this.router.navigate(['a/edit-coordinator-assignment/' + key]);
+  }
+
   getStatusClass(status: string): string {
     switch (status ? status.toLowerCase():'') {
       case 'active':

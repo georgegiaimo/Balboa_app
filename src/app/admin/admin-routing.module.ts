@@ -6,6 +6,7 @@ import { CoordinatorsComponent } from './coordinators/coordinators.component';
 import { EditCoordinatorComponent } from './edit-coordinator/edit-coordinator.component';
 import { CoordinatorDetailsComponent } from './coordinator-details/coordinator-details.component';
 import { authGuard } from '../auth.guards';
+import { EditCoordinatorAssignmentComponent } from './edit-coordinator-assignment/edit-coordinator-assignment.component';
 
 const routes: Routes = [
   {path: 'admins', component: AdminsComponent, canActivate: [authGuard]},  
@@ -13,6 +14,7 @@ const routes: Routes = [
   {path: 'coordinators', component: CoordinatorsComponent, canActivate: [authGuard]},
   {path: 'coordinator-details/:coordinator_id', component: CoordinatorDetailsComponent, canActivate: [authGuard]},   
   {path: 'edit-coordinator/:coordinator_id', component: EditCoordinatorComponent, canActivate: [authGuard]},
+  {path: 'edit-coordinator-assignment/:key', component: EditCoordinatorAssignmentComponent, canActivate: [authGuard]},
 ];
 
 @NgModule({
@@ -26,5 +28,6 @@ export const routingComponents = [
     EditAdminComponent,
     CoordinatorsComponent,
     EditCoordinatorComponent,
-    CoordinatorDetailsComponent
+    CoordinatorDetailsComponent,
+    EditCoordinatorAssignmentComponent
 ]

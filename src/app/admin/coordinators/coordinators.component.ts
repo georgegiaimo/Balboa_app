@@ -28,7 +28,7 @@ export class CoordinatorsComponent {
     this.apisService.GetCoordinators().subscribe((response:any) => {
       this.coordinators = response.data;
       this.coordinators_o = JSON.parse(JSON.stringify(this.coordinators));
-      //console.log('coordinators', this.coordinators);
+      console.log('coordinators', this.coordinators);
     })
   }
 

@@ -17,6 +17,7 @@ export class ProductionDetailsComponent implements OnInit {
   users_o!:any[];
 
   coordinators!:any[];
+  activity!:any[];
 
   user_search_query!:string;
 
@@ -40,10 +41,33 @@ export class ProductionDetailsComponent implements OnInit {
       this.users = data.data.users;
       this.users_o = JSON.parse(JSON.stringify(this.users));
       this.coordinators = data.data.coordinators;
+      this.activity = data.data.activity;
+      this.processActivityData();
       console.log('users', this.users);
-      console.log('coordinators', this.coordinators);
+      //console.log('coordinators', this.coordinators);
+      console.log('activity', this.activity);
       
     })
+  }
+
+  processActivityData(){
+    this.activity.forEach((x:any) => {
+        x.segments = [];
+        var params = JSON.parse(x.params);
+        var segmentsx = x.template.split(/(\{.\})/g);
+        segmentsx.forEach((n:any) => {
+          var segment:any = {}
+          segment.is_token = this.isToken(n);
+          if (segment.is_token) {
+            segment.param = this.getParam(n,params);
+            if (segment.param.type == 'user') segment.url = '/u/user-details/' + segment.param.id;
+            else if (segment.param.type == 'production') segment.url = '/u/production-details/' + segment.param.id;
+          }
+          else segment.text = n;
+          
+          x.segments.push(segment);
+        });
+      });
   }
 
   filterUsers(){
@@ -81,6 +105,16 @@ export class ProductionDetailsComponent implements OnInit {
       default:
         return 'bg-gray-100 text-gray-800 border-gray-200';
     }
+  }
+
+  // Helper to find which param matches the {0} or {1} token
+  getParam(token: string, params: any[]) {
+    const index = parseInt(token.replace(/[{}]/g, ''), 10);
+    return params[index];
+  }
+
+  isToken(segment: string): boolean {
+    return /^\{.\}$/.test(segment);
   }
 
 }

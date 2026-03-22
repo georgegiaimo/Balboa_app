@@ -10,28 +10,24 @@
     </div>
 -->
     <div class="flex items-center justify-between mb-10">
-    <h1 *ngIf="!is_collapsed" class="text-xl font-bold text-white transition-all duration-300">
-        Balboa
-    </h1>
+        <h1 *ngIf="!is_collapsed" class="text-xl font-bold text-white transition-all duration-300">
+            Balboa
+        </h1>
 
-    <button (click)="toggleSidebar()" 
+        <button (click)="toggleSidebar()"
             class="p-2 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition-colors duration-200"
             aria-label="Toggle Sidebar">
-        <svg 
-            xmlns="http://www.w3.org/2000/svg" 
-            fill="none" 
-            viewBox="0 0 24 24" 
-            stroke-width="2" 
-            stroke="currentColor" 
-            class="w-6 h-6 transition-transform duration-300"
-            [class.rotate-180]="is_collapsed">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-        </svg>
-    </button>
-</div>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                stroke="currentColor" class="w-6 h-6 transition-transform duration-300"
+                [class.rotate-180]="is_collapsed">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+            </svg>
+        </button>
+    </div>
 
     <nav class="space-y-2">
-        <a (click)="goto('u/dashboard')" class="flex items-center p-3 rounded-lg hover:bg-blue-600 transition-colors group cursor-pointer">
+        <a (click)="goto('u/dashboard')"
+            class="flex items-center p-3 rounded-lg hover:bg-blue-600 transition-colors group cursor-pointer">
             <span class="text-2xl">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="size-6">
@@ -69,12 +65,13 @@
             }
         </a>
         -->
-        <a (click)="goto('a/admins')" class="flex items-center p-3 rounded-lg hover:bg-blue-600 transition-colors group cursor-pointer">
+        <a (click)="goto('a/admins')"
+            class="flex items-center p-3 rounded-lg hover:bg-blue-600 transition-colors group cursor-pointer">
             <span class="text-2xl">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="size-6">
+                    stroke="currentColor" class="size-5">
                     <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM3.75 12h.007v.008H3.75V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm-.375 5.25h.007v.008H3.75v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                        d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25z" />
                 </svg>
 
             </span>
@@ -87,7 +84,8 @@
             </div>
             }
         </a>
-        <a (click)="goto('a/coordinators')" class="flex items-center p-3 rounded-lg hover:bg-blue-600 transition-colors group cursor-pointer">
+        <a (click)="goto('a/coordinators')"
+            class="flex items-center p-3 rounded-lg hover:bg-blue-600 transition-colors group cursor-pointer">
             <span class="text-2xl">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="size-6">
@@ -105,14 +103,14 @@
             </div>
             }
         </a>
-        <a (click)="goto('u/productions')" class="flex items-center p-3 rounded-lg hover:bg-blue-600 transition-colors group cursor-pointer">
+        <a (click)="goto('u/productions')"
+            class="flex items-center p-3 rounded-lg hover:bg-blue-600 transition-colors group cursor-pointer">
             <span class="text-2xl">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="size-6">
                     <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM3.75 12h.007v.008H3.75V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm-.375 5.25h.007v.008H3.75v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                        d="M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 1 1 0-9h.75c.704 0 1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783.247.55.06 1.21-.463 1.511l-.657.38c-.551.318-1.26.117-1.527-.461a13.247 13.247 0 0 1-1.022-2.89m2.667-1.323c.458.066.92.103 1.391.11h4.5c1.105 0 2.01-.867 2.214-1.911l.24-1.23a2.25 2.25 0 0 0 0-1.718l-.24-1.23a2.25 2.25 0 0 0-2.214-1.911h-4.5c-.47 0-.933.037-1.391.11m1.391 9.18c3.193.466 6.557.703 9.984.703a.75.75 0 0 0 .75-.75V2.25a.75.75 0 0 0-.75-.75c-3.427 0-6.791.237-9.984.703" />
                 </svg>
-
             </span>
             @if (!is_collapsed){
             <span class="ml-4 font-medium">Productions</span>
@@ -123,12 +121,13 @@
             </div>
             }
         </a>
-        <a (click)="goto('u/users')" class="flex items-center p-3 rounded-lg hover:bg-blue-600 transition-colors group cursor-pointer">
+        <a (click)="goto('u/users')"
+            class="flex items-center p-3 rounded-lg hover:bg-blue-600 transition-colors group cursor-pointer">
             <span class="text-2xl">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="size-6">
                     <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM3.75 12h.007v.008H3.75V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm-.375 5.25h.007v.008H3.75v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                        d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
                 </svg>
 
             </span>
@@ -141,12 +140,13 @@
             </div>
             }
         </a>
-        <a (click)="goto('u/domains')" class="flex items-center p-3 rounded-lg hover:bg-blue-600 transition-colors group cursor-pointer">
+        <a (click)="goto('u/domains')"
+            class="flex items-center p-3 rounded-lg hover:bg-blue-600 transition-colors group cursor-pointer">
             <span class="text-2xl">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="size-6">
                     <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM3.75 12h.007v.008H3.75V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm-.375 5.25h.007v.008H3.75v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                        d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9s-2.015-9-4.5-9m0 18c-2.485 0-4.5-4.03-4.5-9s2.015-9 4.5-9m0 0a9.001 9.001 0 0 1 8.716 6.747M12 3a9.001 9.001 0 0 0-8.716 6.747M12 9h.01M12 12h.01M12 15h.01M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9Z" />
                 </svg>
             </span>
             @if (!is_collapsed){
@@ -158,13 +158,32 @@
             </div>
             }
         </a>
+        <a (click)="goto('u/activity')"
+            class="flex items-center p-3 rounded-lg hover:bg-blue-600 transition-colors group cursor-pointer">
+            <span class="text-2xl">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M3 13.125C3 12.504 3.504 12 4.125 12h.375c.621 0 1.125.504 1.125 1.125v6.75C5.625 20.496 5.121 21 4.5 21h-.375A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h.375c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-.375a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h.375C18.621 3 19.125 3.504 19.125 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-.375a1.125 1.125 0 01-1.125-1.125V4.125z" />
+                </svg>
+            </span>
+            @if (!is_collapsed){
+            <span class="ml-4 font-medium">Activity</span>
+            }
+            @else{
+            <div class="absolute left-20 hidden group-hover:block bg-black text-white text-xs p-2 rounded">
+                Activity
+            </div>
+            }
+        </a>
         <a (click)="goto('u/health')"
             class="flex items-center p-3 rounded-lg hover:bg-blue-600 transition-colors group cursor-pointer">
             <span class="text-2xl">
-                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
-</svg>
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+                </svg>
             </span>
             @if (!is_collapsed){
             <span class="ml-4 font-medium">Health</span>
@@ -175,15 +194,14 @@
             </div>
             }
         </a>
-        <a class="flex items-center p-3 rounded-lg hover:bg-blue-600 transition-colors group cursor-pointer" (click)="logOut()">
+        <a class="flex items-center p-3 rounded-lg hover:bg-blue-600 transition-colors group cursor-pointer"
+            (click)="logOut()">
             <span class="text-2xl">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="size-6">
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15" />
                 </svg>
-
-
             </span>
             @if (!is_collapsed){
             <span class="ml-4 font-medium">Log out</span>

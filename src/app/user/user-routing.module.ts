@@ -19,6 +19,9 @@ import { SimilarByEmailComponent } from './similar-by-email/similar-by-email.com
 import { SimilarByNameComponent } from './similar-by-name/similar-by-name.component';
 import { authGuard } from '../auth.guards';
 import { ApproachingOneYearMarkComponent } from './approaching-one-year-mark/approaching-one-year-mark.component';
+import { EditUserAssignmentComponent } from './edit-user-assignment/edit-user-assignment.component';
+import { EditProductionAssignmentComponent } from './edit-production-assignment/edit-production-assignment.component';
+import { ActivityComponent } from './activity/activity.component';
 
 
 const routes: Routes = [
@@ -31,6 +34,7 @@ const routes: Routes = [
     {path: 'users', component: UsersComponent, canActivate: [authGuard]},
     {path: 'domains', component: DomainsComponent, canActivate: [authGuard]},
     {path: 'health', component: HealthComponent, canActivate: [authGuard]},
+    {path: 'activity', component: ActivityComponent, canActivate: [authGuard]},
     {path: 'duplicates-by-name', component: DuplicatesByNameComponent, canActivate: [authGuard]},
     {path: 'duplicates-by-email', component: DuplicatesByEmailComponent, canActivate: [authGuard]},
     {path: 'unassigned-users', component: UnassignedUsersComponent, canActivate: [authGuard]},
@@ -40,6 +44,10 @@ const routes: Routes = [
     {path: 'approaching-one-year', component: ApproachingOneYearMarkComponent, canActivate: [authGuard]},
     {path: 'edit-user/:user_id', component: EditUserComponent, canActivate: [authGuard]},
     {path: 'edit-production/:production_id', component: EditProductionComponent, canActivate: [authGuard]},
+
+    {path: 'edit-user-assignment/:production_assignment_id', component: EditUserAssignmentComponent, canActivate: [authGuard]},
+    {path: 'edit-production-assignment/:production_assignment_id', component: EditProductionAssignmentComponent, canActivate: [authGuard]},
+    
 ];
 
 @NgModule({
@@ -60,6 +68,7 @@ export const routingComponents = [
     EditUserComponent,
     EditProductionComponent,
     HealthComponent,
+    ActivityComponent,
     DuplicatesByEmailComponent,
     DuplicatesByNameComponent,
     UnassignedUsersComponent,
