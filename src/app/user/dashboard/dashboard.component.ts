@@ -60,7 +60,7 @@ export class DashboardComponent implements OnInit {
       this.last_updated = this.commonService.getWhen(this.historical_data[this.historical_data.length-1].timestamp);
 
       this.number_users = users;
-      this.number_productions = this.productions.filter((x:any) => { return x.status != 'removed'; }).length;
+      this.number_productions = this.productions.filter((x:any) => { return x.status ? x.status.toLowerCase() == 'active':false; }).length;
     })
   }
 

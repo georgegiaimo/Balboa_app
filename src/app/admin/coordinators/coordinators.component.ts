@@ -51,6 +51,11 @@ export class CoordinatorsComponent {
     }
   }
 
+  getIsExecClass(is_executive: number): string {
+    if (is_executive) return 'bg-green-100 text-green-800 border-green-200';
+    else return 'bg-gray-100 text-gray-800 border-gray-200';
+  }
+
   onSearch(){
     if (this.search_query.length > 0){
       this.coordinators = this.coordinators_o.filter((x:any) => { return (x.first_name + ' ' + x.last_name).toLowerCase().indexOf(this.search_query) > -1});

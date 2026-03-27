@@ -136,6 +136,14 @@ export class ApisService {
     ) 
   }
 
+  UpdateCoordinator(object:any): Observable<any> {
+    return this.http.post<any>(this.baseurl + '/updateCoordinator', object, this.httpOptions)
+    .pipe(
+      retry(0),
+      catchError(this.errorHandl),
+    ) 
+  }
+
   AddCoordinatorAssignment(object:any): Observable<any> {
     return this.http.post<any>(this.baseurl + '/addCoordinatorAssignment', object, this.httpOptions)
     .pipe(

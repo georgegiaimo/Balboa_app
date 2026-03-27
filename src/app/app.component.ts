@@ -7,6 +7,7 @@ import { SystemService } from './services/system.service';
 import { ReportsService } from './services/reports.service';
 import { ApisService } from './services/apis.service';
 import { AuthService } from './services/auth.service';
+import { DocsService } from './services/docs.service';
 
 
 @Component({
@@ -14,7 +15,7 @@ import { AuthService } from './services/auth.service';
   imports: [RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
-  providers: [ChatService, SocketService, CommonService, SystemService, ReportsService, ApisService, AuthService]
+  providers: [ChatService, SocketService, CommonService, SystemService, ReportsService, ApisService, AuthService, DocsService]
 })
 export class AppComponent implements OnInit{
   title = 'balboa';

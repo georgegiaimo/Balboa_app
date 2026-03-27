@@ -44,8 +44,6 @@ export class UserHistoricalChartComponent implements OnInit {
   };
 
 
-  
-
   ngOnInit(): void {
 
     console.log('historical_data', this.data);

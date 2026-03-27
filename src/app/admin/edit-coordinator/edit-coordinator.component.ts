@@ -31,6 +31,7 @@ export class EditCoordinatorComponent {
       first_name: ['', Validators.required],
       last_name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
+      is_executive: [false],
       //domain: ['', Validators.required],
       //production: ['', Validators.required],
       notes: ['']
@@ -72,10 +73,12 @@ export class EditCoordinatorComponent {
       })
   }
 
+  /*
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
     return this.productions.filter(option => option.name.toLowerCase().includes(filterValue)).map((x:any) => { return x.name; });
   }
+  */
 
   selectProduction(option: string) {
     this.coordinatorForm.patchValue({ production: option });
@@ -110,11 +113,13 @@ export class EditCoordinatorComponent {
         
       }
       else {
-        /*
-        this.apisService.UpdateAdmin(this.adminForm.value).subscribe(() => {
-          this.router.navigate(['a/admins']);
+        var object = JSON.parse(JSON.stringify(this.coordinatorForm.value));
+        object.coordinator_id = this.coordinator.coordinator_id;
+
+        this.apisService.UpdateCoordinator(object).subscribe(() => {
+          this.router.navigate(['a/coordinator-details/' + this.coordinator.coordinator_id]);
         });
-        */
+        
       }
 
     } else {

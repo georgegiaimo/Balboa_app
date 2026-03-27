@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApisService } from '../../services/apis.service';
+import { DocsService } from '../../services/docs.service';
 
 @Component({
   selector: 'app-production-details',
@@ -20,9 +21,12 @@ export class ProductionDetailsComponent implements OnInit {
   activity!:any[];
 
   user_search_query!:string;
+  document_status:string = 'none';
+  document_url!:string;
 
   constructor(
     public apisService: ApisService,
+    public docsService: DocsService,
     private route:ActivatedRoute,
     private router: Router
   ){
@@ -43,9 +47,9 @@ export class ProductionDetailsComponent implements OnInit {
       this.coordinators = data.data.coordinators;
       this.activity = data.data.activity;
       this.processActivityData();
-      console.log('users', this.users);
+      //console.log('users', this.users);
       //console.log('coordinators', this.coordinators);
-      console.log('activity', this.activity);
+      //console.log('activity', this.activity);
       
     })
   }
@@ -55,6 +59,7 @@ export class ProductionDetailsComponent implements OnInit {
         x.segments = [];
         var params = JSON.parse(x.params);
         var segmentsx = x.template.split(/(\{.\})/g);
+        var ctr = 0;
         segmentsx.forEach((n:any) => {
           var segment:any = {}
           segment.is_token = this.isToken(n);
@@ -65,9 +70,13 @@ export class ProductionDetailsComponent implements OnInit {
           }
           else segment.text = n;
           
+          segment.ctr = ctr;
+          ctr += 1;
           x.segments.push(segment);
         });
       });
+
+      console.log('activity', this.activity);
   }
 
   filterUsers(){
@@ -117,4 +126,21 @@ export class ProductionDetailsComponent implements OnInit {
     return /^\{.\}$/.test(segment);
   }
 
+
+  downloadReport(){
+
+    if (this.document_status == 'completed' && this.document_url){
+      window.open(this.document_url);
+      return;
+    }
+
+    this.document_status = 'generating';
+    this.docsService.GetProductionReport(this.production_id).subscribe((response:any) => {
+      console.log('response', response.data);
+      this.document_status = 'completed';
+      this.document_url = response.data;
+      //this.saveReport(response.data);
+    });
+  }
+  
 }

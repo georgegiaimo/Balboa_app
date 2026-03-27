@@ -35,7 +35,7 @@ export class ActivityComponent implements OnInit {
 
   loadActivity(){
     this.apisService.GetActivity().subscribe((response:any) => {
-      console.log('response', response);
+      //console.log('response', response);
       this.activity = response.data;
 
       this.activity.forEach((x:any) => {
@@ -56,7 +56,7 @@ export class ActivityComponent implements OnInit {
         });
       });
 
-      console.log('this.activity', this.activity);
+      //console.log('this.activity', this.activity);
       this.is_loading = false;
     })
   }
