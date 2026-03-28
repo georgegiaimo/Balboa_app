@@ -1,5 +1,5 @@
 export const environment = {
     production: true,
-    baseurl: 'https://server-balboa.azurewebsites.net'
+    baseurl: 'https://server2.askbalboa.com'
   };
   
