@@ -69,12 +69,13 @@
                                     <a (click)="gotoUsersDuplicatedByName()" class="text-blue-600 hover:text-blue-900">Details</a>
                                 </td>
                             </tr>
+
+                            <!--
                             <tr class="hover:bg-gray-50 transition-colors">
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm font-medium text-gray-900">Unassigned users</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <!--<div class="text-sm font-medium text-gray-900">{{ health_response.unassigned_users }}</div>-->
                                     <span [class]="getClass(health_response.unassigned_users)"
                                         class="px-2.5 py-0.5 rounded-full text-xs font-medium border">
                                         {{ health_response.unassigned_users }}
@@ -84,6 +85,7 @@
                                     <a (click)="gotoUnassignedUsers()" class="text-blue-600 hover:text-blue-900">Details</a>
                                 </td>
                             </tr>
+                            -->
                             <tr class="hover:bg-gray-50 transition-colors">
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm font-medium text-gray-900">Users with last login more than a year ago</div>

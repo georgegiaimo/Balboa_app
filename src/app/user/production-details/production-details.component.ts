@@ -142,5 +142,10 @@ export class ProductionDetailsComponent implements OnInit {
       //this.saveReport(response.data);
     });
   }
+
+  gotoEditProduction(){
+    console.log('aaaa');
+    this.router.navigate(['u/edit-production/' + this.production_id]);
+  }
   
 }

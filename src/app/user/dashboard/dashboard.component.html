@@ -10,6 +10,17 @@
       <div class="flex items-center space-x-4">
         <span class="text-sm text-gray-500">Last updated: {{last_updated}}</span>
         <!--<div class="w-10 h-10 rounded-full bg-gray-300"></div> -->
+
+        <button (click)="syncNow()"
+          class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-all duration-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
+            </path>
+          </svg>
+          Sync Now
+        </button>
+
       </div>
     </header>
 
@@ -18,24 +29,31 @@
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
           <p class="text-sm font-medium text-gray-500 uppercase">Active Users</p>
-          <p class="text-3xl font-bold text-gray-900">{{number_users}}</p>
+          <p class="text-3xl font-bold text-gray-900">{{number_users}}
+
+          </p>
           <!--<p class="text-xs text-green-500 mt-2">↑ 12% from last month</p>-->
         </div>
-        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+        <div class="md:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-gray-200">
           <p class="text-sm font-medium text-gray-500 uppercase">Productions</p>
-          <p class="text-3xl font-bold text-gray-900">{{number_productions}}</p>
+          <p class="text-3xl font-bold text-gray-900">{{active_productions.length}}&nbsp;<span class="bg-green-100 text-green-800 border-green-200 text-sm px-2 rounded-lg">Active</span>&nbsp;|&nbsp;
+            {{writers_room_productions}}&nbsp;<span class="bg-blue-100 text-blue-800 border-blue-200 text-sm px-2 rounded-lg">Writers Room</span>&nbsp;|&nbsp;
+            {{post_production_productions}}&nbsp;<span class="bg-grey-100 text-grey-800 border-grey-200 text-sm px-2 rounded-lg">Post Production</span>
+          </p>
           <!--<p class="text-xs text-blue-500 mt-2">8 Currently live</p>-->
         </div>
+
+        <!--
         <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
           <p class="text-sm font-medium text-gray-500 uppercase">Estimated Cost</p>
           <p class="text-3xl font-bold text-gray-900">${{(number_users*3).toLocaleString()}}</p>
-          <!--<p class="text-xs text-red-400 mt-2">Within budget</p>-->
         </div>
+        -->
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-          <h3 class="font-semibold text-gray-700 mb-4">Productions</h3>
+          <h3 class="font-semibold text-gray-700 mb-4">Active Productions</h3>
           <div class="h-96 flex items-center justify-center bg-gray-50 rounded-lg border-dashed border-2 border-gray-200">
              <!--<span class="text-gray-400">Pie Chart: Production Status</span>-->
              @if (productions){
@@ -55,7 +73,7 @@
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-100">
-                @for (x of productions; track x.production_id){
+                @for (x of active_productions; track x.production_id){
                 <tr class="hover:bg-gray-50 transition-colors">
                   <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 truncate max-w-[200px] cursor-pointer" (click)="gotoProduction(x)">{{x.name}}</td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{x.domain}}</td>
@@ -130,3 +148,23 @@
 
   </main>
 </div>
+
+
+@if(show_syncing_data){
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50 backdrop-blur-sm">
+  
+  <div class="bg-white p-8 rounded-xl shadow-2xl flex flex-col items-center space-y-4 max-w-xs w-full mx-4">
+    
+    <div class="relative">
+      <div class="w-12 h-12 border-4 border-indigo-100 rounded-full"></div>
+      <div class="absolute top-0 left-0 w-12 h-12 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
+    </div>
+
+    <div class="text-center">
+      <h3 class="text-lg font-semibold text-gray-900">Syncing Data</h3>
+      <p class="text-sm text-gray-500 mt-1">Please wait while we sync the application data with the Google Directories. This process takes about 2-3 minutes.</p>
+    </div>
+
+  </div>
+</div>
+}

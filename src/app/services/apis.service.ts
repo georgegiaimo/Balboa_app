@@ -232,6 +232,30 @@ export class ApisService {
     ) 
   }
 
+  GetGoogleUsers(): Observable<any> {
+    return this.http.get<any>(this.baseurl + '/getGoogleUsers', this.httpOptions)
+    .pipe(
+      retry(0),
+      catchError(this.errorHandl),
+    ) 
+  }
+
+  UpdateUser(object:any): Observable<any> {
+    return this.http.post<any>(this.baseurl + '/updateUser', object, this.httpOptions)
+    .pipe(
+      retry(0),
+      catchError(this.errorHandl),
+    ) 
+  }
+
+  UpdateProduction(object:any): Observable<any> {
+    return this.http.post<any>(this.baseurl + '/updateProduction', object, this.httpOptions)
+    .pipe(
+      retry(0),
+      catchError(this.errorHandl),
+    ) 
+  }
+
   // Error handling
   errorHandl(error:any) {
     let errorMessage = '';

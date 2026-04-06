@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApisService } from '../../services/apis.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { GoogleService } from '../../services/google.service';
 
 @Component({
   selector: 'app-user-details',
@@ -16,8 +17,12 @@ export class UserDetailsComponent implements OnInit {
   assignments!:any[];
   show_confirm_delete:boolean = false;
 
+  show_user_deleted_succesfully:boolean = false;
+  show_user_deleted_error:boolean = false;
+
   constructor(
     public apisService: ApisService,
+    public googleService: GoogleService,
     private route: ActivatedRoute, 
     private router: Router
   ){
@@ -35,6 +40,7 @@ export class UserDetailsComponent implements OnInit {
       this.user = response.data.user;
       this.assignments = response.data.assignments;
 
+      console.log('this.user', this.user);
       console.log('this.assignments', this.assignments);
     })
   }
@@ -51,6 +57,20 @@ export class UserDetailsComponent implements OnInit {
     this.show_confirm_delete = true;
   }
 
+  deleteUser(){
+    console.log('delete user');
+    this.googleService.DeleteUserInGoogle(this.user).subscribe((response:any) => {
+      
+      console.log('response', response);
+      if (response.message == 'success') this.show_user_deleted_succesfully = true;
+      else this.show_user_deleted_error = true;
+    })
+  }
+
+  gotoEditUser(){
+    this.router.navigate(['u/edit-user/' + this.user.user_id]);
+  }
+
   getStatusClass(status: string): string {
     switch (status ? status.toLowerCase():'') {
       case 'active':
@@ -60,6 +80,8 @@ export class UserDetailsComponent implements OnInit {
       case 'writers room':
         return 'bg-blue-100 text-blue-800 border-blue-200';
       case 'unknown':
+        return 'bg-grey-100 text-grey-800 border-grey-200';
+      case 'removed':
         return 'bg-grey-100 text-grey-800 border-grey-200';
       default:
         return 'bg-gray-100 text-gray-800 border-gray-200';

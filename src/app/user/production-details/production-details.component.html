@@ -41,6 +41,17 @@
       <span [class]="getStatusClass(production.status)" class="px-3 py-1 rounded-full text-xs font-semibold uppercase border">
         {{ production.status }}
       </span>
+      <button type="button" (click)="gotoEditProduction()"
+        class="group flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all">
+      
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+          class="size-4 text-slate-400 group-hover:text-slate-600">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
+        </svg>
+      
+        <span></span>
+      </button>
     </div>
     <div class="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-y-6 gap-x-8">
       <div>
@@ -58,6 +69,28 @@
       <div>
         <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider">Total Users</label>
         <p class="mt-1 text-sm font-medium text-gray-900">{{ users.length }}</p>
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider">Production Type</label>
+        <p class="mt-1 text-sm font-medium text-gray-900">{{ production.type }}</p>
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider">Episodes</label>
+        <p class="mt-1 text-sm font-medium text-gray-900">{{ production.number_of_episodes }}</p>
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider">Projected End Date</label>
+        <p class="mt-1 text-sm font-medium text-gray-900">{{ production.projected_end_date }}</p>
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider">Location</label>
+        <p class="mt-1 text-sm font-medium text-gray-900">{{ production.location }}</p>
+      </div>
+    </div>
+     <div class="p-6 grid grid-cols-1 gap-y-6 gap-x-8">
+      <div>
+        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider">Notes</label>
+        <p class="mt-1 text-sm font-medium text-gray-900">{{ production.notes }}</p>
       </div>
     </div>
   </section>

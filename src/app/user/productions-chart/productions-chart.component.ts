@@ -38,9 +38,12 @@ export class ProductionsChartComponent implements OnInit {
   ){}
   
   ngOnInit(): void {
-      this.pieChartData = {
-        labels: this.productions.map((x:any) => { return x.name}),
-        datasets: [ { data: this.productions.map((x:any) => { return x.active_users})}],
+
+    var productions = this.productions.filter((x:any) => { return (x.status ? x.status.toLowerCase() == 'active':false)});
+
+    this.pieChartData = {
+        labels: productions.map((x:any) => { return x.name}),
+        datasets: [ { data: productions.map((x:any) => { return x.active_users})}],
         
       }
   }

@@ -28,6 +28,7 @@ export class UnassignedUsersComponent {
   loadData(){
     this.apisService.GetUnassignedUsers().subscribe((response:any) => {
       this.unassigned_users = response.data;
+      console.log('this.unasigned_users', this.unassigned_users);
       this.unassigned_users_o = JSON.parse(JSON.stringify(this.unassigned_users));
       this.is_loading = false;
     })
