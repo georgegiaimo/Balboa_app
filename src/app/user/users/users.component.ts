@@ -83,4 +83,9 @@ export class UsersComponent implements OnInit {
     }
   }
 
+  getIdentityUserClass(is_identity_user: boolean): string {
+    if (is_identity_user)    return 'bg-green-100 text-green-800 border-green-200';
+    else return 'bg-grey-100 text-grey-800 border-grey-200';
+  }
+
 }
