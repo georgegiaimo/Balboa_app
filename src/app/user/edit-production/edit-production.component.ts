@@ -38,12 +38,12 @@ export class EditProductionComponent implements OnInit{
     this.productionForm = this.fb.group({
       projectName: ['', [Validators.required, Validators.minLength(3)]],
       domain: ['crew-tv.com', Validators.required],
-      status: ['Active', Validators.required],
-      type: ['TV', Validators.required],
+      status: ['Active'],
+      type: ['TV'],
       //coordinator: ['', Validators.required],
-      endDate: ['', Validators.required],
-      episodes: [1, [Validators.required, Validators.min(1)]],
-      location: ['', Validators.required],
+      endDate: [''],
+      episodes: [1, []],
+      location: [''],
       notes: ['']
     });
 
@@ -116,6 +116,7 @@ export class EditProductionComponent implements OnInit{
   }
 
   onSubmit() {
+    //console.log('form valid',this.productionForm.valid);
     if (this.productionForm.valid) {
       console.log('New Production Created:', this.productionForm.value);
       // Logic to send to your Express backend goes here
