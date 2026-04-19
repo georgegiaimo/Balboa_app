@@ -87,5 +87,9 @@ export class UserDetailsComponent implements OnInit {
         return 'bg-gray-100 text-gray-800 border-gray-200';
     }
   }
+  getIdentityUserClass(is_identity_user: boolean): string {
+    if (is_identity_user)    return 'bg-green-100 text-green-800 border-green-200';
+    else return 'bg-grey-100 text-grey-800 border-grey-200';
+  }
 
 }
