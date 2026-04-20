@@ -17,7 +17,7 @@ export class EditProductionComponent implements OnInit{
 
   // Dropdown Options
   domains = ['crew-tv', 'mount22prod', 'seriescrew'];
-  statuses = ['Active', 'Writers Room', 'Post Production', 'Completed', 'Paused', 'Canceled'];
+  statuses = ['Active', 'Writers Room', 'Post Production', 'Completed', 'Paused', 'Closed', 'Canceled'];
   types = ['TV'];
   coordinators!:any[];
 

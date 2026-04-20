@@ -37,7 +37,7 @@ export class UsersComponent implements OnInit {
         if (current_assignment) x.assignment = current_assignment;
       });
 
-      console.log('this.users', response.data);
+      //console.log('this.users', response.data);
       this.users_o = JSON.parse(JSON.stringify(this.users));
     })
   }

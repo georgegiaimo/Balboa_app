@@ -27,7 +27,12 @@ export class ProductionsComponent implements OnInit {
 
   loadData(){
     this.apisService.GetProductions().subscribe((data:any) => {
-      this.productions = data.data;
+      
+      //filter removed productions
+      this.productions = data.data.filter((x:any) => { return x.status ? (x.status.toLowerCase() != 'removed'):true});
+
+      //filter removed productions
+      
 
       //console.log('this.productions', this.productions);
       
@@ -82,6 +87,8 @@ export class ProductionsComponent implements OnInit {
         return 'bg-yellow-100 text-yellow-800 border-yellow-200';
       case 'writers room':
         return 'bg-blue-100 text-blue-800 border-blue-200';
+      case 'post production':
+        return 'bg-gray-600 text-white border-gray-600';
       case 'unknown':
         return 'bg-grey-100 text-grey-800 border-grey-200';
       default:
