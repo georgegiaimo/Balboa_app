@@ -127,6 +127,7 @@ export class EditUserComponent implements OnInit {
         
         user_data.production_email = this.user.production_email;
         user_data.google_id = this.user.google_id;
+        user_data.user_id = this.user.user_id;
 
         this.googleService.UpdateUserInGoogle(user_data).subscribe((response:any) => {
         console.log('response', response);

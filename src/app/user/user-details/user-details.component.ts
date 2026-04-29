@@ -13,6 +13,7 @@ export class UserDetailsComponent implements OnInit {
 
   user_id!:number;
   user:any;
+  added_user:any;
 
   assignments!:any[];
   show_confirm_delete:boolean = false;
@@ -39,9 +40,11 @@ export class UserDetailsComponent implements OnInit {
     this.apisService.GetUserDetails(this.user_id).subscribe((response:any) => {
       this.user = response.data.user;
       this.assignments = response.data.assignments;
+      this.added_user = response.data.added_user;
 
       console.log('this.user', this.user);
       console.log('this.assignments', this.assignments);
+      console.log('this.added_user', this.added_user);
     })
   }
 
@@ -90,6 +93,10 @@ export class UserDetailsComponent implements OnInit {
   getIdentityUserClass(is_identity_user: boolean): string {
     if (is_identity_user)    return 'bg-green-100 text-green-800 border-green-200';
     else return 'bg-grey-100 text-grey-800 border-grey-200';
+  }
+
+  editAssignment(production_assignment_id:number){
+    this.router.navigate(['u/edit-user-assignment/' + this.user_id + '-' + production_assignment_id])
   }
 
 }

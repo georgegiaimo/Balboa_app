@@ -45,6 +45,4 @@ getWhen(timestamp:any){
   }
 }
 
-
-
 }

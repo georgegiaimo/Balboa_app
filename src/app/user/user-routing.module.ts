@@ -20,7 +20,6 @@ import { SimilarByNameComponent } from './similar-by-name/similar-by-name.compon
 import { authGuard } from '../auth.guards';
 import { ApproachingOneYearMarkComponent } from './approaching-one-year-mark/approaching-one-year-mark.component';
 import { EditUserAssignmentComponent } from './edit-user-assignment/edit-user-assignment.component';
-import { EditProductionAssignmentComponent } from './edit-production-assignment/edit-production-assignment.component';
 import { ActivityComponent } from './activity/activity.component';
 import { GoogleUsersComponent } from './google-users/google-users.component';
 
@@ -45,10 +44,7 @@ const routes: Routes = [
     {path: 'approaching-one-year', component: ApproachingOneYearMarkComponent, canActivate: [authGuard]},
     {path: 'edit-user/:user_id', component: EditUserComponent, canActivate: [authGuard]},
     {path: 'edit-production/:production_id', component: EditProductionComponent, canActivate: [authGuard]},
-
-    {path: 'edit-user-assignment/:production_assignment_id', component: EditUserAssignmentComponent, canActivate: [authGuard]},
-    {path: 'edit-production-assignment/:production_assignment_id', component: EditProductionAssignmentComponent, canActivate: [authGuard]},
-
+    {path: 'edit-user-assignment/:key', component: EditUserAssignmentComponent, canActivate: [authGuard]},
     {path: 'google-users', component: GoogleUsersComponent, canActivate: [authGuard]},
     
 ];
@@ -79,5 +75,6 @@ export const routingComponents = [
     SimilarByEmailComponent,
     SimilarByNameComponent,
     ApproachingOneYearMarkComponent,
-    GoogleUsersComponent
+    GoogleUsersComponent,
+    EditUserAssignmentComponent
 ]

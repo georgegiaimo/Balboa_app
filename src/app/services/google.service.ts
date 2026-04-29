@@ -56,6 +56,30 @@ export class GoogleService {
     ) 
   }
 
+  UpdateGoogleOrgUnit(data:any): Observable<any> {
+    return this.http.post<any>(this.baseurl + '/updateGoogleOrgUnit', data, this.httpOptions)
+    .pipe(
+      retry(0),
+      catchError(this.errorHandl),
+    ) 
+  }
+
+  CreateGoogleOrgUnit(data:any): Observable<any> {
+    return this.http.post<any>(this.baseurl + '/createGoogleOrgUnit', data, this.httpOptions)
+    .pipe(
+      retry(0),
+      catchError(this.errorHandl),
+    ) 
+  }
+
+  DeleteGoogleOrgUnit(data:any): Observable<any> {
+    return this.http.post<any>(this.baseurl + '/deleteGoogleOrgUnit', data, this.httpOptions)
+    .pipe(
+      retry(0),
+      catchError(this.errorHandl),
+    ) 
+  }
+
   // Error handling
   errorHandl(error:any) {
     let errorMessage = '';

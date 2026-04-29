@@ -74,8 +74,6 @@ export class EditCoordinatorAssignmentComponent {
   }
 
   loadCoordinatorAssignment(){
-    
-
 
     this.apisService.GetCoordinatorAssignment(this.coordinator_assignment_id).subscribe((response:any) => {
       

@@ -32,6 +32,14 @@ export class DocsService {
     ) 
   }
 
+  uploadUsersFromCSV(file: File, run_id:number) {
+    const formData = new FormData();
+    formData.append('file', file, file.name);
+
+    // This sends a multipart/form-data request
+    return this.http.post(this.baseurl + '/uploadUsersFromCSV?id=' + run_id, formData, this.httpOptions);
+  }
+
   
 
   // Error handling

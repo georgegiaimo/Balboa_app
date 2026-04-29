@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApisService } from '../../services/apis.service';
 import { DocsService } from '../../services/docs.service';
+import { GoogleService } from '../../services/google.service';
 
 @Component({
   selector: 'app-production-details',
@@ -24,9 +25,15 @@ export class ProductionDetailsComponent implements OnInit {
   document_status:string = 'none';
   document_url!:string;
 
+  show_confirm_delete:boolean = false;
+
+  show_production_deleted_succesfully:boolean = false;
+  show_production_deleted_error:boolean = false;
+
   constructor(
     public apisService: ApisService,
     public docsService: DocsService,
+    public googleService: GoogleService,
     private route:ActivatedRoute,
     private router: Router
   ){
@@ -149,6 +156,20 @@ export class ProductionDetailsComponent implements OnInit {
   gotoEditProduction(){
     console.log('aaaa');
     this.router.navigate(['u/edit-production/' + this.production_id]);
+  }
+
+  confirmDelete(){
+    this.show_confirm_delete = true;
+  }
+
+  deleteProduction(){
+    console.log('delete user');
+    this.googleService.DeleteGoogleOrgUnit(this.production).subscribe((response:any) => {
+      
+      console.log('response', response);
+      if (response.message == 'success') this.show_production_deleted_succesfully = true;
+      else this.show_production_deleted_error = true;
+    })
   }
   
 }

@@ -160,6 +160,30 @@ export class ApisService {
     ) 
   }
 
+  AddProductionAssignment(object:any): Observable<any> {
+    return this.http.post<any>(this.baseurl + '/addProductionAssignment', object, this.httpOptions)
+    .pipe(
+      retry(0),
+      catchError(this.errorHandl),
+    ) 
+  }
+
+  UpdateProductionAssignment(object:any): Observable<any> {
+    return this.http.post<any>(this.baseurl + '/updateProductionAssignment', object, this.httpOptions)
+    .pipe(
+      retry(0),
+      catchError(this.errorHandl),
+    ) 
+  }
+
+  DeleteProductionAssignment(production_assignment_id:number): Observable<any> {
+    return this.http.post<any>(this.baseurl + '/deleteProductionAssignment', { production_assignment_id: production_assignment_id }, this.httpOptions)
+    .pipe(
+      retry(0),
+      catchError(this.errorHandl),
+    ) 
+  }
+
   GetHealth(): Observable<any> {
     return this.http.get<any>(this.baseurl + '/getHealth', this.httpOptions)
     .pipe(
@@ -250,6 +274,30 @@ export class ApisService {
 
   UpdateProduction(object:any): Observable<any> {
     return this.http.post<any>(this.baseurl + '/updateProduction', object, this.httpOptions)
+    .pipe(
+      retry(0),
+      catchError(this.errorHandl),
+    ) 
+  }
+
+  GetProductionAssignment(production_assignment_id:number): Observable<any> {
+    return this.http.get<any>(this.baseurl + '/getProductionAssignment?id=' + production_assignment_id, this.httpOptions)
+    .pipe(
+      retry(0),
+      catchError(this.errorHandl),
+    ) 
+  }
+
+  CreateBulkUploadRun(): Observable<any> {
+    return this.http.post<any>(this.baseurl + '/createBulkUploadRun', {}, this.httpOptions)
+    .pipe(
+      retry(0),
+      catchError(this.errorHandl),
+    ) 
+  }
+
+  GetBulkUploadRun(run_id:number): Observable<any> {
+    return this.http.get<any>(this.baseurl + '/getBulkUploadRun?id=' + run_id, this.httpOptions)
     .pipe(
       retry(0),
       catchError(this.errorHandl),

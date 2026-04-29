@@ -11,6 +11,7 @@
   </nav>
 
   <section class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    @if(user){
     <div class="px-6 py-5 border-b border-gray-200 bg-gray-50 flex justify-between items-center">
       <h2 class="text-lg font-bold text-gray-900">{{ user.first_name }}&nbsp; {{ user.last_name }}</h2>
       
@@ -31,6 +32,7 @@
       </button>
 
     </div>
+    
     <div class="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-y-6 gap-x-8">
       <div>
         <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider">Name</label>
@@ -54,15 +56,35 @@
         </p>
       </div>
     </div>
+  
     <div class="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-y-6 gap-x-8">
       <div>
         <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider">Creation Date</label>
         <p class="mt-1 text-sm font-medium text-gray-900">{{ user.creation_date }}</p>
       </div>
+      
       <div>
         <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider">Last Login</label>
         <p class="mt-1 text-sm font-medium text-gray-900">{{ user.last_login_date }}</p>
       </div>
+      
+      @if(added_user && !added_user.has_logged_in) {
+        <div>
+          <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider">Onboarding Status</label>
+          @if(added_user.reminder2_date){
+            <p class="mt-1 text-sm font-medium text-gray-900">Reminder #2 - {{ added_user.reminder2_date }}</p>
+          }
+          @else if(added_user.reminder1_date){
+            <p class="mt-1 text-sm font-medium text-gray-900">Reminder #1 - {{ added_user.reminder1_date }}</p>
+          }
+          @else if(added_user.notification_date){
+            <p class="mt-1 text-sm font-medium text-gray-900">Notification - {{ added_user.notification_date }}</p>
+          }
+          @else {
+             <p class="mt-1 text-sm font-medium text-gray-900">Pending</p>
+          }
+        </div>
+      }
       <div>
         <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider">Storage Usage</label>
         <p class="mt-1 text-sm font-medium text-gray-900">{{ user.usage_percentage != null ? (user.usage_percentage + '%'):''}}</p>
@@ -75,12 +97,28 @@
         <p class="mt-1 text-sm font-medium text-gray-900">{{ user.notes}}</p>
       </div>
     </div>
+  }
   </section>
 
   <section class="space-y-4">
-    <div class="flex items-center justify-between">
+    <div class="flex items-center justify-between p-4 border-gray-200">
+    
       <h3 class="text-xl font-bold text-gray-900">Assignments</h3>
+    
+      <button type="button" (click)="editAssignment(0)"
+        class="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-gray-600 transition-colors duration-200 bg-gray-50 border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-900 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+    
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+          class="w-4 h-4">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+        </svg>
+    
+        Add Assignment
+      </button>
+    
     </div>
+
+    
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
       <table class="min-w-full divide-y divide-gray-200">
         <thead class="bg-gray-50">
@@ -106,7 +144,7 @@
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{x.assignment_start_date}}</td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{x.assignment_end_date}}</td>
               <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
-                <button class="text-blue-600 hover:text-blue-800 font-medium cursor-pointer">Edit</button>
+                <button class="text-blue-600 hover:text-blue-800 font-medium cursor-pointer" (click)="editAssignment(x.production_assignment_id)">Edit</button>
               </td>
             </tr>
           }@empty {
@@ -125,8 +163,8 @@
       <path stroke-linecap="round" stroke-linejoin="round"
         d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
     </svg>
-    &nbsp;Delete
-    <span class="sr-only">Delete</span>
+    &nbsp;Delete User
+    <span class="sr-only">Delete User</span>
   </button>
 </div>
 
