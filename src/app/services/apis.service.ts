@@ -40,6 +40,14 @@ export class ApisService {
     ) 
   }
 
+  GetProductionHistory(production_id:number): Observable<any> {
+    return this.http.get<any>(this.baseurl + '/getProductionHistory?id=' + production_id, this.httpOptions)
+    .pipe(
+      retry(0),
+      catchError(this.errorHandl),
+    ) 
+  }
+
   GetUsers(): Observable<any> {
     return this.http.get<any>(this.baseurl + '/getUsers', this.httpOptions)
     .pipe(

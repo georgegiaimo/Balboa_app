@@ -30,6 +30,8 @@ export class ProductionDetailsComponent implements OnInit {
   show_production_deleted_succesfully:boolean = false;
   show_production_deleted_error:boolean = false;
 
+  history!:any[];
+
   constructor(
     public apisService: ApisService,
     public docsService: DocsService,
@@ -54,11 +56,16 @@ export class ProductionDetailsComponent implements OnInit {
       this.coordinators = data.data.coordinators;
       this.activity = data.data.activity;
       this.processActivityData();
-      console.log('users', this.users);
+      //console.log('users', this.users);
       //console.log('coordinators', this.coordinators);
       //console.log('activity', this.activity);
 
       
+    });
+
+    this.apisService.GetProductionHistory(this.production_id).subscribe((response:any) => {
+      //console.log('response', response);
+      this.history = response.data.history;
     })
   }
 
@@ -84,7 +91,7 @@ export class ProductionDetailsComponent implements OnInit {
         });
       });
 
-      console.log('activity', this.activity);
+      //console.log('activity', this.activity);
   }
 
   filterUsers(){
@@ -146,7 +153,7 @@ export class ProductionDetailsComponent implements OnInit {
 
     this.document_status = 'generating';
     this.docsService.GetProductionReport(this.production_id).subscribe((response:any) => {
-      console.log('response', response.data);
+      //console.log('response', response.data);
       this.document_status = 'completed';
       this.document_url = response.data;
       //this.saveReport(response.data);
@@ -154,7 +161,6 @@ export class ProductionDetailsComponent implements OnInit {
   }
 
   gotoEditProduction(){
-    console.log('aaaa');
     this.router.navigate(['u/edit-production/' + this.production_id]);
   }
 

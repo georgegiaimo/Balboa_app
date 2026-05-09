@@ -223,31 +223,39 @@
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Production Email</th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Personal Email</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Start Date</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">End Date</th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last login</th>
+            <!--<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last login</th>-->
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Usage</th>
-            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+            <!--<th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>-->
           </tr>
         </thead>
         <tbody class="divide-y divide-gray-200">
           @for (user of users; track user.user_id) {
             <tr class="hover:bg-gray-50">
-              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ user.first_name }}&nbsp;{{ user.last_name }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 cursor-pointer hover:underline" (click)="gotoUserDetails(user)">{{ user.first_name }}&nbsp;{{ user.last_name }}</td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ user.production_email }}</td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ user.personal_email }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ user.assignment_start_date }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ user.assignment_end_date }}</td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <span class="text-xs font-medium px-2 py-0.5 rounded-full border"
                 [class]="getStatusClass(user.assignment_status)">
                   {{ user.assignment_status }}
                 </span>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ user.last_login_date }}</td>
+              <!--<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ user.last_login_date }}</td>-->
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                {{ user.usage_percentage }}%
+                @if(user.usage_percentage){ 
+                  {{ user.usage_percentage }}%
+                }
               </td>
+              <!--
               <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
                 <button class="text-blue-600 hover:text-blue-800 font-medium" (click)="gotoUserDetails(user)">Details</button>
               </td>
+            -->
             </tr>
           } @empty {
             <tr>
@@ -258,7 +266,31 @@
       </table>
     </div>
   </section>
+  
   }
+
+  <section>
+  
+    <h3 class="text-xl font-bold text-gray-900">Timeline</h3>
+    <div class="bg-white p-8">
+      @for(x of history; track x.month + x.year){
+      <div class="relative w-full block bg-gray-600 text-gray-100 p-2 my-2">
+        <strong>{{x.month}}&nbsp;{{x.year}}</strong>&nbsp;&nbsp;|&nbsp;&nbsp;{{x.count}}&nbsp;Users&nbsp;({{x.change > 0 ? '+':''}}{{x.change}})</div>
+      @for (n of x.added; track n.first_name + n.last_name; let i = $index){
+      <div class="block my-0 text-sm">{{i+1}}.&nbsp;Added
+        <em>{{n.first_name}}&nbsp;{{n.last_name}}</em>&nbsp;&nbsp;&nbsp;{{n.assignment_start_date}}</div>
+      }
+      @for (n of x.removed; track n.first_name + n.last_name; let i = $index){
+      <div class="block my-0 text-sm">{{i+1}}.&nbsp;Removed
+        <em>{{n.first_name}}&nbsp;{{n.last_name}}</em>&nbsp;&nbsp;&nbsp;{{n.assignment_end_date}}</div>
+      }
+    
+      }
+    </div>
+  </section>
+  
+
+
 </div>
 <button type="button" (click)="confirmDelete()"
   class="group inline-flex items-center rounded-md p-2 text-gray-400 hover:bg-red-50 hover:text-red-600 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 float-right">
