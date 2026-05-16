@@ -79,20 +79,20 @@
                                     <div class="text-sm font-medium text-gray-900">{{x.personal_email}}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm font-medium text-gray-900">{{x.type}}</div>
+                                    <div class="text-sm font-medium text-gray-900">{{x.message}}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium cursor-pointer">
                                     @if(x.bounced){
-                                        <em>Bounced&nbsp;{{x.bounced_date}}</em>
+                                        <em>Bounced&nbsp;-&nbsp;{{x.bounced_date}}</em>
                                     }
                                     @else if(x.delivered){
-                                        <em>Delivered&nbsp;{{x.delivered_date}}</em>
+                                        <em>Delivered&nbsp;-&nbsp;{{x.delivered_date}}</em>
                                     }
                                     @else if(x.opened){
-                                        <em>Opened&nbsp;{{x.opened_date}}</em>
+                                        <em>Opened&nbsp;-&nbsp;{{x.opened_date}}</em>
                                     }
                                     @else if(x.clicked){
-                                        <em>Clicked&nbsp;{{x.clicked_date}}</em>
+                                        <em>Clicked&nbsp;-&nbsp;{{x.clicked_date}}</em>
                                     }
                                 </td>
                             </tr>
