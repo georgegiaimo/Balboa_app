@@ -26,6 +26,7 @@ export class EditUserComponent implements OnInit {
 
   show_user_updated_succesfully:boolean = false;
   show_user_updated_error:boolean = false;
+  show_adding_user:boolean = false;
 
   domains = ['crew-tv', 'seriescrew', 'mount22prod'];
   user:any;
@@ -115,6 +116,8 @@ export class EditUserComponent implements OnInit {
   onSubmit() {
     if (this.userForm.valid) {
       console.log('Form Data:', this.userForm.value);
+
+      this.show_adding_user = true;
       if (this.user_id == 0) {
         //new user
         //find selected production
@@ -128,6 +131,9 @@ export class EditUserComponent implements OnInit {
         //if past user add to application database (no remote Google Workspace)
         if (user_data.is_past_user) {
           this.apisService.AddUser(user_data).subscribe((response: any) => {
+
+            this.show_adding_user = false;
+
             if (response) this.show_user_added_succesfully = true;
             else this.show_user_added_error = true;
           })
@@ -137,6 +143,8 @@ export class EditUserComponent implements OnInit {
 
           this.googleService.AddUserToGoogle(user_data).subscribe((response: any) => {
             console.log('response', response);
+
+            this.show_adding_user = false;
             
             if (response.data.error) this.show_user_added_error = true;
             else this.show_user_added_succesfully = true;  
@@ -154,6 +162,9 @@ export class EditUserComponent implements OnInit {
 
         this.googleService.UpdateUserInGoogle(user_data).subscribe((response:any) => {
         console.log('response', response);
+
+        this.show_adding_user = false;
+
         if (response) this.show_user_updated_succesfully = true;
         else this.show_user_updated_error = true;
 
@@ -164,6 +175,7 @@ export class EditUserComponent implements OnInit {
         }
 
         this.apisService.UpdateUser(object).subscribe();
+       
 
       });
 
