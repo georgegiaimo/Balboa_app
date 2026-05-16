@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ApisService } from '../../services/apis.service';
 import { DocsService } from '../../services/docs.service';
 import { GoogleService } from '../../services/google.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-production-details',
@@ -29,8 +30,19 @@ export class ProductionDetailsComponent implements OnInit {
 
   show_production_deleted_succesfully:boolean = false;
   show_production_deleted_error:boolean = false;
+  show_deleting_users:boolean = false;
+  show_bulk_delete_success:boolean = false;
+  show_bulk_delete_error:boolean = false;
 
   history!:any[];
+  select_all_users:boolean = false;
+  users_selected:boolean = false;
+
+  delete_error!:string;
+
+  run:any;
+  runStatusInterval:any;
+  selected_users!:number;
 
   constructor(
     public apisService: ApisService,
@@ -165,7 +177,9 @@ export class ProductionDetailsComponent implements OnInit {
   }
 
   confirmDelete(){
+    this.selected_users = this.users.filter((x:any) => { return x.is_selected; }).length;
     this.show_confirm_delete = true;
+
   }
 
   deleteProduction(){
@@ -177,5 +191,85 @@ export class ProductionDetailsComponent implements OnInit {
       else this.show_production_deleted_error = true;
     })
   }
+
+  evalAllSelected(){
+    setTimeout(() => {
+      if (this.select_all_users){
+        this.users.forEach((x:any) => {
+          x.is_selected = true;
+        });
+      }
+      else {
+        this.users.forEach((x:any) => {
+          x.is_selected = false;
+        })
+      }
+
+      this.users_selected = this.users.filter((x:any) => { return x.is_selected;}).length > 0;
+      console.log('user_selected', this.users_selected);
+
+    },250)
+  }
+
+  toggleSelected(item:any){
+
+    setTimeout(() => {
+      //item.is_selected = item.is_selected ? false : true;
+      this.users_selected = this.users.filter((x: any) => { return x.is_selected; }).length > 0;
+      console.log('user_selected', this.users_selected);
+    }, 250);
+    
+  }
+
+  async deleteSelected(){
+
+    this.show_confirm_delete = false;
+    this.show_deleting_users = true;
+    
+
+    var user_ids = this.users.filter((x:any) => { return x.is_selected; }).map((x:any) => { return { user_id: x.user_id } });
+    
+    var responsex:any = await firstValueFrom(this.apisService.CreateBulkUploadRun());
+          console.log('responsex', responsex);
+          var run_id = responsex.data;
+    
+          console.log('run_id', run_id);
+          this.startInterval(run_id);
+    
+    this.googleService.DeleteUsersBulk(user_ids, run_id).subscribe({
+        next: (response) => {
+          console.log('response', response);
+          //this.show_confirm_delete = false;
+          //console.log('Bulk upload complete', response);
+          this.show_deleting_users = false;
+          this.show_bulk_delete_success = true;
+          this.loadProduction();
+        },
+        error: (err) => {
+          console.log('responsex', err);
+          
+          this.delete_error = err.error.error;
+          this.show_deleting_users = false;
+          this.show_bulk_delete_error = true;
+          //console.error('Upload failed', err)
+        }
+      });
+  }
+
+  startInterval(run_id:number){
+    
+    this.runStatusInterval = setInterval(() => {
+
+      if (!this.show_deleting_users) clearInterval(this.runStatusInterval);
+      
+      this.apisService.GetBulkUploadRun(run_id).subscribe((response:any) => {
+        this.run = response.data;
+      });
+
+    },3000);
+
+  }
+
+
   
 }

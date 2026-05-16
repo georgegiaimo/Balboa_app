@@ -21,12 +21,14 @@ export class UsersComponent implements OnInit {
   show_bulk_upload_success:boolean = false;
   show_bulk_upload_error:boolean = false;
   show_uploading_users:boolean = false;
+  show_upload_type:boolean = false;
 
   upload_error!:string;
 
   selected_file!:File;
   run:any;
   runStatusInterval:any;
+  selected_type!:string;
 
   constructor(
     public apisService:ApisService,
@@ -48,10 +50,13 @@ export class UsersComponent implements OnInit {
         x.name = user_name;
 
         var current_assignment = x.productions.find((n:any) => { return n.assignment_status == 'active'});
-        if (current_assignment) x.assignment = current_assignment;
+        if (current_assignment) {
+          x.assignment = current_assignment;
+          x.status = 'active';
+        }
       });
 
-      console.log('this.users', response.data);
+      //console.log('this.users', response.data);
       this.users_o = JSON.parse(JSON.stringify(this.users));
     })
   }
@@ -104,7 +109,7 @@ export class UsersComponent implements OnInit {
   }
 
   bulkUpload(){
-    this.show_file_upload = true;
+    this.show_upload_type = true;
   }
 
   onFileSelected(event: any) {
@@ -127,11 +132,11 @@ export class UsersComponent implements OnInit {
       var run_id = responsex.data;
 
       console.log('run_id', run_id);
-      this.startInterval(run_id)
+      this.startInterval(run_id);
 
       //this.fileUploaded.emit(this.selectedFile);
       console.log('send');
-      this.docsService.uploadUsersFromCSV(this.selected_file, run_id).subscribe({
+      this.docsService.uploadUsersFromCSV(this.selected_file, run_id, this.selected_type).subscribe({
         next: (response) => {
           console.log('response', response);
           this.show_file_upload = false;
@@ -163,6 +168,11 @@ export class UsersComponent implements OnInit {
 
     },3000);
 
+  }
+
+  handleNext(){
+    this.show_upload_type = false;
+    this.show_file_upload = true;
   }
 
 }

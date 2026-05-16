@@ -176,6 +176,23 @@
             </div>
             }
         </a>
+        <a (click)="goto('u/mailing')"
+            class="flex items-center p-3 rounded-lg hover:bg-blue-600 transition-colors group cursor-pointer">
+            <span class="text-2xl">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+            </span>
+            @if (!is_collapsed){
+            <span class="ml-4 font-medium">Mailing</span>
+            }
+            @else{
+            <div class="absolute left-20 hidden group-hover:block bg-black text-white text-xs p-2 rounded">
+                Mailing
+            </div>
+            }
+        </a>
         <a (click)="goto('u/health')"
             class="flex items-center p-3 rounded-lg hover:bg-blue-600 transition-colors group cursor-pointer">
             <span class="text-2xl">

@@ -44,6 +44,7 @@ export class EditUserComponent implements OnInit {
       domain: ['crew-tv', Validators.required],
       production: ['', Validators.required],
       is_identity_client: [false],
+      is_past_user: [false],
       notes: ['']
     });
 
@@ -72,7 +73,6 @@ export class EditUserComponent implements OnInit {
 
       var active_assignment = response.data.assignments.find((x:any) => { return x.assignment_status == 'active' });
 
-
        this.userForm.patchValue({
         first_name: this.user.first_name,
         last_name: this.user.last_name,
@@ -91,6 +91,9 @@ export class EditUserComponent implements OnInit {
       this.apisService.GetProductions().subscribe((response:any) => {
         //this.productions = response.data.filter((x:any) => { return x.status ? x.status.toLowerCase() == 'active':false });
         this.productions = response.data;
+        this.productions.sort((a:any,b:any) => { return a.name.localeCompare(b.name)});
+        
+        //console.log('this.productions', this.productions);
       })
   }
 
@@ -102,24 +105,44 @@ export class EditUserComponent implements OnInit {
   selectProduction(option: string) {
     this.userForm.patchValue({ production: option });
     this.showAutocomplete = false;
+
+    var production = this.productions.find((x: any) => { return x.name == this.userForm.value.production });
+    this.userForm.patchValue({ domain: production.domain });
+    this.userForm.get('domain')?.disable();
+
   }
 
   onSubmit() {
     if (this.userForm.valid) {
       console.log('Form Data:', this.userForm.value);
-      if (this.user_id == 0){
+      if (this.user_id == 0) {
         //new user
         //find selected production
-      var production = this.productions.find((x:any) => { return x.name == this.userForm.value.production});
+        var production = this.productions.find((x: any) => { return x.name == this.userForm.value.production });
 
-      var user_data = JSON.parse(JSON.stringify(this.userForm.value));
-      user_data['org_unit_path'] = production.org_unit_path;
+        var user_data = JSON.parse(JSON.stringify(this.userForm.value));
+        user_data['org_unit_path'] = production.org_unit_path;
 
-      this.googleService.AddUserToGoogle(user_data).subscribe((response:any) => {
-        console.log('response', response);
-        if (response) this.show_user_added_succesfully = true;
-        else this.show_user_added_error = true;
-      })
+        if (!user_data.domain) user_data.domain = production.domain;
+
+        //if past user add to application database (no remote Google Workspace)
+        if (user_data.is_past_user) {
+          this.apisService.AddUser(user_data).subscribe((response: any) => {
+            if (response) this.show_user_added_succesfully = true;
+            else this.show_user_added_error = true;
+          })
+        }
+
+        else {
+
+          this.googleService.AddUserToGoogle(user_data).subscribe((response: any) => {
+            console.log('response', response);
+            
+            if (response.data.error) this.show_user_added_error = true;
+            else this.show_user_added_succesfully = true;  
+             
+          });
+        }
       }
       else {
         //update existing user
@@ -145,10 +168,6 @@ export class EditUserComponent implements OnInit {
       });
 
       }
-
-      
-      
-      
       
     } else {
       this.userForm.markAllAsTouched();
@@ -156,11 +175,12 @@ export class EditUserComponent implements OnInit {
   }
 
   gotoUserDetails(){
-    this.router.navigate(['u/user-details/' + this.user.user_id])
+    if (this.user_id > 0) this.router.navigate(['u/user-details/' + this.user.user_id]);
+    else this.router.navigate(['u/users']);
   }
 
   gotoUsers(){
-    this.router.navigate(['u/users'])
+    this.router.navigate(['u/users']);
   }
 
 }

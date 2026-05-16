@@ -22,6 +22,7 @@ import { ApproachingOneYearMarkComponent } from './approaching-one-year-mark/app
 import { EditUserAssignmentComponent } from './edit-user-assignment/edit-user-assignment.component';
 import { ActivityComponent } from './activity/activity.component';
 import { GoogleUsersComponent } from './google-users/google-users.component';
+import { MailingComponent } from './mailing/mailing.component';
 
 
 const routes: Routes = [
@@ -46,6 +47,7 @@ const routes: Routes = [
     {path: 'edit-production/:production_id', component: EditProductionComponent, canActivate: [authGuard]},
     {path: 'edit-user-assignment/:key', component: EditUserAssignmentComponent, canActivate: [authGuard]},
     {path: 'google-users', component: GoogleUsersComponent, canActivate: [authGuard]},
+    {path: 'mailing', component: MailingComponent, canActivate: [authGuard]},
     
 ];
 
@@ -76,5 +78,6 @@ export const routingComponents = [
     SimilarByNameComponent,
     ApproachingOneYearMarkComponent,
     GoogleUsersComponent,
-    EditUserAssignmentComponent
+    EditUserAssignmentComponent,
+    MailingComponent
 ]

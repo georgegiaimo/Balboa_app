@@ -312,6 +312,22 @@ export class ApisService {
     ) 
   }
 
+  AddUser(object:any): Observable<any> {
+    return this.http.post<any>(this.baseurl + '/addUser', object, this.httpOptions)
+    .pipe(
+      retry(0),
+      catchError(this.errorHandl),
+    ) 
+  }
+
+  GetMailing(): Observable<any> {
+    return this.http.get<any>(this.baseurl + '/mailing', this.httpOptions)
+    .pipe(
+      retry(0),
+      catchError(this.errorHandl),
+    ) 
+  }
+
   // Error handling
   errorHandl(error:any) {
     let errorMessage = '';
