@@ -68,7 +68,7 @@ export class ProductionDetailsComponent implements OnInit {
       this.coordinators = data.data.coordinators;
       this.activity = data.data.activity;
       this.processActivityData();
-      //console.log('users', this.users);
+      console.log('users', this.users);
       //console.log('coordinators', this.coordinators);
       //console.log('activity', this.activity);
 
