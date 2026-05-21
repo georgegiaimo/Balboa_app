@@ -70,7 +70,7 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                           @for(x of emails; track x.name+x.type){
+                           @for(x of emails; track x.name+x.type+x.email){
                             <tr class="hover:bg-gray-50 transition-colors">
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm font-medium text-gray-900 cursor-pointer hover:underline"  (click)="gotoUserDetails(x)">{{x.name}}</div>
@@ -83,16 +83,16 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium cursor-pointer">
                                     @if(x.bounced){
-                                        <em>Bounced&nbsp;-&nbsp;{{x.bounced_date}}</em>
-                                    }
-                                    @else if(x.delivered){
-                                        <em>Delivered&nbsp;-&nbsp;{{x.delivered_date}}</em>
-                                    }
-                                    @else if(x.opened){
-                                        <em>Opened&nbsp;-&nbsp;{{x.opened_date}}</em>
+                                        <em class="text-red-600">Bounced&nbsp;-&nbsp;{{x.bounced_date}}</em>
                                     }
                                     @else if(x.clicked){
-                                        <em>Clicked&nbsp;-&nbsp;{{x.clicked_date}}</em>
+                                        <em class="text-green-600">Clicked&nbsp;-&nbsp;{{x.clicked_date}}</em>
+                                    }
+                                    @else if(x.opened){
+                                        <em class="text-green-600">Opened&nbsp;-&nbsp;{{x.opened_date}}</em>
+                                    }
+                                    @else if(x.delivered){
+                                        <em class="text-gray-600">Delivered&nbsp;-&nbsp;{{x.delivered_date}}</em>
                                     }
                                 </td>
                             </tr>
