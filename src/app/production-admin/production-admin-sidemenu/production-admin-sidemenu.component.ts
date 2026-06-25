@@ -4,12 +4,12 @@ import { AuthService } from '../../services/auth.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-sidemenu',
-  standalone:false,
-  templateUrl: './sidemenu.component.html',
-  styleUrl: './sidemenu.component.css'
+  selector: 'app-production-admin-sidemenu',
+  standalone: false,
+  templateUrl: './production-admin-sidemenu.component.html',
+  styleUrl: './production-admin-sidemenu.component.css'
 })
-export class SidemenuComponent implements OnInit{
+export class ProductionAdminSidemenuComponent implements OnInit{
 
   is_collapsed:boolean = false;
   user:any;

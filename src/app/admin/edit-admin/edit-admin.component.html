@@ -64,8 +64,27 @@
                         class="w-full px-3 py-2 border border-slate-300 rounded-md bg-white outline-none focus:ring-1 focus:ring-blue-500">
                         <option value="admin">admin</option>
                         <option value="guest">guest</option>
+                        <option value="production-admin">production-admin</option>
                     </select>
                 </div>
+
+                @if(adminForm.value['role'] == 'production-admin'){
+                <div class="relative">
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Production</label>
+                    <input type="text" formControlName="production" (focus)="showAutocomplete = true" (blur)="showAutocomplete = false"
+                        placeholder="Search for a production..."
+                        class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition">
+                
+                    <div *ngIf="showAutocomplete"
+                        class="absolute z-10 w-full mt-1 bg-white border border-slate-200 rounded-lg shadow-lg max-h-48 overflow-y-auto">
+                        <div *ngFor="let option of filteredProductions$ | async" (mousedown)="selectProduction(option.name)"
+                            class="px-4 py-2 hover:bg-blue-50 cursor-pointer text-slate-700 transition">
+                            {{ option.name }}
+                        </div>
+                    </div>
+                
+                </div>
+                }
 
                 <div class="flex flex-col items-end space-y-2 pt-4 border-t border-slate-100">
                     <button type="submit" [disabled]="adminForm.invalid"

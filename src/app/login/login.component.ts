@@ -58,7 +58,7 @@ export class LoginComponent implements OnInit{
     if (this.loginForm.valid) {
       this.is_loading = true;
       // Call your backend service here...
-      console.log('login data:', this.loginForm.value);
+      //console.log('login data:', this.loginForm.value);
 
       
       this.authService.LogIn(this.loginForm.value).subscribe({
@@ -67,7 +67,8 @@ export class LoginComponent implements OnInit{
          this.authService.handleLogin(response.data);
          this.is_loading = false;
         setTimeout(() => {
-          this.router.navigate(['u/dashboard']);
+          if (response.data.role == 'admin') this.router.navigate(['u/dashboard']);
+          else if(response.data.role == 'production-admin') this.router.navigate(['p/production-details']);
         }, 1000);
          
       }, 

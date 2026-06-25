@@ -3,15 +3,16 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ApisService } from '../../services/apis.service';
 import { DocsService } from '../../services/docs.service';
 import { GoogleService } from '../../services/google.service';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, Subscription } from 'rxjs';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
-  selector: 'app-production-details',
+  selector: 'app-production-admin-production-details',
   standalone: false,
-  templateUrl: './production-details.component.html',
-  styleUrl: './production-details.component.css'
+  templateUrl: './production-admin-production-details.component.html',
+  styleUrl: './production-admin-production-details.component.css'
 })
-export class ProductionDetailsComponent implements OnInit {
+export class ProductionAdminProductionDetailsComponent implements OnInit {
 
   production_id!:number;
   production:any;
@@ -46,10 +47,14 @@ export class ProductionDetailsComponent implements OnInit {
 
   active_users!:number;
 
+  get_user_subscription!:Subscription;
+  user:any;
+
   constructor(
     public apisService: ApisService,
     public docsService: DocsService,
     public googleService: GoogleService,
+    public authService: AuthService,
     private route:ActivatedRoute,
     private router: Router
   ){
@@ -59,11 +64,20 @@ export class ProductionDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadProduction();
+
+    this.get_user_subscription = this.authService.currentUserSubject.subscribe((currentUser) => {
+      if (currentUser) {
+          this.user = currentUser;
+          this.loadProduction();
+        }
+        //this.loadHours();
+      else this.router.navigate(['/login']);
+    });
+
   }
 
   loadProduction(){
-    this.apisService.GetProductionDetails(this.production_id).subscribe((data:any) => {
+    this.apisService.GetProductionDetails(this.user.production_id).subscribe((data:any) => {
       this.production = data.data.production;
       this.users = data.data.users;
       this.users_o = JSON.parse(JSON.stringify(this.users));
@@ -79,7 +93,7 @@ export class ProductionDetailsComponent implements OnInit {
       
     });
 
-    this.apisService.GetProductionHistory(this.production_id).subscribe((response:any) => {
+    this.apisService.GetProductionHistory(this.user.production_id).subscribe((response:any) => {
       //console.log('response', response);
       this.history = response.data.history;
     })
@@ -277,3 +291,4 @@ export class ProductionDetailsComponent implements OnInit {
 
   
 }
+
