@@ -71,6 +71,8 @@ export class UsersComponent implements OnInit {
     else {
       this.users = this.users_o;
     }
+
+    //console.log('users', this.users);
   }
 
   clearSearch(){

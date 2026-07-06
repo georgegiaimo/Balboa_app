@@ -60,6 +60,7 @@ export class EditProductionComponent implements OnInit{
         type: ['TV'],
         //coordinator: ['', Validators.required],
         endDate: [''],
+        startDate: [''],
         episodes: [1, []],
         location: [''],
         notes: ['']
@@ -102,7 +103,8 @@ export class EditProductionComponent implements OnInit{
         episodes: this.production.number_of_episodes,
         notes: this.production.notes,
         location: this.production.location,
-        endDate: this.production.projected_end_date
+        endDate: this.production.projected_end_date,
+        startDate: this.production.start_date
         //coordinator: coordinators.length > 0 ? `${coordinators[0].first_name} ${coordinators[0].last_name}`:''
        });
 
@@ -149,6 +151,7 @@ export class EditProductionComponent implements OnInit{
           status: this.productionForm.value.status,
           number_of_episodes: this.productionForm.value.episodes,
           projected_end_date: this.productionForm.value.endDate,
+          start_date: this.productionForm.value.startDate,
           location: this.productionForm.value.location,
           notes: this.productionForm.value.notes,
           production_id: this.production.production_id,

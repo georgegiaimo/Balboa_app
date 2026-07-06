@@ -16,6 +16,11 @@ export class ProductionsComponent implements OnInit {
   search_query:string = '';
   selected_status:string = 'All';
 
+  sort_name_order:string = 'asc';
+  sort_users_order:string = 'asc';
+  sort_status_order:string = 'asc';
+  sort_start_date_order:string = 'asc';
+
   constructor(
     private router: Router,
     public apisService: ApisService
@@ -34,7 +39,7 @@ export class ProductionsComponent implements OnInit {
       //filter removed productions
       
 
-      //console.log('this.productions', this.productions);
+      console.log('this.productions', this.productions);
       
       this.productions.forEach((x:any) => {
         if (!x.status) x.status = 'unknown';
@@ -93,6 +98,33 @@ export class ProductionsComponent implements OnInit {
         return 'bg-grey-100 text-grey-800 border-grey-200';
       default:
         return 'bg-gray-100 text-gray-800 border-gray-200';
+    }
+  }
+
+  sort(field:string){
+    if (field == 'name'){
+      if (this.sort_name_order == 'asc') this.productions = this.productions.sort((a:any, b:any) => { return a.name.localeCompare(b.name) });
+      else this.productions = this.productions.sort((a:any, b:any) => { return b.name.localeCompare(a.name) });
+
+      this.sort_name_order = this.sort_name_order == 'asc' ? 'desc':'asc';
+    }
+    else if(field == 'users'){
+      if (this.sort_users_order == 'asc') this.productions = this.productions.sort((a:any, b:any) => { return a.active_users - b.active_users });
+      else this.productions = this.productions.sort((a:any, b:any) => { return b.active_users - a.active_users });
+
+      this.sort_users_order = this.sort_users_order == 'asc' ? 'desc':'asc';
+    }
+    else if(field == 'status'){
+      if (this.sort_status_order == 'asc') this.productions = this.productions.sort((a:any, b:any) => { return a.status.localeCompare(b.status) });
+      else this.productions = this.productions.sort((a:any, b:any) => { return b.status.localeCompare(a.status) });
+
+      this.sort_status_order = this.sort_status_order == 'asc' ? 'desc':'asc';
+    }
+    else if(field == 'start_date'){
+      if (this.sort_start_date_order == 'asc') this.productions = this.productions.sort((a:any, b:any) => { return a.start_date_timestamp - b.start_date_timestamp });
+      else this.productions = this.productions.sort((a:any, b:any) => { return b.start_date_timestamp - a.start_date_timestamp });
+
+      this.sort_start_date_order = this.sort_start_date_order == 'asc' ? 'desc':'asc';
     }
   }
 

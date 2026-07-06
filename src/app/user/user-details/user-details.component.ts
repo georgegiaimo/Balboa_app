@@ -67,7 +67,7 @@ export class UserDetailsComponent implements OnInit {
       console.log('response', response);
       if (response.message == 'success') this.show_user_deleted_succesfully = true;
       else this.show_user_deleted_error = true;
-    })
+    });
   }
 
   gotoEditUser(){
