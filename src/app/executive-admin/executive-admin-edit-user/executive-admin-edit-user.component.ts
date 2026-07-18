@@ -1,0 +1,262 @@
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { map, Observable, of, startWith, Subscription } from 'rxjs';
+import { ApisService } from '../../services/apis.service';
+import { GoogleService } from '../../services/google.service';
+import { AuthService } from '../../services/auth.service';
+
+@Component({
+  selector: 'app-executive-admin-edit-user',
+  standalone:false,
+  templateUrl: './executive-admin-edit-user.component.html',
+  styleUrl: './executive-admin-edit-user.component.css'
+})
+export class ExecutiveAdminEditUserComponent implements OnInit, OnDestroy {
+
+  userForm: FormGroup;
+  user_id!:number;
+  
+  // Example data for autocomplete
+  productions!:any[];
+  filteredProductions$: Observable<any[]> = of([]);
+  showAutocomplete = false;
+
+  show_user_added_succesfully:boolean = false;
+  show_user_added_error:boolean = false;
+
+  show_user_updated_succesfully:boolean = false;
+  show_user_updated_error:boolean = false;
+  show_adding_user:boolean = false;
+
+  domains = ['crew-tv', 'seriescrew', 'mount22prod'];
+  user:any;
+
+  get_user_subscription!:Subscription;
+  userx:any;
+
+  production:any;
+  
+
+  constructor(
+    public apisService: ApisService,
+    public googleService: GoogleService,
+    public authService: AuthService,
+    private fb: FormBuilder,
+    private router:Router,
+    private route:ActivatedRoute) {
+
+    this.userForm = this.fb.group({
+      first_name: ['', Validators.required],
+      last_name: ['', Validators.required],
+      personal_email: ['', [Validators.required, Validators.email]],
+      domain: ['crew-tv', Validators.required],
+      production: ['', Validators.required],
+      is_identity_client: [false],
+      is_past_user: [false],
+      notes: ['']
+    });
+
+    this.route.params.subscribe( params => {
+      this.user_id = params['user_id']; 
+    });
+  }
+
+  ngOnInit() {
+
+    this.get_user_subscription = this.authService.currentUserSubject.subscribe((currentUser) => {
+      if (currentUser) {
+          this.userx = currentUser;
+          console.log('this.userx', this.userx);
+          if (this.userx.role == 'executive-admin') this.loadProductions();
+          else {
+            this.authService.handleLogout();
+            this.router.navigate(['/login']);
+          }
+        }
+        //this.loadHours();
+      else {
+        this.authService.handleLogout();
+        this.router.navigate(['/login']);
+      }
+    });
+
+    // Setup filtering for the production autocomplete
+    this.filteredProductions$ = this.userForm.get('production')!.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value || ''))
+    );
+
+    if (this.user_id > 0) this.loadUser();
+
+  }
+
+  ngOnDestroy(): void {
+    if(this.get_user_subscription) this.get_user_subscription.unsubscribe();
+  }
+
+
+
+  
+  loadProductions(){
+    console.log('loadProductions',this.userx.admin_id);
+    this.apisService.GetProductionsForExecutiveAdmin(this.userx.admin_id).subscribe((data:any) => {
+      this.productions = data.data;
+      console.log('this.productions', this.productions);
+      /*
+      this.userForm.patchValue({
+        production: this.production.name,
+        domain: this.production.domain
+      });
+      */
+      //this.users = data.data.users;
+      //this.users_o = JSON.parse(JSON.stringify(this.users));
+
+      //this.active_users = this.users.filter((x:any) => { return x.assignment_status == 'active'; }).length;
+      //this.coordinators = data.data.coordinators;
+      //this.activity = data.data.activity;
+      //this.processActivityData();
+      //console.log('users', this.users);
+      //console.log('coordinators', this.coordinators);
+      //console.log('activity', this.activity);
+      // this.is_loading = false;
+       //this.userForm.get('production')?.disable();
+       //this.userForm.get('domain')?.disable();
+      
+    });
+
+  }
+  
+  loadUser(){
+    this.apisService.GetUserDetails(this.user_id).subscribe((response:any) => {
+      this.user = response.data.user;
+      console.log('this.user', this.user);
+      console.log('assignments', response.data.assignments);
+
+      var active_assignment = response.data.assignments.find((x:any) => { return x.assignment_status == 'active' });
+
+       this.userForm.patchValue({
+        first_name: this.user.first_name,
+        last_name: this.user.last_name,
+        personal_email: this.user.personal_email,
+        production: active_assignment ? active_assignment.name:'',
+        is_identity_client: this.user.is_identity_client
+       });
+
+       this.userForm.get('production')?.disable();
+       this.userForm.get('domain')?.disable();
+
+    })
+  }
+
+  /*
+  loadProductions(){
+      this.apisService.GetProductions().subscribe((response:any) => {
+        //this.productions = response.data.filter((x:any) => { return x.status ? x.status.toLowerCase() == 'active':false });
+        this.productions = response.data;
+        this.productions.sort((a:any,b:any) => { return a.name.localeCompare(b.name)});
+        
+        //console.log('this.productions', this.productions);
+      })
+  }
+  */
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    return this.productions.filter(option => option.name.toLowerCase().includes(filterValue));
+  }
+
+  selectProduction(option: string) {
+    this.userForm.patchValue({ production: option });
+    this.showAutocomplete = false;
+
+    var production = this.productions.find((x: any) => { return x.name == this.userForm.value.production });
+    this.userForm.patchValue({ domain: production.domain });
+    this.userForm.get('domain')?.disable();
+
+  }
+
+  onSubmit() {
+    if (this.userForm.valid) {
+      console.log('Form Data:', this.userForm.value);
+
+      this.show_adding_user = true;
+      if (this.user_id == 0) {
+        //new user
+        //find selected production
+        //var production = this.productions.find((x: any) => { return x.name == this.userForm.value.production });
+
+        var user_data = JSON.parse(JSON.stringify(this.userForm.value));
+        user_data['org_unit_path'] = this.production.org_unit_path;
+
+        if (!user_data.domain) user_data.domain = this.production.domain;
+
+        //if past user add to application database (no remote Google Workspace)
+        if (user_data.is_past_user) {
+          this.apisService.AddUser(user_data).subscribe((response: any) => {
+
+            this.show_adding_user = false;
+
+            if (response) this.show_user_added_succesfully = true;
+            else this.show_user_added_error = true;
+          })
+        }
+
+        else {
+
+          this.googleService.AddUserToGoogle(user_data).subscribe((response: any) => {
+            console.log('response', response);
+
+            this.show_adding_user = false;
+            
+            if (response.data.error) this.show_user_added_error = true;
+            else this.show_user_added_succesfully = true;  
+             
+          });
+        }
+      }
+      else {
+        //update existing user
+        var user_data = JSON.parse(JSON.stringify(this.userForm.value));
+        
+        user_data.production_email = this.user.production_email;
+        user_data.google_id = this.user.google_id;
+        user_data.user_id = this.user.user_id;
+
+        this.googleService.UpdateUserInGoogle(user_data).subscribe((response:any) => {
+        console.log('response', response);
+
+        this.show_adding_user = false;
+
+        if (response) this.show_user_updated_succesfully = true;
+        else this.show_user_updated_error = true;
+
+        var object = {
+          user_id: this.user.user_id,
+          notes: this.userForm.value.notes,
+          is_identity_client: this.userForm.value.is_identity_client
+        }
+
+        this.apisService.UpdateUser(object).subscribe();
+       
+
+      });
+
+      }
+      
+    } else {
+      this.userForm.markAllAsTouched();
+    }
+  }
+
+  gotoUserDetails(){
+    if (this.user_id > 0) this.router.navigate(['p/user-details/' + this.user.user_id]);
+    else this.router.navigate(['e/users']);
+  }
+
+  gotoUsers(){
+    this.router.navigate(['e/users']);
+  }
+
+}
+

@@ -1,0 +1,554 @@
+<div class="flex h-screen overflow-hidden">
+    <app-executive-admin-sidemenu></app-executive-admin-sidemenu>
+    <main class="flex-1 p-8 bg-gray-100 h-screen overflow-y-auto">
+<div class="p-6 max-w-7xl mx-auto space-y-8">
+  <!--
+  <nav class="flex items-center text-sm text-gray-500 mb-4 cursor-pointer">
+    <a (click)="gotoProductions()" class="hover:text-blue-600 transition-colors">Productions</a>
+    <span class="mx-2">/</span>
+    <span class="text-gray-900 font-medium">Production Details</span>
+  </nav>
+  -->
+  @if(production){
+  <section class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <div class="px-6 py-5 border-b border-gray-200 bg-gray-50 flex justify-between items-center">
+    
+      <h2 class="text-lg font-bold text-gray-900">{{ production.name }}</h2>
+      
+      <button type="button" (click)="downloadReport()" [disabled]="document_status == 'generating'" class="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-lg transition-all
+               text-slate-700
+               hover:text-slate-800
+               disabled:opacity-60 disabled:cursor-not-allowed disabled:bg-slate-50">
+        <svg *ngIf="document_status == 'generating'" class="animate-spin size-4 text-teal-600" xmlns="http://www.w3.org/2000/svg" fill="none"
+          viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor"
+            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+          </path>
+        </svg>
+      
+        <svg *ngIf="document_status == 'none' || document_status == 'completed'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+          stroke="currentColor" class="size-4 text-slate-400">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m.75 12 3 3m0 0 3-3m-3 3v-6m-1.5-9H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+        </svg>
+        @if(document_status == 'none'){ <span>{{ 'Create Report' }} </span> }
+        @if(document_status == 'generating'){ <span>{{ 'Generating report...' }} </span> }
+        @if(document_status == 'completed'){ <span>{{ 'Download Report' }} </span> }
+       
+      </button>
+
+
+      <span [class]="getStatusClass(production.status)" class="px-3 py-1 rounded-full text-xs font-semibold uppercase border">
+        {{ production.status }}
+      </span>
+      <!--
+      <button type="button" (click)="gotoEditProduction()"
+        class="group flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all">
+      
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+          class="size-4 text-slate-400 group-hover:text-slate-600">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
+        </svg>
+      
+        <span></span>
+      </button>
+      -->
+    </div>
+    <div class="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-y-6 gap-x-8">
+      <div>
+        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider">Production Name</label>
+        <p class="mt-1 text-sm font-medium text-gray-900">{{ production.name }}</p>
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider">Organizational Unit</label>
+        <p class="mt-1 text-sm font-medium text-gray-900">{{ production.org_unit_path }}</p>
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider">Domain</label>
+        <p class="mt-1 text-sm font-medium text-gray-900">{{ production.domain }}</p>
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider">Users (ACTIVE / TOTAL)</label>
+        <p class="mt-1 text-sm font-medium text-gray-900">{{ active_users }}&nbsp;/&nbsp;{{ users.length }}</p>
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider">Production Type</label>
+        <p class="mt-1 text-sm font-medium text-gray-900">{{ production.type }}</p>
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider">Episodes</label>
+        <p class="mt-1 text-sm font-medium text-gray-900">{{ production.number_of_episodes }}</p>
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider">Projected End Date</label>
+        <p class="mt-1 text-sm font-medium text-gray-900">{{ production.projected_end_date }}</p>
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider">Location</label>
+        <p class="mt-1 text-sm font-medium text-gray-900">{{ production.location }}</p>
+      </div>
+    </div>
+     <div class="p-6 grid grid-cols-1 gap-y-6 gap-x-8">
+      <div>
+        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider">Notes</label>
+        <p class="mt-1 text-sm font-medium text-gray-900">{{ production.notes }}</p>
+      </div>
+    </div>
+  </section>
+  }
+
+  <!--
+  <section class="space-y-4">
+    <div class="flex items-center justify-between">
+      <h3 class="text-xl font-bold text-gray-900">Coordinators</h3>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200">
+          @for (coord of coordinators; track coord.email) {
+            <tr class="hover:bg-gray-50">
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ coord.first_name }}&nbsp;{{ coord.last_name }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{{ coord.email }}</td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span class="text-xs font-medium px-2 py-0.5 rounded-full border"
+                [class]="getStatusClass(coord.coordinator_assignment_status)"
+                >
+                  {{ coord.coordinator_assignment_status }}
+                </span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
+                <button class="text-blue-600 hover:text-blue-800 font-medium">Edit</button>
+              </td>
+            </tr>
+          }@empty {
+            <tr>
+              <td colspan="5" class="px-6 py-10 text-center text-sm text-gray-500">There are no coordinators assigned to this production.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+    -->
+  <section class="space-y-4">
+    <div class="flex items-center justify-between">
+      <h3 class="text-xl font-bold text-gray-900">Latest Activity</h3>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+      <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Date
+                                </th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Action
+                                </th>
+                                 <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Description
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                           @for(x of activity; track x.report_action_id){
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900">{{x.date}}</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900">{{x.action}}</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium"> <!-- cursor-pointer -->
+                                    <div class="text-sm font-medium text-gray-900">
+                                        @for (n of x.segments; track n.ctr){
+                                            @if (!n.param){ {{n.text}} }
+                                            @else {
+                                            <!-- [routerLink]="n.url" -->
+                                            <a
+                                                class="mx-1 font-semibold text-indigo-600 transition-colors decoration-indigo-300 underline-offset-2">
+                                                {{ n.param.text }}
+                                            </a>
+                                            <!-- hover:text-indigo-800 hover:underline -->
+                                            }
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }   
+                        </tbody>
+                    </table>
+    </div>
+  </section>
+
+  @if(users){
+  <section class="space-y-4">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <h3 class="text-xl font-bold text-gray-900">Users ({{ users.length }})</h3>
+      <div class="flex">
+        <!--
+        @if(users_selected){
+        <button type="button" (click)="confirmDelete()"
+          class="inline-flex items-center gap-2 mr-2 px-3 py-1.5 text-sm font-medium text-gray-600 transition-colors duration-200 bg-gray-50 border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-900 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+            class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+          </svg>
+          Delete Selected
+        </button>
+        }
+        -->
+        <div>
+        <div class="relative"> <!-- w-full md:w-80 -->
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <svg class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+          <input type="text" [(ngModel)]="user_search_query" (input)="filterUsers()" placeholder="Search users..."
+            class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-blue-500 focus:border-blue-500">
+          @if (user_search_query && user_search_query.length > 0) {
+          <button (click)="clearSearch()" type="button"
+            class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
+            aria-label="Clear search">
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+          }
+        </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <!--
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <div class="flex items-start">
+                    <div class="flex items-center h-5">
+                        <input type="checkbox" [(ngModel)]="select_all_users" (ngModelChange)="evalAllSelected()"
+                            class="size-4 rounded border-slate-300 text-blue-600 focus:ring-blue-600 cursor-pointer accent-blue-600">
+                    </div>
+                </div>
+            </th>
+            -->
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Production Email</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Personal Email</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Start Date</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">End Date</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+            <!--<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last login</th>-->
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Usage</th>
+            <!--<th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>-->
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200">
+          @for (user of users; track user.user_id) {
+            <tr class="hover:bg-gray-50">
+                <!--
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                <div class="flex items-start">
+                    <div class="flex items-center h-5">
+                        <input type="checkbox" [(ngModel)]="user.is_selected" (ngModelChange)="toggleSelected(user)"
+                            class="size-4 rounded border-slate-300 text-blue-600 focus:ring-blue-600 cursor-pointer accent-blue-600">
+                    </div>
+                </div>
+              </td>
+              -->
+              <!-- (click)="gotoUserDetails(user)" cursor-pointer hover:underline -->
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ user.first_name }}&nbsp;{{ user.last_name }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ user.production_email }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ user.personal_email }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ user.assignment_start_date }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ user.assignment_end_date }}</td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span class="text-xs font-medium px-2 py-0.5 rounded-full border"
+                [class]="getStatusClass(user.assignment_status)">
+                  {{ user.assignment_status }}
+                </span>
+              </td>
+              <!--<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ user.last_login_date }}</td>-->
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                @if(user.usage_percentage){ 
+                  {{ user.usage_percentage }}%
+                }
+              </td>
+              <!--
+              <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
+                <button class="text-blue-600 hover:text-blue-800 font-medium" (click)="gotoUserDetails(user)">Details</button>
+              </td>
+            -->
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="5" class="px-6 py-10 text-center text-sm text-gray-500">No users found matching your search.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+  
+  }
+
+  <section>
+  
+    <h3 class="text-xl font-bold text-gray-900">Timeline</h3>
+    <div class="bg-white p-8">
+      @for(x of history; track x.month + x.year){
+      <div class="relative w-full block bg-gray-600 text-gray-100 p-2 my-2">
+        <strong>{{x.month}}&nbsp;{{x.year}}</strong>&nbsp;&nbsp;|&nbsp;&nbsp;{{x.count}}&nbsp;Users&nbsp;({{x.change > 0 ? '+':''}}{{x.change}})</div>
+      @for (n of x.added; track n.first_name + n.last_name; let i = $index){
+      <div class="block my-0 text-sm">{{i+1}}.&nbsp;Added
+        <em>{{n.first_name}}&nbsp;{{n.last_name}}</em>&nbsp;&nbsp;&nbsp;{{n.assignment_start_date}}</div>
+      }
+      @for (n of x.removed; track n.first_name + n.last_name; let i = $index){
+      <div class="block my-0 text-sm">{{i+1}}.&nbsp;Removed
+        <em>{{n.first_name}}&nbsp;{{n.last_name}}</em>&nbsp;&nbsp;&nbsp;{{n.assignment_end_date}}</div>
+      }
+    
+      }
+    </div>
+  </section>
+  
+
+
+</div>
+<!--
+<button type="button" (click)="confirmDelete()"
+  class="group inline-flex items-center rounded-md p-2 text-gray-400 hover:bg-red-50 hover:text-red-600 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 float-right">
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+    class="size-5">
+    <path stroke-linecap="round" stroke-linejoin="round"
+      d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+  </svg>
+  &nbsp;Delete Production
+  <span class="sr-only">Delete Production</span>
+</button>
+-->
+</main>
+</div>
+
+@if(show_confirm_delete){
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm">
+  
+  <div class="w-full max-w-md overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black/5 animate-in fade-in zoom-in duration-200">
+    
+    <div class="p-6">
+      <div class="flex items-center gap-4">
+        <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-red-100 text-red-600">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+          </svg>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold text-gray-900">Delete Google Org Unit</h3>
+          <p class="mt-1 text-sm text-gray-500">Are you sure you want to delete this Google Org Unit? <br><br>
+            <strong>Org Unit Path:</strong>&nbsp;{{ production.org_unit_path }}<br>
+            <br>
+            
+            This will permanently remove the Organizational Unit from the Google Directory. 
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-gray-50 px-6 py-4 flex flex-col-reverse sm:flex-row sm:justify-end gap-3">
+      <button type="button" (click)="show_confirm_delete = false"
+        class="inline-flex justify-center rounded-lg px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-200 transition-colors">
+        Cancel
+      </button>
+      <button type="button" (click)="deleteProduction()"
+        class="inline-flex justify-center rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2 transition-all">
+        Delete User
+      </button>
+    </div>
+  </div>
+</div>
+}
+
+@if(show_production_deleted_succesfully){
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm">
+  
+  <div class="w-full max-w-md overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black/5 animate-in fade-in zoom-in duration-200">
+    
+    <div class="p-6">
+      <div class="flex items-center gap-4">
+        
+        <div>
+          <h3 class="text-lg font-semibold text-gray-900">Success</h3>
+          <p class="mt-1 text-sm text-gray-500">Production was deleted succesfully
+            </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-gray-50 px-6 py-4 flex flex-col-reverse sm:flex-row sm:justify-end gap-3">
+      <button type="button" (click)="gotoProductions()"
+        class="inline-flex justify-center rounded-lg px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-200 transition-colors">
+        Ok
+      </button>
+    </div>
+  </div>
+</div>
+}
+
+@if(show_production_deleted_error){
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm">
+  
+  <div class="w-full max-w-md overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black/5 animate-in fade-in zoom-in duration-200">
+    
+    <div class="p-6">
+      <div class="flex items-center gap-4">
+        
+        <div>
+          <h3 class="text-lg font-semibold text-gray-900">Error</h3>
+          <p class="mt-1 text-sm text-gray-500">Org Unit could not be deleted.
+            </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-gray-50 px-6 py-4 flex flex-col-reverse sm:flex-row sm:justify-end gap-3">
+      <button type="button" (click)="gotoProductions()"
+        class="inline-flex justify-center rounded-lg px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-200 transition-colors">
+        Ok
+      </button>
+    </div>
+  </div>
+</div>
+}
+
+@if(show_deleting_users){
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50 backdrop-blur-sm">
+  
+  <div class="bg-white p-8 rounded-xl shadow-2xl flex flex-col items-center space-y-4 max-w-xs w-full mx-4">
+    
+    <div class="relative">
+      <div class="w-12 h-12 border-4 border-indigo-100 rounded-full"></div>
+      <div class="absolute top-0 left-0 w-12 h-12 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
+    </div>
+
+    <div class="text-center">
+      <h3 class="text-lg font-semibold text-gray-900">Deleting Users</h3>
+      @if(!run){
+      <p class="text-sm text-gray-500 mt-1">Please wait while we delete users...</p>
+      }
+      @else {
+        <p class="text-sm text-gray-500 mt-1">{{run.status}}</p>
+      }
+    </div>
+  </div>
+</div>
+}
+
+@if(show_confirm_delete){
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm">
+  
+  <div class="w-full max-w-md overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black/5 animate-in fade-in zoom-in duration-200">
+    
+    <div class="p-6">
+      <div class="flex items-center gap-4">
+        <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-red-100 text-red-600">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+          </svg>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold text-gray-900">Delete Users</h3>
+          <p class="mt-1 text-sm text-gray-500">Are you sure you want to delete {{selected_users}} users? <br><br>
+            
+            This will delete users from Google Workspace. 
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-gray-50 px-6 py-4 flex flex-col-reverse sm:flex-row sm:justify-end gap-3">
+      <button type="button" (click)="show_confirm_delete = false"
+        class="inline-flex justify-center rounded-lg px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-200 transition-colors">
+        Cancel
+      </button>
+      <button type="button" (click)="deleteSelected()"
+        class="inline-flex justify-center rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2 transition-all">
+        Delete Users
+      </button>
+    </div>
+  </div>
+</div>
+}
+
+@if(show_bulk_delete_success){
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm">
+  
+  <div class="w-full max-w-md overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black/5 animate-in fade-in zoom-in duration-200">
+    
+    <div class="p-6">
+      <div class="flex items-center gap-4">
+        
+        <div>
+          <h3 class="text-lg font-semibold text-gray-900">Success</h3>
+          <p class="mt-1 text-sm text-gray-500">Users were deleted succesfully.<br><br>
+            <strong>NOTE:</strong>&nbsp;Changes are not immediately apparent. It take few minutes for changes to reflect on the Google Workspace accounts.
+            Please wait 2-3 minutes and perform a data sync using the 'Sync Now' in the Home (dashboard) page to see these changes. 
+            </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-gray-50 px-6 py-4 flex flex-col-reverse sm:flex-row sm:justify-end gap-3">
+      <button type="button" (click)="show_bulk_delete_success=false"
+        class="inline-flex justify-center rounded-lg px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-200 transition-colors">
+        Ok
+      </button>
+    </div>
+  </div>
+</div>
+}
+
+@if(show_bulk_delete_error){
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm">
+  
+  <div class="w-full max-w-md overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black/5 animate-in fade-in zoom-in duration-200">
+    
+    <div class="p-6">
+      <div class="flex items-center gap-4">
+        
+        <div>
+          <h3 class="text-lg font-semibold text-gray-900">Error</h3>
+          <p class="mt-1 text-sm text-gray-500">An error ocurred while deleting users:<br>
+            {{delete_error}}
+            </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-gray-50 px-6 py-4 flex flex-col-reverse sm:flex-row sm:justify-end gap-3">
+      <button type="button" (click)="show_bulk_delete_error=false"
+        class="inline-flex justify-center rounded-lg px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-200 transition-colors">
+        Ok
+      </button>
+    </div>
+  </div>
+</div>
+}

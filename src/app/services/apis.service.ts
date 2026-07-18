@@ -328,6 +328,38 @@ export class ApisService {
     ) 
   }
 
+  GetProductionsForExecutiveAdmin(admin_id:number): Observable<any> {
+    return this.http.get<any>(this.baseurl + '/getProductionsForExecutiveAdmin?id=' + admin_id, this.httpOptions)
+    .pipe(
+      retry(0),
+      catchError(this.errorHandl),
+    ) 
+  }
+
+  GetUsersForExecutiveAdmin(admin_id:number): Observable<any> {
+    return this.http.get<any>(this.baseurl + '/getUsersForExecutiveAdmin?id=' + admin_id, this.httpOptions)
+    .pipe(
+      retry(0),
+      catchError(this.errorHandl),
+    ) 
+  }
+
+  GetActivityForExecutiveAdmin(admin_id:number): Observable<any> {
+    return this.http.get<any>(this.baseurl + '/getActivityForExecutiveAdmin?id=' + admin_id, this.httpOptions)
+    .pipe(
+      retry(0),
+      catchError(this.errorHandl),
+    ) 
+  }
+
+  GetMailingForExecutiveAdmin(admin_id:number): Observable<any> {
+    return this.http.get<any>(this.baseurl + '/getMailingForExecutiveAdmin?id=' + admin_id, this.httpOptions)
+    .pipe(
+      retry(0),
+      catchError(this.errorHandl),
+    ) 
+  }
+
   // Error handling
   errorHandl(error:any) {
     let errorMessage = '';

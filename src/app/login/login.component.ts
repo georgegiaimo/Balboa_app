@@ -69,6 +69,7 @@ export class LoginComponent implements OnInit{
         setTimeout(() => {
           if (response.data.role == 'admin') this.router.navigate(['u/dashboard']);
           else if(response.data.role == 'production-admin') this.router.navigate(['p/production-details']);
+          else if(response.data.role == 'executive-admin') this.router.navigate(['e/productions']);
         }, 1000);
          
       }, 

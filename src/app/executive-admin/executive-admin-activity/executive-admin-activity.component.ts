@@ -1,16 +1,16 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ApisService } from '../../services/apis.service';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-production-admin-activity',
-  standalone: false,
-  templateUrl: './production-admin-activity.component.html',
-  styleUrl: './production-admin-activity.component.css'
+  selector: 'app-executive-admin-activity',
+  standalone:false,
+  templateUrl: './executive-admin-activity.component.html',
+  styleUrl: './executive-admin-activity.component.css'
 })
-export class ProductionAdminActivityComponent implements OnInit, OnDestroy {
+export class ExecutiveAdminActivityComponent implements OnInit {
 
   is_loading:boolean = true;
 
@@ -29,27 +29,32 @@ export class ProductionAdminActivityComponent implements OnInit, OnDestroy {
     this.get_user_subscription = this.authService.currentUserSubject.subscribe((currentUser) => {
       if (currentUser) {
           this.user = currentUser;
-          this.loadProduction();
+          if (this.user.role == 'executive-admin') this.loadData();
+          else {
+            this.authService.handleLogout();
+            this.router.navigate(['/login']);
+          }
         }
         //this.loadHours();
-      else this.router.navigate(['/login']);
+      else {
+        this.authService.handleLogout();
+        this.router.navigate(['/login']);
+      }
     });
+    
 
   }
 
-  ngOnDestroy(): void {
-    if (this.get_user_subscription) this.get_user_subscription.unsubscribe();
-  }
-
-  loadProduction(){
-    this.apisService.GetProductionDetails(this.user.production_id).subscribe((data:any) => {
+  loadData(){
+    this.apisService.GetActivityForExecutiveAdmin(this.user.admin_id).subscribe((data:any) => {
       //this.production = data.data.production;
       //this.users = data.data.users;
       //this.users_o = JSON.parse(JSON.stringify(this.users));
+      console.log('data ##########', data);
 
       //this.active_users = this.users.filter((x:any) => { return x.assignment_status == 'active'; }).length;
       //this.coordinators = data.data.coordinators;
-      this.activity = data.data.activity;
+      this.activity = data.data;
       this.processActivityData();
       //console.log('users', this.users);
       //console.log('coordinators', this.coordinators);
@@ -103,3 +108,4 @@ export class ProductionAdminActivityComponent implements OnInit, OnDestroy {
       //console.log('activity', this.activity);
   }
 }
+

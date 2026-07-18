@@ -22,6 +22,8 @@ export class EditAdminComponent implements OnInit{
   filteredProductions$: Observable<any[]> = of([]);
   showAutocomplete = false;
 
+  selected_productions: any[] = [];
+
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
@@ -88,6 +90,8 @@ export class EditAdminComponent implements OnInit{
         object.password = 'password123';
         object.status = 'invited';
 
+        if (this.adminForm.value['role'] == 'executive-admin') object.productions = this.selected_productions;
+
         if (object.production) object.production_id = this.productions.find((x:any) => { return x.name == object.production}).production_id;
 
         this.authService.SignUp(object).subscribe((response:any) => {
@@ -122,6 +126,17 @@ export class EditAdminComponent implements OnInit{
     return this.productions.filter(option => option.name.toLowerCase().includes(filterValue));
   }
 
+  addProductionToSelected(option: string) {
+    //this.adminForm.patchValue({ production: option });
+    //see if its not already there to avoid duplicated
+    var exists = this.selected_productions.find((x:any) => { return x == option });
+    if (!exists) this.selected_productions.push(option);
+
+    console.log('this.selected_productions', this.selected_productions);
+    this.showAutocomplete = false;
+    this.adminForm.patchValue({ production: '' });
+  }
+
   loadProductions(){
     this.apisService.GetProductions().subscribe((data:any) => {
       //filter removed productions
@@ -129,6 +144,11 @@ export class EditAdminComponent implements OnInit{
       //this.productions = this.productions_full.map((x:any) => { return x.name });
       console.log('this.productions',this.productions);
     })
+  }
+
+  removeSelection(item:string){
+    var idx = this.selected_productions.indexOf(item);
+    if (idx > -1) this.selected_productions.splice(idx,1);
   }
 
 }

@@ -13,4 +13,5 @@ export const routes: Routes = [
     {path: 'u', loadChildren: () => import('./user/user.module').then(m => m.UserModule)},
     {path: 'a', loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)},
     {path: 'p', loadChildren: () => import('./production-admin/production-admin.module').then(m => m.ProductionAdminModule)},
+    {path: 'e', loadChildren: () => import('./executive-admin/executive-admin.module').then(m => m.ExecutiveAdminModule)}
 ];

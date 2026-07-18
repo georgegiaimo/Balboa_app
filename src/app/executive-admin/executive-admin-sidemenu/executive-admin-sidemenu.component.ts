@@ -4,12 +4,12 @@ import { AuthService } from '../../services/auth.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-production-admin-sidemenu',
-  standalone: false,
-  templateUrl: './production-admin-sidemenu.component.html',
-  styleUrl: './production-admin-sidemenu.component.css'
+  selector: 'app-executive-admin-sidemenu',
+  standalone:false,
+  templateUrl: './executive-admin-sidemenu.component.html',
+  styleUrl: './executive-admin-sidemenu.component.css'
 })
-export class ProductionAdminSidemenuComponent implements OnInit{
+export class ExecutiveAdminSidemenuComponent implements OnInit{
 
   is_collapsed:boolean = false;
   user:any;
@@ -25,7 +25,7 @@ export class ProductionAdminSidemenuComponent implements OnInit{
     this.get_user_subscription = this.authService.currentUserSubject.subscribe((currentUser) => {
       if (currentUser) {
           this.user = currentUser;
-          if (this.user.role != 'production-admin' || !this.user.production_id) {
+          if (this.user.role != 'executive-admin') {
             this.authService.handleLogout();
             this.router.navigate(['/login']);
           }
