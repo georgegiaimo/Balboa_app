@@ -1,0 +1,1 @@
+import{Na as u,d as t,i as e,ra as o,t as r}from"./chunk-GWGKSUXT.js";var h=(c,n)=>t(null,null,function*(){let a=r(u),i=r(o);return(yield e(a.currentUser$))?!0:i.createUrlTree(["/login"],{queryParams:{returnUrl:n.url}})});export{h as a};

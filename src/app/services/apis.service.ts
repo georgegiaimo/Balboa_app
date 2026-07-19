@@ -360,6 +360,30 @@ export class ApisService {
     ) 
   }
 
+  DeleteAdmin(admin_id:number): Observable<any> {
+    return this.http.post<any>(this.baseurl + '/deleteAdmin', { admin_id: admin_id }, this.httpOptions)
+    .pipe(
+      retry(0),
+      catchError(this.errorHandl),
+    ) 
+  }
+
+  AddExecutiveAdminProductionAssignment(object:any): Observable<any> {
+    return this.http.post<any>(this.baseurl + '/addExecutiveAdminProductionAssignment', object, this.httpOptions)
+    .pipe(
+      retry(0),
+      catchError(this.errorHandl),
+    ) 
+  }
+
+  DeleteExecutiveAdminProductionAssignment(exec_admin_production_assignment_id:number): Observable<any> {
+    return this.http.post<any>(this.baseurl + '/deleteExecutiveAdminProductionAssignment', { exec_admin_production_assignment_id: exec_admin_production_assignment_id }, this.httpOptions)
+    .pipe(
+      retry(0),
+      catchError(this.errorHandl),
+    ) 
+  }
+
   // Error handling
   errorHandl(error:any) {
     let errorMessage = '';
