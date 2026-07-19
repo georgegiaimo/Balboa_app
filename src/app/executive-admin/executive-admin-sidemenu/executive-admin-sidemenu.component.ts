@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { Subscription } from 'rxjs';
@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './executive-admin-sidemenu.component.html',
   styleUrl: './executive-admin-sidemenu.component.css'
 })
-export class ExecutiveAdminSidemenuComponent implements OnInit{
+export class ExecutiveAdminSidemenuComponent implements OnInit, OnDestroy{
 
   is_collapsed:boolean = false;
   user:any;
@@ -26,17 +26,23 @@ export class ExecutiveAdminSidemenuComponent implements OnInit{
       if (currentUser) {
           this.user = currentUser;
           if (this.user.role != 'executive-admin') {
-            this.authService.handleLogout();
+            //this.authService.handleLogout();
             this.router.navigate(['/login']);
           }
         }
         //this.loadHours();
       else {
-        this.authService.handleLogout();
+        //this.authService.handleLogout();
         this.router.navigate(['/login']);
       }
     });
   }
+
+  ngOnDestroy(): void {
+    if(this.get_user_subscription) this.get_user_subscription.unsubscribe();
+  }
+
+
 
   toggleSidebar(){
 
@@ -48,6 +54,7 @@ export class ExecutiveAdminSidemenuComponent implements OnInit{
   }
 
   logOut(){
+    console.log('logout');
     this.authService.handleLogout();
     this.router.navigate([''],{ replaceUrl: true });
   }

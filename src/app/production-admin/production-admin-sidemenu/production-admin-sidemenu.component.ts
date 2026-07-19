@@ -26,13 +26,13 @@ export class ProductionAdminSidemenuComponent implements OnInit{
       if (currentUser) {
           this.user = currentUser;
           if (this.user.role != 'production-admin' || !this.user.production_id) {
-            this.authService.handleLogout();
+            //this.authService.handleLogout();
             this.router.navigate(['/login']);
           }
         }
         //this.loadHours();
       else {
-        this.authService.handleLogout();
+        //this.authService.handleLogout();
         this.router.navigate(['/login']);
       }
     });

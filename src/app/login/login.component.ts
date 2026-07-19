@@ -47,6 +47,7 @@ export class LoginComponent implements OnInit{
       console.log('Email is now:', email);
     });
     */
+    this.authService.handleLogout();
   }
   
 

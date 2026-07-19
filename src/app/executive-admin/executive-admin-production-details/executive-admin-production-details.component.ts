@@ -73,7 +73,7 @@ export class ExecutiveAdminProductionDetailsComponent implements OnInit, OnDestr
           var record = this.user.assignments.find((x:any) => { return x.production_id == this.production_id});
           if (record) this.loadProduction();
           else {
-            this.authService.handleLogout();
+            //this.authService.handleLogout();
             this.router.navigate(['/login']);
           }
 
@@ -81,7 +81,7 @@ export class ExecutiveAdminProductionDetailsComponent implements OnInit, OnDestr
         }
         //this.loadHours();
       else {
-        this.authService.handleLogout();
+        //this.authService.handleLogout();
         this.router.navigate(['/login']);
       }
     });

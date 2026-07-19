@@ -70,13 +70,13 @@ export class ExecutiveAdminEditUserComponent implements OnInit, OnDestroy {
           console.log('this.userx', this.userx);
           if (this.userx.role == 'executive-admin') this.loadProductions();
           else {
-            this.authService.handleLogout();
+            //this.authService.handleLogout();
             this.router.navigate(['/login']);
           }
         }
         //this.loadHours();
       else {
-        this.authService.handleLogout();
+        //this.authService.handleLogout();
         this.router.navigate(['/login']);
       }
     });

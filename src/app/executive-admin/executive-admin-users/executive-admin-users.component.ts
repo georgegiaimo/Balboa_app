@@ -53,13 +53,13 @@ export class ExecutiveAdminUsersComponent implements OnInit {
           this.user = currentUser;
           if (this.user.role == 'executive-admin') this.loadData();
           else {
-            this.authService.handleLogout();
+            //this.authService.handleLogout();
             this.router.navigate(['/login']);
           }
         }
         //this.loadHours();
       else {
-        this.authService.handleLogout();
+        //this.authService.handleLogout();
         this.router.navigate(['/login']);
       }
     });
