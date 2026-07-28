@@ -88,6 +88,14 @@ export class GoogleService {
     ) 
   }
 
+  RequestPasswordChange(object:any): Observable<any> {
+    return this.http.post<any>(this.baseurl + '/requestPasswordChange', object, this.httpOptions)
+    .pipe(
+      retry(0),
+      catchError(this.errorHandl),
+    ) 
+  }
+
   // Error handling
   errorHandl(error:any) {
     let errorMessage = '';

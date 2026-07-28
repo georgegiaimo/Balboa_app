@@ -46,7 +46,7 @@ export class UserHistoricalChartComponent implements OnInit {
 
   ngOnInit(): void {
 
-    console.log('historical_data', this.data);
+    //console.log('historical_data', this.data);
 
     this.barChartData.labels = this.data.map((x:any) => { return x.date; });
     this.barChartData.datasets[0].data = this.data.map((x:any) => { return x.users; });

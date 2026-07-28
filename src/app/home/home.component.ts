@@ -17,4 +17,8 @@ export class HomeComponent {
     this.router.navigate(['login']);
   }
 
+  resetPassword(){
+    this.router.navigate(['request-password-reset']);
+  }
+
 }
