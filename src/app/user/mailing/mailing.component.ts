@@ -29,7 +29,6 @@ export class MailingComponent implements OnInit {
 
   loadData(){
     this.apisService.GetMailing().subscribe((response:any) => {
-      console.log('response', response);
       this.is_loading = false;
       this.emails = response.data;
       this.emails_o = JSON.parse(JSON.stringify(this.emails));
@@ -37,7 +36,6 @@ export class MailingComponent implements OnInit {
   }
 
   onSearch(){
-    console.log('sss');
     if (this.search_query.length == 0) this.emails = this.emails_o;
     else {
       var query = this.search_query.toLowerCase();

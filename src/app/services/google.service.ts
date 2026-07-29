@@ -101,13 +101,15 @@ export class GoogleService {
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {
       // Get client-side error
-      errorMessage = error.error.message;
-    } else {
+      errorMessage = error.error.error.message;
+    } 
+    else {
       // Get server-side error
       errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
-    console.log(errorMessage);
-    return throwError(errorMessage);
+    //console.log(errorMessage);
+    //return throwError(errorMessage);
+    return throwError(() => error);
   }
 
 

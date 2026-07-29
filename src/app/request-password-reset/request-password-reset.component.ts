@@ -4,6 +4,7 @@ import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { GoogleService } from '../services/google.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-request-password-reset',
@@ -36,14 +37,17 @@ export class RequestPasswordResetComponent {
 
     try {
       // Replace with your actual AuthService call
-      await this.googleService.RequestPasswordChange({email: this.requestChangeForm.value.email }).subscribe();
+      var response = await firstValueFrom(this.googleService.RequestPasswordChange({email: this.requestChangeForm.value.email }));
       
+      //console.log('response', response);
+
       // Simulate API delay
       await new Promise(resolve => setTimeout(resolve, 1500));
       
       this.is_sent = true;
     } catch (err: any) {
-      this.errorMessage = err.message || 'Something went wrong. Please try again.';
+      //console.log('error --- ', err);
+      this.errorMessage = err.error?.error?.message || err.message || 'Something went wrong. Please try again.';
     } finally {
       this.is_loading = false;
     }
