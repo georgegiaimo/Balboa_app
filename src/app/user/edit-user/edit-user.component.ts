@@ -109,7 +109,9 @@ export class EditUserComponent implements OnInit {
 
     var production = this.productions.find((x: any) => { return x.name == this.userForm.value.production });
     this.userForm.patchValue({ domain: production.domain });
-    this.userForm.get('domain')?.disable();
+    //this.userForm.get('domain')?.disable();
+    if (production.domain == 'seriescrew' || production.domain == 'crew-tv') this.domains = ['seriescrew','crew-tv'];
+    else if (production.domain == 'mount22prod')  this.domains = ['mount22prod'];
 
   }
 
