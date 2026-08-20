@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ApisService } from '../../services/apis.service';
 import { Router } from '@angular/router';
 import { DocsService } from '../../services/docs.service';
@@ -12,7 +12,7 @@ import { GoogleService } from '../../services/google.service';
   templateUrl: './production-admin-users.component.html',
   styleUrl: './production-admin-users.component.css'
 })
-export class ProductionAdminUsersComponent implements OnInit {
+export class ProductionAdminUsersComponent implements OnInit, OnDestroy {
 
   users!:any[];
   users_o!:any[];
@@ -57,6 +57,10 @@ export class ProductionAdminUsersComponent implements OnInit {
       else this.router.navigate(['/login']);
     });
 
+  }
+
+  ngOnDestroy(): void {
+    if(this.get_user_subscription) this.get_user_subscription.unsubscribe();
   }
 
   loadProduction(){

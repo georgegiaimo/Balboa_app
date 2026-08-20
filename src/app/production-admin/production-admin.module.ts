@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ProductionAdminRoutingModule, routingComponents } from './production-admin-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProductionAdminSidemenuComponent } from './production-admin-sidemenu/production-admin-sidemenu.component';
+import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
@@ -15,6 +16,7 @@ import { ProductionAdminSidemenuComponent } from './production-admin-sidemenu/pr
     CommonModule,
     ProductionAdminRoutingModule,
     FormsModule,
+    SharedModule,
     ReactiveFormsModule,
     ProductionAdminRoutingModule
   ]

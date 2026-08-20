@@ -91,7 +91,8 @@ export class EditUserComponent implements OnInit {
   loadProductions(){
       this.apisService.GetProductions().subscribe((response:any) => {
         //this.productions = response.data.filter((x:any) => { return x.status ? x.status.toLowerCase() == 'active':false });
-        this.productions = response.data;
+        this.productions = response.data.filter((x:any) => { 
+          return x.status && (x.status.toLowerCase() == 'active' || x.status.toLowerCase() == 'post production' || x.status.toLowerCase() == 'writers room')});
         this.productions.sort((a:any,b:any) => { return a.name.localeCompare(b.name)});
         
         //console.log('this.productions', this.productions);
@@ -99,6 +100,7 @@ export class EditUserComponent implements OnInit {
   }
 
   private _filter(value: string): string[] {
+    if (!this.productions) return [''];
     const filterValue = value.toLowerCase();
     return this.productions.filter(option => option.name.toLowerCase().includes(filterValue));
   }

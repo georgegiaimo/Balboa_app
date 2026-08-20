@@ -1,0 +1,298 @@
+<div class="flex">
+<app-production-admin-sidemenu></app-production-admin-sidemenu>
+<main class="flex-1 flex flex-col bg-gray-100 h-screen p-8">
+
+    <nav class="flex items-center text-sm text-gray-500 mb-4 cursor-pointer pb-4">
+            <a (click)="gotoMessages()" class="hover:text-blue-600 transition-colors">Messages</a>
+            <span class="mx-2">/</span>
+            <a (click)="gotoComposeMessage()" class="hover:text-blue-600 transition-colors">Compose Message</a>
+            <span class="mx-2">/</span>
+            <a (click)="gotoMessagingGroups()" class="hover:text-blue-600 transition-colors">Messaging Groups</a>
+            <span class="mx-2">/</span>
+            <span class="text-gray-900 font-medium">Edit Groups</span>
+        </nav>
+
+    <div class="flex-1 flex flex-col min-h-0">
+         
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+
+                <div>
+                    @if(group_id == 0){
+                        <div class="relative w-full px-4 py-2 font-semibold text-small text-gray-600">
+                            <h1 class="text-2xl font-bold text-gray-900 py-4">&#64;{{group_name}}
+                                <span class="inline-block">
+                                    <button type="button" (click)="editName()"
+                                    class="group flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all">
+                            
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                        class="size-4 text-slate-400 group-hover:text-slate-600">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
+                                    </svg>
+                            
+                                    <span></span>
+                                </button>
+                                </span>
+                            </h1>
+                            
+                                
+                            
+                        </div>
+                    }
+                    @else {
+                        <h1 class="text-2xl font-bold text-gray-900 py-4">&#64;{{group_name}}</h1>
+                    }
+                    
+                    @if(group_description){
+                    <p class="text-sm text-gray-500">{{group_description}}</p>
+                    }
+                </div>
+
+                <!--
+                <div class="text-sm text-gray-500 pb-4 bg-white p-4">
+                    Available groups:<br>
+                    @if (users){
+                    <div class="cursor-pointer hover:underline" (click)="loadGroup('production')">&#64;production ({{users.length}})</div>
+                    @for (x of messaging_groups; track x.group_id) {
+                    <div class="cursor-pointer hover:underline" (click)="loadGroup(x.group_name)">&#64;{{x.group_name}} ({{x.members}})</div>
+                    }
+                    }
+                </div>
+                -->
+            </div>
+
+            <div class="text-right my-4">
+                @if(group_id > 0){
+                <button type="button" (click)="deleteGroup()"
+                        class="inline-flex items-center px-4 py-2 border border-transparent text-sm text-gray-500 font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all">
+                        Delete Group
+                </button>
+                }
+                <button type="button" (click)="save()"
+                        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all">
+                        Save
+                </button>
+            </div>
+
+        
+        <p class="text-sm text-gray-500 p-4">Select users that form part of this messaging group.</p>
+        
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 flex flex-col min-h-0 overflow-hidden">
+            
+            <div class="overflow-auto flex-1">
+                <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <div class="flex items-start">
+                                        <div class="flex items-center h-5">
+                                            <input type="checkbox" [(ngModel)]="select_all_users" (ngModelChange)="evalAllSelected()"
+                                                class="size-4 rounded border-slate-300 text-blue-600 focus:ring-blue-600 cursor-pointer accent-blue-600">
+                                        </div>
+                                        <!--
+                                                    <div class="ml-3 text-sm leading-6">
+                                                        <label for="is_past_user" class="font-medium text-slate-900 cursor-pointer">All</label>
+                                                    </div>
+                                                    -->
+                                    </div>
+                                </th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Name
+                                </th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Production Email
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            @for (x of users; track x.user_id) {
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                    <div class="flex items-start">
+                                        <div class="flex items-center h-5">
+                                            <input type="checkbox" [(ngModel)]="x.is_selected" (ngModelChange)="toggleSelected(user)"
+                                                class="size-4 rounded border-slate-300 text-blue-600 focus:ring-blue-600 cursor-pointer accent-blue-600">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap"> <!-- truncate max-w-[120px] cursor-pointer hover:underline (click)="gotoUserDetails(x)" -->
+                                    <div class="text-sm font-medium text-gray-900">{{ x.first_name }}&nbsp;{{ x.last_name }}</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap"><!-- truncate max-w-[180px] -->
+                                    <div class="text-sm font-medium text-gray-900">{{ x.production_email }}</div>
+                                </td>
+                                
+                            </tr>
+                            } @empty {
+                            <tr>
+                                <td colspan="9" class="px-6 py-10 text-center text-sm text-gray-500 italic">
+                                    No productions found. Click 'Add Production' to get started.
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+            </div>
+            
+        </div>
+    </div>
+</main>
+</div>
+
+@if(show_edit_group_name){
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm">
+  
+  <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl border border-gray-100 overflow-hidden p-4">
+    
+    <div class="py-4">
+    <label class="block text-sm font-semibold text-slate-700 mb-1">Group name</label>
+    <input type="text"
+        class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+        [(ngModel)]="group_namex">
+    </div>
+    <div class="py-4">
+    <label class="block text-sm font-semibold text-slate-700 mb-1">Group description (optional)</label>
+    <textarea type="text" rows="2"
+        class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+        [(ngModel)]="group_descriptionx"></textarea>
+    </div>
+    
+
+    
+    <div class="px-6 py-4 bg-white flex justify-end gap-3">
+      <button (click)="show_edit_group_name=false" class="px-4 py-2 text-sm font-semibold text-gray-600 hover:text-gray-800">
+        Cancel
+      </button>
+      <button 
+        (click)="saveGroupName()"
+        class="px-5 py-2 bg-blue-600 text-white text-sm font-bold rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all shadow-md">
+        Save
+      </button>
+    </div>
+  </div>
+</div>
+}
+
+@if(show_invalid_group_name){
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm">
+
+    <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl border border-gray-100 overflow-hidden p-4">
+
+        <div class="py-4">
+            <div class="flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-4 text-red-800"
+                role="alert">
+                <svg class="mt-0.5 h-5 w-5 flex-shrink-0 text-red-500" xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" aria-hidden="true">
+                    <path d="M10.3 3.6 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.6a2 2 0 0 0-3.4 0Z" />
+                    <path d="M12 9v4" />
+                    <path d="M12 17h.01" />
+                </svg>
+
+                <div>
+                    <p class="font-medium">Error</p>
+                    <p class="mt-1 text-sm text-red-700">
+                        Group name is invalid.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="px-6 py-4 bg-white flex justify-end gap-3">
+            <button (click)="show_invalid_group_name=false"
+                class="px-4 py-2 text-sm font-semibold text-gray-600 hover:text-gray-800">
+                Ok
+            </button>
+        </div>
+    </div>
+</div>
+}
+
+@if(show_invalid_number_of_users){
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm">
+
+    <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl border border-gray-100 overflow-hidden p-4">
+
+        <div class="py-4">
+            <div class="flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-4 text-red-800"
+                role="alert">
+                <svg class="mt-0.5 h-5 w-5 flex-shrink-0 text-red-500" xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" aria-hidden="true">
+                    <path d="M10.3 3.6 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.6a2 2 0 0 0-3.4 0Z" />
+                    <path d="M12 9v4" />
+                    <path d="M12 17h.01" />
+                </svg>
+
+                <div>
+                    <p class="font-medium">Error</p>
+                    <p class="mt-1 text-sm text-red-700">
+                        A group must have at least 1 user
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="px-6 py-4 bg-white flex justify-end gap-3">
+            <button (click)="show_invalid_number_of_users=false"
+                class="px-4 py-2 text-sm font-semibold text-gray-600 hover:text-gray-800">
+                Ok
+            </button>
+        </div>
+    </div>
+</div>
+}
+
+@if(show_adding_group_success){
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm">
+  
+  <div class="w-full max-w-md overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black/5 animate-in fade-in zoom-in duration-200">
+    
+    <div class="p-6">
+      <div class="flex items-center gap-4">
+        
+        <div>
+          <h3 class="text-lg font-semibold text-gray-900">Success</h3>
+          <p class="mt-1 text-sm text-gray-500">Message group added successfully.
+            </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-gray-50 px-6 py-4 flex flex-col-reverse sm:flex-row sm:justify-end gap-3">
+      <button type="button" (click)="gotoMessagingGroups();"
+        class="inline-flex justify-center rounded-lg px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-200 transition-colors">
+        Ok
+      </button>
+    </div>
+  </div>
+</div>
+}
+
+@if(show_delete_group_success){
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm">
+  
+  <div class="w-full max-w-md overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black/5 animate-in fade-in zoom-in duration-200">
+    
+    <div class="p-6">
+      <div class="flex items-center gap-4">
+        
+        <div>
+          <h3 class="text-lg font-semibold text-gray-900">Success</h3>
+          <p class="mt-1 text-sm text-gray-500">Message group deleted successfully.
+            </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-gray-50 px-6 py-4 flex flex-col-reverse sm:flex-row sm:justify-end gap-3">
+      <button type="button" (click)="gotoMessagingGroups();"
+        class="inline-flex justify-center rounded-lg px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-200 transition-colors">
+        Ok
+      </button>
+    </div>
+  </div>
+</div>
+}

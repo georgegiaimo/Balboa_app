@@ -5,8 +5,8 @@
         <div class="p-6 max-w-7xl mx-auto">
             <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
                 <div>
-                    <h1 class="text-2xl font-bold text-gray-900">Mailing</h1>
-                    <p class="text-sm text-gray-500">Track the email messages sent.</p>
+                    <h1 class="text-2xl font-bold text-gray-900">Notifications</h1>
+                    <p class="text-sm text-gray-500">Track email notifications messages sent.</p>
                 </div>
             </div>
 
@@ -47,7 +47,7 @@
             }
             @else{
 
-                @if(emails.length > 0){
+                @if(emails && emails.length > 0){
 
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                 <div>

@@ -1,0 +1,51 @@
+<div class="w-full rounded-xl border border-gray-300 bg-white shadow-sm">
+
+    <div class="flex flex-wrap items-center gap-1 border-b border-gray-200 p-2">
+
+        <button type="button" class="rounded-md px-3 py-2 text-sm font-bold hover:bg-gray-100" (click)="format('bold')"
+            title="Bold">
+            B
+        </button>
+
+        <button type="button" class="rounded-md px-3 py-2 text-sm italic hover:bg-gray-100" (click)="format('italic')"
+            title="Italic">
+            I
+        </button>
+
+        <button type="button" class="rounded-md px-3 py-2 text-sm underline hover:bg-gray-100"
+            (click)="format('underline')" title="Underline">
+            U
+        </button>
+
+        <div class="mx-1 h-6 border-l border-gray-300"></div>
+
+        <button type="button" class="rounded-md px-3 py-2 text-sm hover:bg-gray-100"
+            (click)="format('insertUnorderedList')" title="Bullet List">
+            • List
+        </button>
+
+        <button type="button" class="rounded-md px-3 py-2 text-sm hover:bg-gray-100"
+            (click)="format('insertOrderedList')" title="Numbered List">
+            1. List
+        </button>
+
+        <div class="mx-1 h-6 border-l border-gray-300"></div>
+
+        <button type="button" class="rounded-md px-3 py-2 text-sm hover:bg-gray-100" (click)="addLink()"
+            title="Add Link">
+            Link
+        </button>
+
+        <button type="button" class="rounded-md px-3 py-2 text-sm hover:bg-gray-100" (click)="format('removeFormat')"
+            title="Clear Formatting">
+            Clear
+        </button>
+
+    </div>
+
+    <!-- Editor -->
+    <div #editor contenteditable="true" formControlName="message"
+        class="min-h-[180px] p-4 leading-6 text-gray-800 outline-none" (input)="onEditorInput()"
+        (blur)="onEditorInput()">
+    </div>
+</div>

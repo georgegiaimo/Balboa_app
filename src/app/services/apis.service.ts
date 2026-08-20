@@ -384,6 +384,54 @@ export class ApisService {
     ) 
   }
 
+  AddMessagingGroup(object:any): Observable<any> {
+    return this.http.post<any>(this.baseurl + '/addMessagingGroup', object, this.httpOptions)
+    .pipe(
+      retry(0),
+      catchError(this.errorHandl),
+    ) 
+  }
+
+  GetMessagingGroups(admin_id:number): Observable<any> {
+    return this.http.get<any>(this.baseurl + '/getMessagingGroups?id=' + admin_id, this.httpOptions)
+    .pipe(
+      retry(0),
+      catchError(this.errorHandl),
+    ) 
+  }
+
+  DeleteMessagingGroup(messaging_group_id:number): Observable<any> {
+    return this.http.post<any>(this.baseurl + '/deleteMessagingGroup', { messaging_group_id: messaging_group_id }, this.httpOptions)
+    .pipe(
+      retry(0),
+      catchError(this.errorHandl),
+    ) 
+  }
+
+  UpdateMessagingGroup(object:any): Observable<any> {
+    return this.http.post<any>(this.baseurl + '/updateMessagingGroup', object, this.httpOptions)
+    .pipe(
+      retry(0),
+      catchError(this.errorHandl),
+    ) 
+  }
+
+  LoadComposedMessages(admin_id:any): Observable<any> {
+    return this.http.get<any>(this.baseurl + '/getComposedMessages?id=' + admin_id, this.httpOptions)
+    .pipe(
+      retry(0),
+      catchError(this.errorHandl),
+    ) 
+  }
+
+  LoadComposedMessageDetails(message_id:any): Observable<any> {
+    return this.http.get<any>(this.baseurl + '/getMessageDetails?id=' + message_id, this.httpOptions)
+    .pipe(
+      retry(0),
+      catchError(this.errorHandl),
+    ) 
+  }
+
   // Error handling
   errorHandl(error:any) {
     let errorMessage = '';
