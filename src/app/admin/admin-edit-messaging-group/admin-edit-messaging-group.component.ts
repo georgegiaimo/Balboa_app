@@ -5,12 +5,12 @@ import { Subscription } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
-  selector: 'app-production-admin-edit-messaging-group',
+  selector: 'app-admin-edit-messaging-group',
   standalone: false,
-  templateUrl: './production-admin-edit-messaging-group.component.html',
-  styleUrl: './production-admin-edit-messaging-group.component.css'
+  templateUrl: './admin-edit-messaging-group.component.html',
+  styleUrl: './admin-edit-messaging-group.component.css'
 })
-export class ProductionAdminEditMessagingGroupComponent implements OnInit, OnDestroy {
+export class AdminEditMessagingGroupComponent implements OnInit, OnDestroy {
 
   users!:any[];
   users_o!:any[];
@@ -37,6 +37,7 @@ export class ProductionAdminEditMessagingGroupComponent implements OnInit, OnDes
   messaging_groups!:any[];
 
   users_ids:any[] = [];
+
   search_query:string = '';
   user_view!:string;
 
@@ -56,6 +57,7 @@ export class ProductionAdminEditMessagingGroupComponent implements OnInit, OnDes
       else{
         this.user_view = 'selected';
       }
+      //console.log('this.user_view', this.user_view);
     });
   }
 
@@ -64,7 +66,7 @@ export class ProductionAdminEditMessagingGroupComponent implements OnInit, OnDes
     this.get_user_subscription = this.authService.currentUserSubject.subscribe((currentUser) => {
       if (currentUser) {
           this.user = currentUser;
-          this.loadProduction();
+          this.loadUsers();
           //this.loadGroups();
         }
         //this.loadHours();
@@ -78,6 +80,7 @@ export class ProductionAdminEditMessagingGroupComponent implements OnInit, OnDes
   }
 
   
+  /*
   loadProduction(){
     this.apisService.GetProductionDetails(this.user.production_id).subscribe((data:any) => {
       //this.production = data.data.production;
@@ -89,19 +92,32 @@ export class ProductionAdminEditMessagingGroupComponent implements OnInit, OnDes
       
     });
 
-    /*
-    this.apisService.GetProductionHistory(this.user.production_id).subscribe((response:any) => {
-      //console.log('response', response);
-      this.history = response.data.history;
-    })
-    */
+  }
+  */
+ loadUsers(){
+    this.apisService.GetUsers().subscribe((response:any) => {
+      //console.log('users data', response);
+      this.users = response.data.filter((x:any) => { return x.status == 'active'; });
+      this.users_o = JSON.parse(JSON.stringify(this.users));
+      
+      /*
+      this.users.forEach((x:any) => {
+        x.name = x.first_name + ' ' + x.last_name;
+        x.type = 'user';
+      });
+
+      console.log('this.users', this.users);
+      this.loadGroups();
+      */
+     this.loadGroups();
+    });
   }
 
   loadGroups(){
     this.apisService.GetMessagingGroups(this.user.admin_id).subscribe((response:any) => {
       this.messaging_groups = response.data;
 
-      console.log('*********', this.messaging_groups);
+      //console.log('*********', this.messaging_groups);
 
       this.messaging_groups.forEach((x:any) => {
         x.users = JSON.parse(x.users_ids);
@@ -110,6 +126,7 @@ export class ProductionAdminEditMessagingGroupComponent implements OnInit, OnDes
 
 
       this.group = this.messaging_groups.find((x:any) => { return x.messaging_group_id == this.group_id;});
+      this.group_description = this.group.description;
 
       //console.log('this.group', this.group);
       if (this.group){
@@ -121,15 +138,21 @@ export class ProductionAdminEditMessagingGroupComponent implements OnInit, OnDes
 
         //console.log('this.group', this.group);
         //console.log('this.users', this.users);
-        this.users_o = JSON.parse(JSON.stringify(this.users));
-        this.showByView();
       }
+      this.users_o = JSON.parse(JSON.stringify(this.users));
+      this.showByView();
+
+
 
     })
   }
   
   toggleSelected(item:any){
-    
+    /*
+    setTimeout(() => {
+      this.number_selected = this.users.filter((x:any) => { return x.is_selected; }).length;
+    },100);
+    */
    this.updateOriginal(item);
   }
 
@@ -154,10 +177,11 @@ export class ProductionAdminEditMessagingGroupComponent implements OnInit, OnDes
       var group_object = {
         admin_id: this.user.admin_id,
         users_ids: JSON.stringify(this.users_ids),
-        group_name: this.group_name,
+        group_name: this.group_name, 
         description: this.group_description
       }
 
+      //console.log('group_object', group_object);
       this.apisService.AddMessagingGroup(group_object).subscribe(() => {
       this.show_adding_group_success = true;
     });
@@ -190,7 +214,7 @@ export class ProductionAdminEditMessagingGroupComponent implements OnInit, OnDes
   }
 
   gotoComposeMessage(){
-    this.router.navigate(['p/compose-message']);
+    this.router.navigate(['a/compose-message']);
   }
 
   evalAllSelected(){
@@ -219,11 +243,11 @@ export class ProductionAdminEditMessagingGroupComponent implements OnInit, OnDes
   }
 
   gotoMessagingGroups(){
-    this.router.navigate(['p/messaging-groups']);
+    this.router.navigate(['a/messaging-groups']);
   }
 
   gotoMessages(){
-    this.router.navigate(['p/messages']);
+    this.router.navigate(['a/messages']);
   }
 
   deleteGroup(){

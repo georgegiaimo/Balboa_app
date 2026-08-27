@@ -91,7 +91,7 @@ export class ExecutiveAdminMailingComponent implements OnInit {
   }
   */
   onSearch(){
-    console.log('sss');
+    //console.log('sss');
     if (this.search_query.length == 0) this.emails = this.emails_o;
     else {
       var query = this.search_query.toLowerCase();

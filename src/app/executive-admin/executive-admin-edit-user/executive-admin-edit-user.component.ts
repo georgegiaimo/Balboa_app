@@ -67,7 +67,7 @@ export class ExecutiveAdminEditUserComponent implements OnInit, OnDestroy {
     this.get_user_subscription = this.authService.currentUserSubject.subscribe((currentUser) => {
       if (currentUser) {
           this.userx = currentUser;
-          console.log('this.userx', this.userx);
+          //console.log('this.userx', this.userx);
           if (this.userx.role == 'executive-admin') this.loadProductions();
           else {
             //this.authService.handleLogout();
@@ -99,10 +99,10 @@ export class ExecutiveAdminEditUserComponent implements OnInit, OnDestroy {
 
   
   loadProductions(){
-    console.log('loadProductions',this.userx.admin_id);
+    //console.log('loadProductions',this.userx.admin_id);
     this.apisService.GetProductionsForExecutiveAdmin(this.userx.admin_id).subscribe((data:any) => {
       this.productions = data.data;
-      console.log('this.productions', this.productions);
+      //console.log('this.productions', this.productions);
       /*
       this.userForm.patchValue({
         production: this.production.name,
@@ -130,8 +130,8 @@ export class ExecutiveAdminEditUserComponent implements OnInit, OnDestroy {
   loadUser(){
     this.apisService.GetUserDetails(this.user_id).subscribe((response:any) => {
       this.user = response.data.user;
-      console.log('this.user', this.user);
-      console.log('assignments', response.data.assignments);
+      //console.log('this.user', this.user);
+      //console.log('assignments', response.data.assignments);
 
       var active_assignment = response.data.assignments.find((x:any) => { return x.assignment_status == 'active' });
 
@@ -178,7 +178,7 @@ export class ExecutiveAdminEditUserComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if (this.userForm.valid) {
-      console.log('Form Data:', this.userForm.value);
+      //console.log('Form Data:', this.userForm.value);
 
       this.show_adding_user = true;
       if (this.user_id == 0) {
@@ -205,7 +205,7 @@ export class ExecutiveAdminEditUserComponent implements OnInit, OnDestroy {
         else {
 
           this.googleService.AddUserToGoogle(user_data).subscribe((response: any) => {
-            console.log('response', response);
+            //console.log('response', response);
 
             this.show_adding_user = false;
             
@@ -224,7 +224,7 @@ export class ExecutiveAdminEditUserComponent implements OnInit, OnDestroy {
         user_data.user_id = this.user.user_id;
 
         this.googleService.UpdateUserInGoogle(user_data).subscribe((response:any) => {
-        console.log('response', response);
+        //console.log('response', response);
 
         this.show_adding_user = false;
 
@@ -250,7 +250,7 @@ export class ExecutiveAdminEditUserComponent implements OnInit, OnDestroy {
   }
 
   gotoUserDetails(){
-    if (this.user_id > 0) this.router.navigate(['p/user-details/' + this.user.user_id]);
+    if (this.user_id > 0) this.router.navigate(['e/user-details/' + this.user.user_id]);
     else this.router.navigate(['e/users']);
   }
 

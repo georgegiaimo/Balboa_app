@@ -141,6 +141,23 @@
             </div>
             }
         </a>
+        <a (click)="goto('a/messages')"
+            class="flex items-center p-3 rounded-lg hover:bg-blue-600 transition-colors group cursor-pointer">
+            <span class="text-2xl">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+            </span>
+            @if (!is_collapsed){
+            <span class="ml-4 font-medium">Messages</span>
+            }
+            @else{
+            <div class="absolute left-20 hidden group-hover:block bg-black text-white text-xs p-2 rounded">
+                Messages
+            </div>
+            }
+        </a>
         <a (click)="goto('u/domains')"
             class="flex items-center p-3 rounded-lg hover:bg-blue-600 transition-colors group cursor-pointer">
             <span class="text-2xl">
@@ -182,8 +199,20 @@
             <span class="text-2xl">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
+                <!-- Envelope -->
+                <rect x="2.5" y="4.5" width="19" height="14" rx="2" />
+            
+                <!-- Envelope flap -->
+                <path d="M3.5 6l7.1 5.2a2.3 2.3 0 0 0 2.8 0L20.5 6" />
+            
+                <!-- Eye -->
+                <path d="M14 16.5s1.7-2.5 4.5-2.5 4.5 2.5 4.5 2.5-1.7 2.5-4.5 2.5-4.5-2.5-4.5-2.5Z" fill="white" />
+            
+                <path d="M14 16.5s1.7-2.5 4.5-2.5 4.5 2.5 4.5 2.5-1.7 2.5-4.5 2.5-4.5-2.5-4.5-2.5Z" />
+            
+                <!-- Eye pupil -->
+                <circle cx="18.5" cy="16.5" r="1" fill="currentColor" stroke="none" />
+            </svg>
             </span>
             @if (!is_collapsed){
             <span class="ml-4 font-medium">Mailing</span>

@@ -1,1 +1,0 @@
-import{Ta as u,d as t,i as e,u as r,wa as o}from"./chunk-PB7HXZ2J.js";var h=(c,n)=>t(null,null,function*(){let a=r(u),i=r(o);return(yield e(a.currentUser$))?!0:i.createUrlTree(["/login"],{queryParams:{returnUrl:n.url}})});export{h as a};
