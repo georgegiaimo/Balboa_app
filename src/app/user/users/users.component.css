@@ -5,3 +5,19 @@
   width: 100%;
   -webkit-overflow-scrolling: touch; /* Better mobile scrolling */
 }
+
+.float_buttons {
+  display:none;
+}
+
+@media screen and (max-width: 1300px) {
+
+  .float_buttons_flex{
+    display: none;
+  }
+
+  .float_buttons {
+    display: block;
+    width: 100%;
+  }
+}
