@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ApisService } from '../../services/apis.service';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { Subscription } from 'rxjs';
+import { LogsService } from '../../services/logs.service';
 
 @Component({
   selector: 'app-productions',
@@ -21,13 +24,41 @@ export class ProductionsComponent implements OnInit {
   sort_status_order:string = 'asc';
   sort_start_date_order:string = 'asc';
 
+  get_user_subscription!:Subscription;
+  user:any;
+  
+
   constructor(
     private router: Router,
-    public apisService: ApisService
+    public apisService: ApisService,
+    public authService: AuthService,
+    public logsService: LogsService
   ){}
 
+
+
   ngOnInit(): void {
-    this.loadData();
+    
+
+    this.get_user_subscription = this.authService.currentUserSubject.subscribe((currentUser) => {
+      if (currentUser) {
+        this.user = currentUser;
+        this.loadData();
+
+        this.logsService.WriteToLogs({
+          admin_id: this.user.admin_id,
+          action: '/productions',
+          timestamp: Date.now()
+        }).subscribe();
+
+      }
+      //this.loadHours();
+      else this.router.navigate(['/login']);
+    });
+  }
+
+  ngOnDestroy(): void {
+    if(this.get_user_subscription) this.get_user_subscription.unsubscribe();
   }
 
   loadData(){

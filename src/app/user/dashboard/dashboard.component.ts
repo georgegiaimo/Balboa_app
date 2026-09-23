@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ReportsService } from '../../services/reports.service';
 import { Router } from '@angular/router';
 import { CommonService } from '../../services/common.service';
 import { GoogleService } from '../../services/google.service';
+import { LogsService } from '../../services/logs.service';
+import { Subscription } from 'rxjs';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,7 +13,7 @@ import { GoogleService } from '../../services/google.service';
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
 
 
   productions!:any[];
@@ -27,15 +30,43 @@ export class DashboardComponent implements OnInit {
 
   show_syncing_data:boolean = false;
 
+  get_user_subscription!:Subscription;
+  user:any;
+
   constructor(
     public reportsService: ReportsService,
     public commonService: CommonService,
     public googleService: GoogleService,
+    public logsService: LogsService,
+    public authService: AuthService,
     private router: Router
   ){}
 
   ngOnInit(): void {
-    this.loadData();
+    
+
+    this.get_user_subscription = this.authService.currentUserSubject.subscribe((currentUser) => {
+      if (currentUser) {
+        this.user = currentUser;
+        this.loadData();
+
+        this.logsService.WriteToLogs({
+          admin_id: this.user.admin_id,
+          action: '/dashboard',
+          timestamp: Date.now()
+        }).subscribe();
+
+      }
+      //this.loadHours();
+      else {
+        console.log('@dashboard logout');
+        this.router.navigate(['/login']);
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    if(this.get_user_subscription) this.get_user_subscription.unsubscribe();
   }
 
   gotoDomainDetails(item:any){
@@ -78,6 +109,13 @@ export class DashboardComponent implements OnInit {
 
   syncNow(){
     this.show_syncing_data = true;
+
+     this.logsService.WriteToLogs({
+      admin_id: this.user.admin_id,
+      action: 'Performed Data Sync from dashboard',
+      timestamp: Date.now()
+    }).subscribe();
+
     this.googleService.SyncData().subscribe((response:any) => {
       this.show_syncing_data = false;
       this.loadData();

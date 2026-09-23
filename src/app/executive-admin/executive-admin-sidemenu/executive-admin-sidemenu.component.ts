@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { Subscription } from 'rxjs';
+import { LogsService } from '../../services/logs.service';
 
 @Component({
   selector: 'app-executive-admin-sidemenu',
@@ -18,7 +19,8 @@ export class ExecutiveAdminSidemenuComponent implements OnInit, OnDestroy{
 
   constructor(
     private authService: AuthService,
-    private router:Router
+    private router:Router,
+    public logsService: LogsService
   ){}
 
   ngOnInit(): void {
@@ -55,7 +57,18 @@ export class ExecutiveAdminSidemenuComponent implements OnInit, OnDestroy{
 
   logOut(){
     console.log('logout');
+
+
+    this.logsService.WriteToLogs({
+      admin_id: this.user.admin_id,
+      action: 'User logged out',
+      timestamp: Date.now()
+    }).subscribe();
+    
     this.authService.handleLogout();
+
+    
+
     this.router.navigate([''],{ replaceUrl: true });
   }
 

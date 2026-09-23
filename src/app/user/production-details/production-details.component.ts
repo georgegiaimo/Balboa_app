@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApisService } from '../../services/apis.service';
 import { DocsService } from '../../services/docs.service';
 import { GoogleService } from '../../services/google.service';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, Subscription } from 'rxjs';
+import { AuthService } from '../../services/auth.service';
+import { LogsService } from '../../services/logs.service';
 
 @Component({
   selector: 'app-production-details',
@@ -11,7 +13,7 @@ import { firstValueFrom } from 'rxjs';
   templateUrl: './production-details.component.html',
   styleUrl: './production-details.component.css'
 })
-export class ProductionDetailsComponent implements OnInit {
+export class ProductionDetailsComponent implements OnInit, OnDestroy {
 
   production_id!:number;
   production:any;
@@ -46,12 +48,17 @@ export class ProductionDetailsComponent implements OnInit {
 
   active_users!:number;
 
+  get_user_subscription!:Subscription;
+  user:any;
+
   constructor(
     public apisService: ApisService,
     public docsService: DocsService,
     public googleService: GoogleService,
     private route:ActivatedRoute,
-    private router: Router
+    private router: Router,
+    public authService: AuthService,
+    public logsService: LogsService
   ){
      this.route.params.subscribe( params => {
       this.production_id = params['production_id']; 
@@ -59,7 +66,21 @@ export class ProductionDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadProduction();
+    
+
+    this.get_user_subscription = this.authService.currentUserSubject.subscribe((currentUser) => {
+      if (currentUser) {
+        this.user = currentUser;
+        this.loadProduction();
+
+      }
+      //this.loadHours();
+      else this.router.navigate(['/login']);
+    });
+  }
+
+  ngOnDestroy(): void {
+    if(this.get_user_subscription) this.get_user_subscription.unsubscribe();
   }
 
   loadProduction(){
@@ -72,9 +93,15 @@ export class ProductionDetailsComponent implements OnInit {
       this.coordinators = data.data.coordinators;
       this.activity = data.data.activity;
       this.processActivityData();
-      console.log('users', this.users);
+      //console.log('users', this.users);
       //console.log('coordinators', this.coordinators);
       //console.log('activity', this.activity);
+
+      this.logsService.WriteToLogs({
+        admin_id: this.user.admin_id,
+        action: '/production-details | ' + this.production.name,
+        timestamp: Date.now()
+      }).subscribe();
 
       
     });

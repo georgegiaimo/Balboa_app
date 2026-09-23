@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ApisService } from '../../services/apis.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GoogleService } from '../../services/google.service';
+import { Subscription } from 'rxjs';
+import { LogsService } from '../../services/logs.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-user-details',
@@ -21,11 +24,16 @@ export class UserDetailsComponent implements OnInit {
   show_user_deleted_succesfully:boolean = false;
   show_user_deleted_error:boolean = false;
 
+  get_user_subscription!:Subscription;
+  userx:any;
+
   constructor(
     public apisService: ApisService,
     public googleService: GoogleService,
     private route: ActivatedRoute, 
-    private router: Router
+    private router: Router,
+    public logsService: LogsService,
+    public authService: AuthService
   ){
     this.route.params.subscribe( params => {
       this.user_id = params['user_id']; 
@@ -33,7 +41,21 @@ export class UserDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadUserDetails();
+    
+
+    this.get_user_subscription = this.authService.currentUserSubject.subscribe((currentUser) => {
+      if (currentUser) {
+        this.userx = currentUser;
+        this.loadUserDetails();
+
+      }
+      //this.loadHours();
+      else this.router.navigate(['/login']);
+    });
+  }
+
+  ngOnDestroy(): void {
+    if(this.get_user_subscription) this.get_user_subscription.unsubscribe();
   }
 
   loadUserDetails(){
@@ -41,6 +63,12 @@ export class UserDetailsComponent implements OnInit {
       this.user = response.data.user;
       this.assignments = response.data.assignments;
       this.added_user = response.data.added_user;
+
+      this.logsService.WriteToLogs({
+          admin_id: this.userx.admin_id,
+          action: '/user-details | ' + this.user.first_name + ' ' + this.user.last_name + ' (id:' + this.user.user_id + ')',
+          timestamp: Date.now()
+        }).subscribe();
 
       console.log('this.user', this.user);
       console.log('this.assignments', this.assignments);

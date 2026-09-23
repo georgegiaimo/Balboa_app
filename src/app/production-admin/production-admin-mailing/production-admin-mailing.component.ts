@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ApisService } from '../../services/apis.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -10,7 +10,7 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './production-admin-mailing.component.html',
   styleUrl: './production-admin-mailing.component.css'
 })
-export class ProductionAdminMailingComponent implements OnInit {
+export class ProductionAdminMailingComponent implements OnInit, OnDestroy {
 
   search_query!:string;
   is_loading:boolean = true;
@@ -40,6 +40,10 @@ export class ProductionAdminMailingComponent implements OnInit {
       else this.router.navigate(['/login']);
     });
 
+  }
+
+  ngOnDestroy(): void {
+    if(this.get_user_subscription) this.get_user_subscription.unsubscribe();
   }
 
   loadProduction(){

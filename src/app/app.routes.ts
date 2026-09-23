@@ -4,6 +4,7 @@ import { HomeComponent } from './home/home.component';
 import { PasswordResetComponent } from './password-reset/password-reset.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { RequestPasswordResetComponent } from './request-password-reset/request-password-reset.component';
+import { SetupTwoFactorAuthenticationComponent } from './setup-two-factor-authentication/setup-two-factor-authentication.component';
 
 export const routes: Routes = [
     {path: '', component: HomeComponent},
@@ -12,6 +13,7 @@ export const routes: Routes = [
     {path: 'password-reset/:token', component: PasswordResetComponent},
     {path: 'forgot-password', component: ForgotPasswordComponent},
     {path: 'request-password-reset', component: RequestPasswordResetComponent},
+    {path: 'setup-two-factor-authentication', component: SetupTwoFactorAuthenticationComponent},
     {path: 'u', loadChildren: () => import('./user/user.module').then(m => m.UserModule)},
     {path: 'a', loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)},
     {path: 'p', loadChildren: () => import('./production-admin/production-admin.module').then(m => m.ProductionAdminModule)},

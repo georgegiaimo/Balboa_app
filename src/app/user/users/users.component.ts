@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ApisService } from '../../services/apis.service';
 import { Router } from '@angular/router';
 import { DocsService } from '../../services/docs.service';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, Subscription } from 'rxjs';
+import { AuthService } from '../../services/auth.service';
+import { LogsService } from '../../services/logs.service';
 
 @Component({
   selector: 'app-users',
@@ -30,14 +32,39 @@ export class UsersComponent implements OnInit {
   runStatusInterval:any;
   selected_type!:string;
 
+  get_user_subscription!:Subscription;
+  user:any;
+
   constructor(
     public apisService:ApisService,
     public docsService:DocsService,
-    private router: Router
+    private router: Router,
+    public logsService: LogsService,
+    public authService: AuthService
   ){}
 
   ngOnInit(): void {
-    this.loadUsers();
+    
+
+    this.get_user_subscription = this.authService.currentUserSubject.subscribe((currentUser) => {
+      if (currentUser) {
+        this.user = currentUser;
+        this.loadUsers();
+
+        this.logsService.WriteToLogs({
+          admin_id: this.user.admin_id,
+          action: '/users',
+          timestamp: Date.now()
+        }).subscribe();
+
+      }
+      //this.loadHours();
+      else this.router.navigate(['/login']);
+    });
+  }
+
+  ngOnDestroy(): void {
+    if(this.get_user_subscription) this.get_user_subscription.unsubscribe();
   }
 
   loadUsers(){

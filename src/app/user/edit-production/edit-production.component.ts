@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApisService } from '../../services/apis.service';
-import { firstValueFrom, map, Observable, of, startWith } from 'rxjs';
+import { firstValueFrom, map, Observable, of, startWith, Subscription } from 'rxjs';
 import { GoogleService } from '../../services/google.service';
+import { AuthService } from '../../services/auth.service';
+import { LogsService } from '../../services/logs.service';
 
 @Component({
   selector: 'app-edit-production',
@@ -11,7 +13,7 @@ import { GoogleService } from '../../services/google.service';
   templateUrl: './edit-production.component.html',
   styleUrl: './edit-production.component.css'
 })
-export class EditProductionComponent implements OnInit{
+export class EditProductionComponent implements OnInit, OnDestroy{
 
   productionForm!: FormGroup;
   production_id!:number;
@@ -35,12 +37,18 @@ export class EditProductionComponent implements OnInit{
 
   mode!:string;
 
+  get_user_subscription!:Subscription;
+  user:any;
+    
+
   constructor(
     public apisService:ApisService,
     public googleService:GoogleService,
     private fb: FormBuilder,
     private router:Router,
-    private route:ActivatedRoute) {
+    private route:ActivatedRoute,
+    public authService: AuthService,
+    public logsService: LogsService ) {
 
     this.route.params.subscribe( params => {
       this.production_id = params['production_id'];
@@ -50,7 +58,11 @@ export class EditProductionComponent implements OnInit{
 
   ngOnInit(): void {
 
-    this.mode = this.production_id > 0 ? 'edit':'add';
+    this.get_user_subscription = this.authService.currentUserSubject.subscribe((currentUser) => {
+      if (currentUser) {
+        this.user = currentUser;
+        
+        this.mode = this.production_id > 0 ? 'edit':'add';
 
     if (this.mode == 'edit') {
       this.productionForm = this.fb.group({
@@ -76,6 +88,12 @@ export class EditProductionComponent implements OnInit{
 
     this.loadCoordinators();
 
+    this.logsService.WriteToLogs({
+          admin_id: this.user.admin_id,
+          action: '/edit-production | (new)',
+          timestamp: Date.now()
+        }).subscribe();
+
     /*
     this.filteredCoordinators$ = this.productionForm.get('coordinator')!.valueChanges.pipe(
           startWith(''),
@@ -84,6 +102,20 @@ export class EditProductionComponent implements OnInit{
     */
 
     if (this.production_id > 0) this.loadProduction();
+
+        
+
+      }
+      //this.loadHours();
+      else this.router.navigate(['/login']);
+    });
+
+
+    
+  }
+
+  ngOnDestroy(): void {
+    if(this.get_user_subscription) this.get_user_subscription.unsubscribe();
   }
 
   loadProduction(){
@@ -110,6 +142,12 @@ export class EditProductionComponent implements OnInit{
 
        this.productionForm.get('domain')?.disable();
        this.productionForm.get('projectName')?.disable();
+
+       this.logsService.WriteToLogs({
+          admin_id: this.user.admin_id,
+          action: '/edit-production | ' + this.production.name,
+          timestamp: Date.now()
+        }).subscribe();
 
     })
   }
@@ -174,6 +212,12 @@ export class EditProductionComponent implements OnInit{
         else this.show_production_updated_error = true;
         //});
 
+        this.logsService.WriteToLogs({
+          admin_id: this.user.admin_id,
+          action: 'Updated production | ' + this.production.name,
+          timestamp: Date.now()
+        }).subscribe();
+
       }
       else{
 
@@ -188,6 +232,12 @@ export class EditProductionComponent implements OnInit{
         if(responsex2.message == 'success'){
           this.show_production_added_succesfully = true;
         }
+
+        this.logsService.WriteToLogs({
+          admin_id: this.user.admin_id,
+          action: 'Added production | ' + this.productionForm.value.projectName,
+          timestamp: Date.now()
+        }).subscribe();
         
       }
 

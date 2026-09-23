@@ -1,0 +1,206 @@
+<div class="min-h-screen bg-slate-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+  <!-- Card Container -->
+  <div class="sm:mx-auto sm:w-full sm:max-w-md">
+    <div class="bg-white py-8 px-6 shadow-xl rounded-2xl border border-slate-100 sm:px-10">
+      
+        @if(page == 'form'){
+
+      <!-- Header Icon -->
+      <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-blue-50 mb-6">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+        </svg>
+      </div>
+
+      <!-- Title & Subtitle -->
+
+      @if(!user.phone_has_been_verified){
+      <div class="text-center mb-8">
+        <h2 class="text-2xl font-bold tracking-tight text-slate-900">
+          Secure Your Account
+        </h2>
+        <p class="mt-2 text-sm text-slate-600">
+          Add two-factor authentication to protect your account with SMS verification codes.
+        </p>
+      </div>
+    }
+    @else {
+        <div class="text-center mb-8">
+        <h2 class="text-2xl font-bold tracking-tight text-slate-900">
+          Two-Factor Authentication Enabled
+        </h2>
+        <p class="mt-2 text-sm text-slate-600">
+          Your account is currently protected with SMS verification codes. 
+          If you have problems accessing your account, please contact as at <em>support&#64;askbalboa.com</em>
+        </p>
+      </div>
+    }
+
+    @if(!user.phone_has_been_verified){
+      <!-- Form -->
+      <form [formGroup]="twoFactorForm" (ngSubmit)="onSubmit()" class="space-y-6">
+        
+        <!-- Phone Number Field Group -->
+        <div>
+          <label for="phone-number" class="block text-sm font-medium text-slate-700 mb-1">
+            Phone Number
+          </label>
+          <div class="relative flex rounded-lg shadow-sm">
+            
+            <!-- Country Code Dropdown -->
+            <select
+              formControlName="countryCode"
+              class="rounded-l-lg border border-r-0 border-slate-300 bg-slate-50 px-3 py-2.5 text-slate-700 text-sm focus:border-blue-500 focus:ring-blue-500 focus:z-10 outline-none"
+            >
+              <option *ngFor="let c of countryCodes" [value]="c.code">
+                {{ c.code }} ({{ c.country }})
+              </option>
+            </select>
+
+            <!-- Phone Input -->
+            <input
+              type="tel"
+              id="phone-number"
+              formControlName="phoneNumber"
+              placeholder="(555) 000-0000"
+              class="w-full rounded-r-lg border border-slate-300 px-3 py-2.5 text-slate-900 placeholder-slate-400 text-sm focus:border-blue-500 focus:ring-blue-500 focus:z-10 outline-none"
+              [ngClass]="{'border-red-500 focus:border-red-500 focus:ring-red-500':twoFactorForm.get('phoneNumber')?.invalid && twoFactorForm.get('phoneNumber')?.touched}"
+            />
+          </div>
+
+          <!-- Validation Error Message -->
+          <div
+            *ngIf="twoFactorForm.get('phoneNumber')?.invalid && twoFactorForm.get('phoneNumber')?.touched"
+            class="mt-1.5 text-xs text-red-600 flex items-center gap-1"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Please enter a valid phone number.
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          [disabled]="isSubmitting"
+          class="w-full flex justify-center items-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 transition-colors"
+        >
+          <span *ngIf="!isSubmitting">Send Code</span>
+          <span *ngIf="isSubmitting" class="flex items-center gap-2">
+            <svg class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            Sending...
+          </span>
+        </button>
+
+      </form>
+
+      <!-- Skip Link Option -->
+      <div class="mt-6 text-center">
+        <button
+          type="button"
+          (click)="onSkip()"
+          class="text-sm font-medium text-slate-500 hover:text-slate-800 transition-colors focus:outline-none focus:underline"
+        >
+          Skip for now
+        </button>
+      </div>
+        
+        }
+    }
+
+    @else if(page == 'verify'){
+        <!-- Security Icon -->
+      <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-blue-50 mb-6">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+        </svg>
+      </div>
+
+      <!-- Title & Subtitle -->
+      <div class="text-center mb-8">
+        <h2 class="text-2xl font-bold tracking-tight text-slate-900">
+          Enter Verification Code
+        </h2>
+        <p class="mt-2 text-sm text-slate-600">
+          We sent a 6-digit security code via SMS to <br />
+          <span class="font-semibold text-slate-800">{{ phoneNumber }}</span>
+        </p>
+      </div>
+
+      <!-- Verification Code Form -->
+      <form [formGroup]="verifyForm" (ngSubmit)="onSubmitVerification()" class="space-y-6">
+        
+        <!-- 6-Digit Code Input Group -->
+        <div formArrayName="digits" class="flex justify-between gap-2 sm:gap-3">
+          <ng-container *ngFor="let control of digitsControls.controls; let i = index">
+            <input
+              #digitInput
+              type="text"
+              inputmode="numeric"
+              maxLength="1"
+              [formControlName]="i"
+              (input)="onInput($event, i)"
+              (keydown)="onKeyDown($event, i)"
+              (paste)="onPaste($event)"
+              class="w-11 h-13 sm:w-12 sm:h-14 text-center text-xl font-bold rounded-lg border border-slate-300 bg-slate-50 text-slate-900 focus:bg-white focus:border-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 outline-none transition-all"
+              [ngClass]="{
+                'border-red-500 bg-red-50 focus:border-red-500 focus:ring-red-500': control.invalid && control.touched
+              }"
+            />
+          </ng-container>
+        </div>
+
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          [disabled]="verifyForm.invalid || isSubmitting"
+          class="w-full flex justify-center items-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 transition-colors mt-6"
+        >
+          <span *ngIf="!isSubmitting">Verify Code</span>
+          <span *ngIf="isSubmitting" class="flex items-center gap-2">
+            <svg class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            Verifying...
+          </span>
+        </button>
+
+      </form>
+
+      <!-- Footer Options -->
+      <div class="mt-6 text-center space-y-2">
+        <p class="text-sm text-slate-600">
+          Didn't receive the code? 
+          <button
+            type="button"
+            (click)="onResendCode()"
+            class="font-semibold text-blue-600 hover:text-blue-700 transition-colors focus:outline-none focus:underline"
+          >
+            Resend SMS
+          </button>
+        </p>
+      </div>
+
+      <!-- Skip Link Option -->
+       @if (!user.phone_has_been_verified){
+      <div class="mt-6 text-center">
+        <button
+          type="button"
+          (click)="onSkip()"
+          class="text-sm font-medium text-slate-500 hover:text-slate-800 transition-colors focus:outline-none focus:underline"
+        >
+          Skip for now
+        </button>
+      </div>
+    }
+
+    }
+
+    </div>
+  </div>
+</div>

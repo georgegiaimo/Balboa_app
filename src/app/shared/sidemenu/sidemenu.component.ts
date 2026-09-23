@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { Subscription } from 'rxjs';
+import { LogsService } from '../../services/logs.service';
 
 @Component({
   selector: 'app-sidemenu',
@@ -18,7 +19,8 @@ export class SidemenuComponent implements OnInit{
 
   constructor(
     private authService: AuthService,
-    private router:Router
+    private router:Router,
+    public logsService: LogsService
   ){}
 
   ngOnInit(): void {
@@ -41,6 +43,13 @@ export class SidemenuComponent implements OnInit{
   }
 
   logOut(){
+
+    this.logsService.WriteToLogs({
+      admin_id: this.user.admin_id,
+      action: 'User logged out',
+      timestamp: Date.now()
+    }).subscribe();
+
     this.authService.handleLogout();
     this.router.navigate([''],{ replaceUrl: true });
   }

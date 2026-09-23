@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ChatService } from './services/chat.service';
 import { SocketService } from './services/socket.service';
@@ -10,6 +10,8 @@ import { AuthService } from './services/auth.service';
 import { DocsService } from './services/docs.service';
 import { GoogleService } from './services/google.service';
 import { MessagingService } from './services/messaging.service';
+import { LogsService } from './services/logs.service';
+import { InactivityService } from './services/inactivity.service';
 
 
 @Component({
@@ -17,10 +19,15 @@ import { MessagingService } from './services/messaging.service';
   imports: [RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
-  providers: [ChatService, SocketService, CommonService, SystemService, ReportsService, ApisService, AuthService, DocsService, GoogleService, MessagingService]
+  providers: [ChatService, SocketService, CommonService, SystemService, ReportsService, ApisService, AuthService, DocsService, 
+    GoogleService, MessagingService, LogsService]
 })
 export class AppComponent implements OnInit{
   title = 'balboa';
+
+  constructor(
+    //public inactivityService: InactivityService
+  ){}
 
   ngOnInit() {
     window.addEventListener('pageshow', (event) => {
@@ -30,5 +37,8 @@ export class AppComponent implements OnInit{
         window.location.reload(); 
       }
     });
+
+    //this.inactivityService.startTracking(); 
   }
+
 }

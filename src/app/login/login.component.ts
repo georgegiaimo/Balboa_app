@@ -4,6 +4,7 @@ import { AuthService } from '../services/auth.service';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { LogsService } from '../services/logs.service';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +22,8 @@ export class LoginComponent implements OnInit{
   constructor(
     private fb: FormBuilder,
     public authService: AuthService,
-    private router:Router
+    private router:Router,
+    public logsService: LogsService
   ){}
 
   ngOnInit(): void {
@@ -64,13 +66,30 @@ export class LoginComponent implements OnInit{
       
       this.authService.LogIn(this.loginForm.value).subscribe({
         next: (response:any) => {
-         console.log('response', response);
+         console.log('response, user logged in', response);
          this.authService.handleLogin(response.data);
-         this.is_loading = false;
+         
         setTimeout(() => {
-          if (response.data.role == 'admin') this.router.navigate(['u/dashboard']);
-          else if(response.data.role == 'production-admin') this.router.navigate(['p/production-details']);
-          else if(response.data.role == 'executive-admin') this.router.navigate(['e/productions']);
+
+          this.is_loading = false;
+          this.logsService.WriteToLogs({
+            admin_id: response.data.admin_id,
+            action: 'User logged in',
+            timestamp: Date.now()
+          }).subscribe();
+         
+          //if (!response.data.phone_has_been_verified) {
+            this.router.navigate(['setup-two-factor-authentication']);
+          //}
+          /*
+          else {
+
+            if (response.data.role == 'admin') this.router.navigate(['u/dashboard']);
+            else if (response.data.role == 'production-admin') this.router.navigate(['p/production-details']);
+            else if (response.data.role == 'executive-admin') this.router.navigate(['e/productions']);
+          }
+          */
+          
         }, 1000);
          
       }, 

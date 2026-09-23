@@ -51,7 +51,7 @@ export class AuthService {
   }
 
   handleLogout() {
-    //console.log('handleLogOUt()');
+    console.log('handleLogOUt()');
     localStorage.removeItem('user_data');
     this.currentUserSubject.next(null);
     // Call your backend /logout endpoint to clear the cookie on the server

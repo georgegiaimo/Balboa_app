@@ -7,9 +7,9 @@ import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class SystemService {
+export class LogsService {
 
-  baseurl = environment.baseurl + '/system';
+  baseurl = environment.baseurl + '/logs';
 
   constructor(
     private http: HttpClient,
@@ -22,35 +22,17 @@ export class SystemService {
       //'Content-Type': 'application/json'
     })
   }
-
   
-  GetConfiguration(): Observable<any> {
-    return this.http.get<any>(this.baseurl + '/getConfiguration', this.httpOptions)
+  WriteToLogs(object:any): Observable<any> {
+    return this.http.post<any>(this.baseurl + '/writeToLogs', object, this.httpOptions)
     .pipe(
       retry(0),
       catchError(this.errorHandl),
     ) 
   }
 
-  UpdateConfiguration(object:any): Observable<any> {
-    return this.http.post<any>(this.baseurl + '/updateConfiguration', object, this.httpOptions)
-    .pipe(
-      retry(0),
-      catchError(this.errorHandl),
-    ) 
-  }
-
-  SendCode2FA(object:any): Observable<any> {
-    console.log('object', object);
-    return this.http.post<any>(this.baseurl + '/sendCode2FA', object, this.httpOptions)
-    .pipe(
-      retry(0),
-      catchError(this.errorHandl),
-    ) 
-  }
-
-  VerifyCode2FA(object:any): Observable<any> {
-    return this.http.post<any>(this.baseurl + '/verifyCode2FA', object, this.httpOptions)
+  GetLogs(): Observable<any> {
+    return this.http.get<any>(this.baseurl + '/getLogs', this.httpOptions)
     .pipe(
       retry(0),
       catchError(this.errorHandl),
