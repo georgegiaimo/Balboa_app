@@ -120,10 +120,12 @@
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Last login
                                 </th>
+                                @if(user.role == 'admin'){
                                 <th scope="col"
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Usage
                                 </th>
+                                }
                                 <!--
                                 <th scope="col" class="relative px-6 py-3 ">
                                     <span class="sr-only">Details</span>
@@ -177,9 +179,11 @@
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm font-medium text-gray-900">{{ x.last_login_date }}</div>
                                 </td>
+                                @if(user.role == 'admin'){
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm font-medium text-gray-900">{{ x.usage_percentage != null ? (x.usage_percentage + '%'):''}}</div>
                                 </td>
+                                }
                                 <!--
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium cursor-pointer">
                                     <a (click)="gotoUserDetails(x)" class="text-blue-600 hover:text-blue-900">

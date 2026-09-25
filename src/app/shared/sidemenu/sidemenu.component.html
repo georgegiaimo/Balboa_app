@@ -66,6 +66,7 @@
             }
         </a>
         -->
+        @if(user.role == 'admin'){
         <a (click)="goto('a/admins')"
             class="flex items-center p-3 rounded-lg hover:bg-blue-600 transition-colors group cursor-pointer">
             <span class="text-2xl">
@@ -85,6 +86,7 @@
             </div>
             }
         </a>
+        }
         <a (click)="goto('a/coordinators')"
             class="flex items-center p-3 rounded-lg hover:bg-blue-600 transition-colors group cursor-pointer">
             <span class="text-2xl">
@@ -223,6 +225,7 @@
             </div>
             }
         </a>
+        @if(user.role == 'admin'){
         <a (click)="goto('u/health')"
             class="flex items-center p-3 rounded-lg hover:bg-blue-600 transition-colors group cursor-pointer">
             <span class="text-2xl">
@@ -241,7 +244,7 @@
             </div>
             }
         </a>
-
+        }
         @if(user.is_super_admin){
         <a (click)="goto('a/user-logs')"
             class="flex items-center p-3 rounded-lg hover:bg-blue-600 transition-colors group cursor-pointer">

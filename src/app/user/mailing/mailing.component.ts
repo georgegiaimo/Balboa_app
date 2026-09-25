@@ -29,6 +29,7 @@ export class MailingComponent implements OnInit {
 
   loadData(){
     this.apisService.GetMailing().subscribe((response:any) => {
+      console.log('response', response);
       this.is_loading = false;
       this.emails = response.data;
       this.emails_o = JSON.parse(JSON.stringify(this.emails));

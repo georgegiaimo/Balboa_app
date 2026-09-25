@@ -271,7 +271,7 @@ export class SetupTwoFactorAuthenticationComponent implements OnInit{
             console.log('one more time', currentUser2);
           });
           
-           if (this.user.role == 'admin') {
+           if (this.user.role == 'admin' || this.user.role == 'paramount') {
             console.log('navigate to admin ----------->');
             this.router.navigate(['u/dashboard']);
            }
