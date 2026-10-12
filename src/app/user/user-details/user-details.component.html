@@ -49,9 +49,9 @@
       <div>
         <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider">Is Identity Client</label>
         <p class="mt-1 text-sm font-medium text-gray-900">
-          <span [class]="getIdentityUserClass(user.is_identity_user)"
+          <span [class]="getIdentityUserClass(user.is_identity_client)"
             class="px-2.5 py-0.5 rounded-full text-xs font-medium border">
-            {{ user.is_identity_user ? 'true':'false' }}
+            {{ user.is_identity_client ? 'true':'false' }}
           </span>
         </p>
       </div>

@@ -173,7 +173,7 @@ export class SetupTwoFactorAuthenticationComponent implements OnInit{
   }
 
   onSkip(): void {
-    console.log('User skipped 2FA setup');
+    //console.log('User skipped 2FA setup');
     // Handle skip logic (e.g., navigate to dashboard)
     //console.log('response', response);
     if (this.user.role == 'admin') this.router.navigate(['u/dashboard']);
@@ -242,7 +242,7 @@ export class SetupTwoFactorAuthenticationComponent implements OnInit{
     
     this.isSubmitting = true;
     const code = this.digitsControls.value.join('');
-    console.log('Verifying 6-digit code:', code);
+    //console.log('Verifying 6-digit code:', code);
 
     const fullPhoneNumber = `${this.twoFactorForm.value.countryCode}${this.twoFactorForm.value.phoneNumber}`;
     // Simulate API request
@@ -251,7 +251,7 @@ export class SetupTwoFactorAuthenticationComponent implements OnInit{
       this.systemService.VerifyCode2FA(
         { phone_number: this.user.phone ? this.user.phone :fullPhoneNumber, code: code }
       ).subscribe((response:any) => {
-        console.log('response', response);
+        //console.log('response', response);
         if (response.data.success){
 
           if (!this.user.phone_has_been_verified) {
@@ -264,15 +264,15 @@ export class SetupTwoFactorAuthenticationComponent implements OnInit{
 
             this.apisService.UpdateAdmin(user_object).subscribe();
           }
-          console.log('here', this.user);
+          //console.log('here', this.user);
 
           //check user one more time
           this.authService.currentUserSubject.subscribe((currentUser2) => {
-            console.log('one more time', currentUser2);
+            //console.log('one more time', currentUser2);
           });
           
            if (this.user.role == 'admin' || this.user.role == 'paramount') {
-            console.log('navigate to admin ----------->');
+            //console.log('navigate to admin ----------->');
             this.router.navigate(['u/dashboard']);
            }
            else if (this.user.role == 'production-admin') this.router.navigate(['p/production-details']);
@@ -286,7 +286,7 @@ export class SetupTwoFactorAuthenticationComponent implements OnInit{
   }
 
   onResendCode(): void {
-    console.log('Resending 2FA code...');
+    //console.log('Resending 2FA code...');
     // Handle resend code logic
     this.isSubmitting = true;
     const fullPhoneNumber = `${this.twoFactorForm.value.countryCode}${this.twoFactorForm.value.phoneNumber}`;
