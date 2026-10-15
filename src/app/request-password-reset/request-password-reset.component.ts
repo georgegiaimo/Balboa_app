@@ -42,7 +42,7 @@ export class RequestPasswordResetComponent {
       //console.log('response', response);
 
       // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      //await new Promise(resolve => setTimeout(resolve, 1500));
       
       this.is_sent = true;
     } catch (err: any) {

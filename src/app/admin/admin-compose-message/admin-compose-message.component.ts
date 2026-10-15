@@ -195,7 +195,7 @@ export class AdminComposeMessageComponent implements OnInit, OnDestroy {
   loadUsers(){
     this.apisService.GetUsers().subscribe((response:any) => {
       //console.log('users data', response);
-      var users_raw = response.data.filter((x:any) => { return x.status.toLowerCase() == 'active'; });
+      var users_raw = response.data.filter((x:any) => { return x.status ? x.status.toLowerCase() == 'active':false; });
       users_raw.forEach((x:any) => {
         x.name = x.first_name + ' ' + x.last_name;
         x.type = 'user';
