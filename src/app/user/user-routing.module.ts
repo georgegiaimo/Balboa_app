@@ -47,7 +47,7 @@ const routes: Routes = [
     {path: 'edit-production/:production_id', component: EditProductionComponent, canActivate: [authGuard]},
     {path: 'edit-user-assignment/:key', component: EditUserAssignmentComponent, canActivate: [authGuard]},
     {path: 'google-users', component: GoogleUsersComponent, canActivate: [authGuard]},
-    {path: 'mailing', component: MailingComponent, canActivate: [authGuard]},
+    {path: 'mailing', component: MailingComponent, canActivate: [authGuard]}
     
 ];
 

@@ -81,6 +81,10 @@ export class UsersComponent implements OnInit {
           x.assignment = current_assignment;
           x.status = 'active';
         }
+
+        else {
+          x.status = 'inactive';
+        }
       });
 
       //console.log('this.users', response.data);
@@ -99,7 +103,7 @@ export class UsersComponent implements OnInit {
       this.users = this.users_o;
     }
 
-    //console.log('users', this.users);
+    console.log('users', this.users);
   }
 
   clearSearch(){
@@ -165,7 +169,7 @@ export class UsersComponent implements OnInit {
 
       //this.fileUploaded.emit(this.selectedFile);
       console.log('send');
-      this.docsService.uploadUsersFromCSV(this.selected_file, run_id, this.selected_type).subscribe({
+      this.docsService.uploadUsersFromCSV(this.selected_file, run_id, this.selected_type, undefined).subscribe({
         next: (response) => {
           console.log('response', response);
           this.show_file_upload = false;

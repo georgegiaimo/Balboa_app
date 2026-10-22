@@ -11,7 +11,20 @@
                 </div>
 
                 <div>
-                    <!--
+
+
+                  <!--
+                  <button type="button" (click)="downloadTemplateFile()"
+                    class="inline-flex items-center gap-2 mr-2 px-3 py-1.5 text-sm font-medium text-gray-600 transition-colors duration-200 bg-gray-50 border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-900 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                  
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                      class="w-6 h-6">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4.5 16.5v3A1.5 1.5 0 0 0 6 21h12a1.5 1.5 0 0 0 1.5-1.5v-3" />
+                    </svg>
+                    Download Upload Template
+                  </button>
+                    -->
                     <button type="button" (click)="bulkUpload()"
                         class="inline-flex items-center gap-2 mr-2 px-3 py-1.5 text-sm font-medium text-gray-600 transition-colors duration-200 bg-gray-50 border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-900 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
@@ -21,7 +34,9 @@
                         </svg>
                         Bulk Upload
                     </button>
-                    -->
+
+                    <!-- -->
+                    
                     <button (click)="syncNow()"
                         class="inline-flex align-bottom items-center mr-4 px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white text-sm font-medium rounded-lg transition-all duration-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -219,7 +234,7 @@
   <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl border border-gray-100 overflow-hidden">
     
     <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
-      <h3 class="text-lg font-bold text-gray-800">Import Data</h3>
+      <h3 class="text-lg font-bold text-gray-800">Import File</h3>
       <button (click)="show_file_upload=false" class="text-gray-400 hover:text-gray-600 transition-colors">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
       </button>
@@ -336,42 +351,45 @@
 </div>
 }
 
-@if(show_upload_type){
+@if(show_upload_options){
     <div class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
   
   <div class="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 shadow-xl transition-all">
     <div class="text-right">
-        <button (click)="show_upload_type=false" class="text-gray-400 hover:text-gray-600 transition-colors">
+        <button class="text-gray-400 hover:text-gray-600 transition-colors" (click)="show_upload_options = false;">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
         </button>
     </div>
     <div class="text-center">
-      <h3 class="text-xl font-semibold leading-6 text-slate-900">Select Upload Type</h3>
+      <h3 class="text-xl font-semibold leading-6 text-slate-900">Select Action</h3>
+      <!--
       <p class="mt-2 text-sm text-slate-500">Please select type of records you wish to upload.</p>
+      -->
     </div>
 
-    <div class="mt-6 grid grid-cols-2 gap-4">
-      <button 
-        (click)="selected_type = 'current'"
-        [class.ring-2]="selected_type === 'current'"
-        [class.ring-blue-600]="selected_type === 'current'"
-        [class.bg-blue-50]="selected_type === 'current'"
+    <div class="mt-6 grid grid-cols-1">
+      <button (click)="downloadTemplateFile()"
         class="flex flex-col items-center justify-center rounded-xl border border-slate-200 p-4 transition-all hover:border-blue-300 hover:bg-slate-50">
-        <span class="text-sm font-medium text-slate-900">Current Users</span>
+        <span class="text-sm font-medium text-slate-900 inline-flex">
+    
+          Download Bulk Upload Template</span>
       </button>
-
-      <button 
-        (click)="selected_type = 'past'"
-        [class.ring-2]="selected_type === 'past'"
-        [class.ring-blue-600]="selected_type === 'past'"
-        [class.bg-blue-50]="selected_type === 'past'"
+      <p class="mt-2 text-sm text-slate-500">Downloads the CSV template for bulk upload.</p>
+      <br>
+    
+      <button (click)="showFileUpload()"
         class="flex flex-col items-center justify-center rounded-xl border border-slate-200 p-4 transition-all hover:border-blue-300 hover:bg-slate-50">
-        <span class="text-sm font-medium text-slate-900">Past Users</span>
+        <span class="text-sm font-medium text-slate-900">
+    
+          Upload Users</span>
       </button>
+      <p class="mt-2 text-sm text-slate-500">Upload a CSV with multiple users for bulk user import.</p>
+      <br>
     </div>
 
+    <!--
     <div class="mt-8">
       <button 
         (click)="handleNext()"
@@ -383,7 +401,7 @@
         Next
       </button>
     </div>
-
+    -->
   </div>
 </div>
 }

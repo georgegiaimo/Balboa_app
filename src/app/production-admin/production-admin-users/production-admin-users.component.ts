@@ -23,7 +23,7 @@ export class ProductionAdminUsersComponent implements OnInit, OnDestroy {
   show_bulk_upload_success:boolean = false;
   show_bulk_upload_error:boolean = false;
   show_uploading_users:boolean = false;
-  show_upload_type:boolean = false;
+  show_upload_options:boolean = false;
 
   upload_error!:string;
 
@@ -37,6 +37,7 @@ export class ProductionAdminUsersComponent implements OnInit, OnDestroy {
   active_users!:number;
 
   show_syncing_data:boolean = false;
+  production:any;
 
   constructor(
     public apisService:ApisService,
@@ -65,7 +66,7 @@ export class ProductionAdminUsersComponent implements OnInit, OnDestroy {
 
   loadProduction(){
     this.apisService.GetProductionDetails(this.user.production_id).subscribe((data:any) => {
-      //this.production = data.data.production;
+      this.production = data.data.production;
       this.users = data.data.users;
       this.users_o = JSON.parse(JSON.stringify(this.users));
 
@@ -73,9 +74,9 @@ export class ProductionAdminUsersComponent implements OnInit, OnDestroy {
       //this.coordinators = data.data.coordinators;
       //this.activity = data.data.activity;
       //this.processActivityData();
-      console.log('users', this.users);
+      //console.log('users', this.users);
       //console.log('coordinators', this.coordinators);
-      //console.log('activity', this.activity);
+      //console.log('production', this.production);
 
       
     });
@@ -157,7 +158,7 @@ export class ProductionAdminUsersComponent implements OnInit, OnDestroy {
   }
 
   bulkUpload(){
-    this.show_upload_type = true;
+    this.show_upload_options = true;
   }
 
   onFileSelected(event: any) {
@@ -184,7 +185,7 @@ export class ProductionAdminUsersComponent implements OnInit, OnDestroy {
 
       //this.fileUploaded.emit(this.selectedFile);
       console.log('send');
-      this.docsService.uploadUsersFromCSV(this.selected_file, run_id, this.selected_type).subscribe({
+      this.docsService.uploadUsersFromCSV(this.selected_file, run_id, this.selected_type, this.production.org_unit_path).subscribe({
         next: (response) => {
           console.log('response', response);
           this.show_file_upload = false;
@@ -219,7 +220,7 @@ export class ProductionAdminUsersComponent implements OnInit, OnDestroy {
   }
 
   handleNext(){
-    this.show_upload_type = false;
+    //this.show_upload_type = false;
     this.show_file_upload = true;
   }
 
@@ -230,5 +231,17 @@ export class ProductionAdminUsersComponent implements OnInit, OnDestroy {
       this.loadProduction();
     })
   }
+
+  downloadTemplateFile(){
+    this.show_upload_options = false;
+    window.location.href = `https://balboa.blob.core.windows.net/system/BalboaComputerBulkUpload.csv`;
+  }
+
+  showFileUpload(){
+    this.show_upload_options = false;
+    this.show_file_upload = true;
+  }
+
+  
 
 }

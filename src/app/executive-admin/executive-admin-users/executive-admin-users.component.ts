@@ -178,7 +178,7 @@ export class ExecutiveAdminUsersComponent implements OnInit {
 
       //this.fileUploaded.emit(this.selectedFile);
       console.log('send');
-      this.docsService.uploadUsersFromCSV(this.selected_file, run_id, this.selected_type).subscribe({
+      this.docsService.uploadUsersFromCSV(this.selected_file, run_id, this.selected_type, undefined).subscribe({
         next: (response) => {
           console.log('response', response);
           this.show_file_upload = false;

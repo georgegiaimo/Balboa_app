@@ -13,6 +13,7 @@ import { AdminMessagingComponent } from './admin-messaging/admin-messaging.compo
 import { AdminMessagingGroupsComponent } from './admin-messaging-groups/admin-messaging-groups.component';
 import { AdminMessageDetailsComponent } from './admin-message-details/admin-message-details.component';
 import { AdminUserLogsComponent } from './admin-user-logs/admin-user-logs.component';
+import { AdminIdentityClientsComponent } from './admin-identity-clients/admin-identity-clients.component';
 
 const routes: Routes = [
   { path: 'admins', component: AdminsComponent, canActivate: [authGuard] },
@@ -27,6 +28,7 @@ const routes: Routes = [
   { path: 'messages', component: AdminMessagingComponent, canActivate: [authGuard] },
   { path: 'messaging-groups', component: AdminMessagingGroupsComponent, canActivate: [authGuard] },
   { path: 'user-logs', component: AdminUserLogsComponent, canActivate: [authGuard] },
+  { path: 'identity-clients', component: AdminIdentityClientsComponent, canActivate: [authGuard] },
 ];
 
 @NgModule({
@@ -47,5 +49,6 @@ export const routingComponents = [
   AdminEditMessagingGroupComponent,
   AdminMessagingComponent,
   AdminMessagingGroupsComponent,
-  AdminUserLogsComponent
+  AdminUserLogsComponent,
+  AdminIdentityClientsComponent
 ]
