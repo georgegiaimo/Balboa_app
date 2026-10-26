@@ -2,7 +2,7 @@
     <app-sidemenu></app-sidemenu>
     <main class="flex-1 p-8 bg-gray-100 h-screen overflow-y-auto">
 
-<div class="p-6 max-w-7xl mx-auto space-y-8">
+<div class="p-6 max-w-8xl mx-auto space-y-8">
   
   <nav class="flex items-center text-sm text-gray-500 mb-4 cursor-pointer">
     <a (click)="gotoUsers()" class="hover:text-blue-600 transition-colors">Users</a>
@@ -33,7 +33,7 @@
 
     </div>
     
-    <div class="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-y-6 gap-x-8">
+    <div class="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-y-6 gap-x-8">
       <div>
         <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider">Name</label>
         <p class="mt-1 text-sm font-medium text-gray-900">{{ user.first_name }}&nbsp; {{ user.last_name }}</p>
@@ -47,17 +47,17 @@
         <p class="mt-1 text-sm font-medium text-gray-900">{{ user.personal_email }}</p>
       </div>
       <div>
-        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider">Is Identity Client</label>
-        <p class="mt-1 text-sm font-medium text-gray-900">
-          <span [class]="getIdentityUserClass(user.is_identity_client)"
-            class="px-2.5 py-0.5 rounded-full text-xs font-medium border">
-            {{ user.is_identity_client ? 'true':'false' }}
-          </span>
-        </p>
+        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider">Phone Number</label>
+        <p class="mt-1 text-sm font-medium text-gray-900">{{ user.phone_number }}</p>
       </div>
+      <div>
+        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider">Department / Title</label>
+        <p class="mt-1 text-sm font-medium text-gray-900">{{ user.department }}&nbsp;/&nbsp;{{ user.title}}</p>
+      </div>
+      
     </div>
   
-    <div class="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-y-6 gap-x-8">
+    <div class="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-y-6 gap-x-8">
       <div>
         <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider">Creation Date</label>
         <p class="mt-1 text-sm font-medium text-gray-900">{{ user.creation_date }}</p>
@@ -89,7 +89,15 @@
         <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider">Storage Usage</label>
         <p class="mt-1 text-sm font-medium text-gray-900">{{ user.usage_percentage != null ? (user.usage_percentage + '%'):''}}</p>
       </div>
-      
+      <div>
+        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider">Is Identity Client</label>
+        <p class="mt-1 text-sm font-medium text-gray-900">
+          <span [class]="getIdentityUserClass(user.is_identity_client)"
+            class="px-2.5 py-0.5 rounded-full text-xs font-medium border">
+            {{ user.is_identity_client ? 'true':'false' }}
+          </span>
+        </p>
+      </div>
     </div>
     <div class="p-6 grid grid-cols-1 gap-y-6 gap-x-8">
       <div>
@@ -185,15 +193,15 @@
         </div>
         
         <div>
-          <h3 class="text-lg font-semibold text-gray-900">Delete User Account</h3>
-          <p class="mt-1 text-sm text-gray-500">Are you sure you want to delete this account? <br><br>
+          <h3 class="text-lg font-semibold text-gray-900">Offboard User</h3>
+          <p class="mt-1 text-sm text-gray-500">Are you sure you want to offboard this account? <br><br>
             <strong>Name:</strong>&nbsp;{{ user.first_name }}&nbsp; {{ user.last_name }}<br>
             <strong>Production Email:</strong>&nbsp;{{ user.production_email }}<br>
             <strong>Personal Email:</strong>&nbsp;{{ user.personal_email }}<br>
             <br>
             
             This will permanently remove the user from the Google Directory. 
-            Be aware that deleting a user is permanent. If you need to preserve their Drive or Calendar data, you must transfer it before or during the deletion process via the Admin Console or specific transfer APIs.
+            Be aware that offboarding a user is permanent. If you need to preserve their Drive or Calendar data, you must transfer it before or during the deletion process via the Admin Console or specific transfer APIs.
           </p>
         </div>
       </div>

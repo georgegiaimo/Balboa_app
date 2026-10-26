@@ -21,7 +21,7 @@ export class EditProductionComponent implements OnInit, OnDestroy{
   // Dropdown Options
   domains = ['crew-tv', 'mount22prod', 'seriescrew'];
   statuses = ['Active', 'Writers Room', 'Post Production', 'Completed', 'Paused', 'Closed', 'Canceled'];
-  types = ['TV'];
+  types = ['TV','Feature'];
   coordinators!:any[];
 
   filteredCoordinators$: Observable<string[]> = of([]);
@@ -119,9 +119,9 @@ export class EditProductionComponent implements OnInit, OnDestroy{
   }
 
   loadProduction(){
-    console.log('load production');
+    //console.log('load production');
     this.apisService.GetProductionDetails(this.production_id).subscribe((response:any) => {
-      console.log('response', response);
+      //console.log('response', response);
       this.production = response.data.production;
 
       //var coordinators = response.data.coordinators;

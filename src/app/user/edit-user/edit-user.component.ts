@@ -41,6 +41,9 @@ export class EditUserComponent implements OnInit {
     this.userForm = this.fb.group({
       first_name: ['', Validators.required],
       last_name: ['', Validators.required],
+      department: ['', []],
+      title: ['', []],
+      phone_number: ['',[]],
       personal_email: ['', [Validators.required, Validators.email]],
       domain: ['crew-tv', Validators.required],
       production: ['', Validators.required],
@@ -77,6 +80,9 @@ export class EditUserComponent implements OnInit {
        this.userForm.patchValue({
         first_name: this.user.first_name,
         last_name: this.user.last_name,
+        department: this.user.department,
+        title: this.user.title,
+        phone_number: this.user.phone_number,
         personal_email: this.user.personal_email,
         production: active_assignment ? active_assignment.name:'',
         is_identity_client: this.user.is_identity_client
@@ -175,12 +181,14 @@ export class EditUserComponent implements OnInit {
         var object = {
           user_id: this.user.user_id,
           notes: this.userForm.value.notes,
-          is_identity_client: this.userForm.value.is_identity_client
+          is_identity_client: this.userForm.value.is_identity_client,
+          department: this.userForm.value.department,
+          title: this.userForm.value.title,
+          phone_number: this.userForm.value.phone_number
         }
 
         this.apisService.UpdateUser(object).subscribe();
        
-
       });
 
       }

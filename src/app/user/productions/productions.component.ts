@@ -70,15 +70,13 @@ export class ProductionsComponent implements OnInit {
       //filter removed productions
       
 
-      console.log('this.productions', this.productions);
+      //console.log('this.productions', this.productions);
       
       this.productions.forEach((x:any) => {
         if (!x.status) x.status = 'unknown';
       });
 
       this.productions_o = JSON.parse(JSON.stringify(this.productions));
-
-      
 
     })
   }

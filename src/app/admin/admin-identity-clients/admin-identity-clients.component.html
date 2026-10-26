@@ -122,9 +122,9 @@
                                     <div class="text-sm font-medium text-gray-900 truncate max-w-[140px]">{{ x.assignment ? x.assignment.name:'' }}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <span [class]="getIdentityUserClass(x.is_identity_user)"
+                                    <span [class]="getIdentityUserClass(x.is_identity_client)"
                                         class="px-2.5 py-0.5 rounded-full text-xs font-medium border">
-                                        {{ x.is_identity_user ? 'true':'false' }}
+                                        {{ x.is_identity_client ? 'true':'false' }}
                                     </span>
                                 </td>
                                 <!--

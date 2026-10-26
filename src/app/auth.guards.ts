@@ -11,7 +11,7 @@ export const authGuard: CanActivateFn = async (route, state) => {
 
   // Check if we have a user in our AuthService state
   const user = await firstValueFrom(authService.currentUser$);
-  console.log('auth guard user', user);
+  //console.log('auth guard user', user);
   
   if (user) {
     return true;

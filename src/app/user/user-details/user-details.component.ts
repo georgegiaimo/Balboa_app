@@ -64,6 +64,10 @@ export class UserDetailsComponent implements OnInit {
       this.assignments = response.data.assignments;
       this.added_user = response.data.added_user;
 
+      //find active assignment
+      var record = this.assignments.find((x:any) => { return x.assignment_status == 'active'});
+      this.user.status = record ? 'active':'inactive';
+
       this.logsService.WriteToLogs({
           admin_id: this.userx.admin_id,
           action: '/user-details | ' + this.user.first_name + ' ' + this.user.last_name + ' (id:' + this.user.user_id + ')',
