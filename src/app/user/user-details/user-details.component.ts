@@ -60,7 +60,7 @@ export class UserDetailsComponent implements OnInit {
 
     this.page_memory = this.navigationService.getPageDestinationMemory(this.router.url);
 
-    console.log('this.page_memory',this.page_memory);
+    //console.log('this.page_memory',this.page_memory);
 
     if (this.page_memory){
       
@@ -68,7 +68,7 @@ export class UserDetailsComponent implements OnInit {
       else if (this.page_memory.page.indexOf('a/identity-clients') > -1) this.back_page = 'identity-clients';
       else if (this.page_memory.page.indexOf('u/mailing') > -1) this.back_page = 'mailing';
 
-      console.log('***', this.back_page);
+      //console.log('***', this.back_page);
     }
 
   }
@@ -93,9 +93,9 @@ export class UserDetailsComponent implements OnInit {
           timestamp: Date.now()
         }).subscribe();
 
-      console.log('this.user', this.user);
-      console.log('this.assignments', this.assignments);
-      console.log('this.added_user', this.added_user);
+      //console.log('this.user', this.user);
+      //console.log('this.assignments', this.assignments);
+      //console.log('this.added_user', this.added_user);
     })
   }
 
@@ -120,10 +120,10 @@ export class UserDetailsComponent implements OnInit {
   }
 
   deleteUser(){
-    console.log('delete user');
+    //console.log('delete user');
     this.googleService.DeleteUserInGoogle(this.user).subscribe((response:any) => {
       
-      console.log('response', response);
+      //console.log('response', response);
       if (response.message == 'success') this.show_user_deleted_succesfully = true;
       else this.show_user_deleted_error = true;
     });

@@ -26,7 +26,13 @@ export class NavigationService {
 
   getPageMemory(page:string){
     var record = this.pages.find((x:any) => { return x.page == page; });
-    return record;
+    
+    if (record){
+      var idx = this.pages.map((x:any) => { return x.page}).indexOf(page);
+      var recordx = JSON.parse(JSON.stringify(record));
+      this.pages.splice(idx,1);
+      return recordx;
+    }
   }
 
   getPageDestinationMemory(destination:string){
