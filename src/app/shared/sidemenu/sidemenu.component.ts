@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { Subscription } from 'rxjs';
 import { LogsService } from '../../services/logs.service';
+import { NavigationService } from '../../services/navigation.service';
 
 @Component({
   selector: 'app-sidemenu',
@@ -20,7 +21,8 @@ export class SidemenuComponent implements OnInit{
   constructor(
     private authService: AuthService,
     private router:Router,
-    public logsService: LogsService
+    public logsService: LogsService,
+    public navigationService: NavigationService
   ){}
 
   ngOnInit(): void {
@@ -51,6 +53,7 @@ export class SidemenuComponent implements OnInit{
     }).subscribe();
 
     this.authService.handleLogout();
+    this.navigationService.clearMemory();
     this.router.navigate([''],{ replaceUrl: true });
   }
 

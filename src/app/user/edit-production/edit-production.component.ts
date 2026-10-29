@@ -176,10 +176,8 @@ export class EditProductionComponent implements OnInit, OnDestroy{
   async onSubmit() {
     //console.log('form valid',this.productionForm.valid);
     if (this.productionForm.valid) {
-      console.log('New Production Created:', this.productionForm.value, this.productionForm.getRawValue());
+      //console.log('New Production Created:', this.productionForm.value, this.productionForm.getRawValue());
 
-      
-      
       // Logic to send to your Express backend goes here
       if (this.production_id > 0){
         
@@ -198,14 +196,14 @@ export class EditProductionComponent implements OnInit, OnDestroy{
         }
 
         var response = await firstValueFrom(this.apisService.UpdateProduction(object)); //.subscribe((response:any) => {
-        console.log('response', response);
+        //console.log('response', response);
 
         //only update Google Workspace org unit if name changes
-        console.log(object.name, this.production.name);
+        //console.log(object.name, this.production.name);
 
         if (object.name != this.production.name){
           var response2 = await firstValueFrom(this.googleService.UpdateGoogleOrgUnit(object)); //.subscribe();
-          console.log('response2', response2);
+          //console.log('response2', response2);
         }
         
         if (response.message == 'success') this.show_production_updated_succesfully = true;

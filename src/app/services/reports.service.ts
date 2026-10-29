@@ -32,6 +32,14 @@ export class ReportsService {
     ) 
   }
 
+  GetDashboardDataFeatures(): Observable<any> {
+    return this.http.get<any>(this.baseurl + '/getDashboardDataFeatures', this.httpOptions)
+    .pipe(
+      retry(0),
+      catchError(this.errorHandl),
+    ) 
+  }
+
 
   // Error handling
   errorHandl(error:any) {

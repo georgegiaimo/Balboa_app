@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { Subscription } from 'rxjs';
 import { LogsService } from '../../services/logs.service';
+import { NavigationService } from '../../services/navigation.service';
 
 @Component({
   selector: 'app-productions',
@@ -26,13 +27,16 @@ export class ProductionsComponent implements OnInit {
 
   get_user_subscription!:Subscription;
   user:any;
+
+  page_memory:any;
   
 
   constructor(
     private router: Router,
     public apisService: ApisService,
     public authService: AuthService,
-    public logsService: LogsService
+    public logsService: LogsService,
+    public navigationService: NavigationService
   ){}
 
 
@@ -55,6 +59,9 @@ export class ProductionsComponent implements OnInit {
       //this.loadHours();
       else this.router.navigate(['/login']);
     });
+
+    this.page_memory = this.navigationService.getPageMemory(this.router.url);
+
   }
 
   ngOnDestroy(): void {
@@ -77,6 +84,11 @@ export class ProductionsComponent implements OnInit {
       });
 
       this.productions_o = JSON.parse(JSON.stringify(this.productions));
+
+      if (this.page_memory){
+        this.search_query = this.page_memory.search;
+        this.onSearch();
+      }
 
     })
   }
@@ -106,6 +118,7 @@ export class ProductionsComponent implements OnInit {
   }
 
   gotoProductionDetails(item:any){
+    this.navigationService.savePage( this.router.url, this.search_query, 'u/production-details/' + item.production_id);
     this.router.navigate(['u/production-details/' + item.production_id]);
   }
 

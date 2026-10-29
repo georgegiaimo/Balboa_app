@@ -23,6 +23,7 @@ import { EditUserAssignmentComponent } from './edit-user-assignment/edit-user-as
 import { ActivityComponent } from './activity/activity.component';
 import { GoogleUsersComponent } from './google-users/google-users.component';
 import { MailingComponent } from './mailing/mailing.component';
+import { DashboardFeaturesComponent } from './dashboard-features/dashboard-features.component';
 
 
 const routes: Routes = [
@@ -47,7 +48,8 @@ const routes: Routes = [
     {path: 'edit-production/:production_id', component: EditProductionComponent, canActivate: [authGuard]},
     {path: 'edit-user-assignment/:key', component: EditUserAssignmentComponent, canActivate: [authGuard]},
     {path: 'google-users', component: GoogleUsersComponent, canActivate: [authGuard]},
-    {path: 'mailing', component: MailingComponent, canActivate: [authGuard]}
+    {path: 'mailing', component: MailingComponent, canActivate: [authGuard]},
+    {path: 'dashboard-features', component: DashboardFeaturesComponent, canActivate: [authGuard]},
     
 ];
 
@@ -79,5 +81,6 @@ export const routingComponents = [
     ApproachingOneYearMarkComponent,
     GoogleUsersComponent,
     EditUserAssignmentComponent,
-    MailingComponent
+    MailingComponent,
+    DashboardFeaturesComponent
 ]

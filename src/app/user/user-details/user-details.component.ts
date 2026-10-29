@@ -5,6 +5,7 @@ import { GoogleService } from '../../services/google.service';
 import { Subscription } from 'rxjs';
 import { LogsService } from '../../services/logs.service';
 import { AuthService } from '../../services/auth.service';
+import { NavigationService } from '../../services/navigation.service';
 
 @Component({
   selector: 'app-user-details',
@@ -27,13 +28,17 @@ export class UserDetailsComponent implements OnInit {
   get_user_subscription!:Subscription;
   userx:any;
 
+  page_memory:any;
+  back_page!:string;
+
   constructor(
     public apisService: ApisService,
     public googleService: GoogleService,
     private route: ActivatedRoute, 
     private router: Router,
     public logsService: LogsService,
-    public authService: AuthService
+    public authService: AuthService,
+    public navigationService: NavigationService
   ){
     this.route.params.subscribe( params => {
       this.user_id = params['user_id']; 
@@ -52,6 +57,20 @@ export class UserDetailsComponent implements OnInit {
       //this.loadHours();
       else this.router.navigate(['/login']);
     });
+
+    this.page_memory = this.navigationService.getPageDestinationMemory(this.router.url);
+
+    console.log('this.page_memory',this.page_memory);
+
+    if (this.page_memory){
+      
+      if (this.page_memory.page.indexOf('u/users') > -1) this.back_page = 'users';
+      else if (this.page_memory.page.indexOf('a/identity-clients') > -1) this.back_page = 'identity-clients';
+      else if (this.page_memory.page.indexOf('u/mailing') > -1) this.back_page = 'mailing';
+
+      console.log('***', this.back_page);
+    }
+
   }
 
   ngOnDestroy(): void {
@@ -82,6 +101,14 @@ export class UserDetailsComponent implements OnInit {
 
   gotoUsers(){
     this.router.navigate(['u/users']);
+  }
+
+  gotoIdentityUsers(){
+    this.router.navigate(['a/identity-clients']);
+  }
+
+  gotoMailing(){
+    this.router.navigate(['u/mailing']);
   }
 
   gotoProduction(production:any){

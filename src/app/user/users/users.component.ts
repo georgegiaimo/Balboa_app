@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ApisService } from '../../services/apis.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DocsService } from '../../services/docs.service';
 import { firstValueFrom, Subscription } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { LogsService } from '../../services/logs.service';
+import { NavigationService } from '../../services/navigation.service';
 
 @Component({
   selector: 'app-users',
@@ -35,12 +36,15 @@ export class UsersComponent implements OnInit {
   get_user_subscription!:Subscription;
   user:any;
 
+  page_memory:any;
+
   constructor(
     public apisService:ApisService,
     public docsService:DocsService,
     private router: Router,
     public logsService: LogsService,
-    public authService: AuthService
+    public authService: AuthService,
+    public navigationService: NavigationService
   ){}
 
   ngOnInit(): void {
@@ -61,6 +65,9 @@ export class UsersComponent implements OnInit {
       //this.loadHours();
       else this.router.navigate(['/login']);
     });
+
+    this.page_memory = this.navigationService.getPageMemory(this.router.url);
+
   }
 
   ngOnDestroy(): void {
@@ -89,6 +96,12 @@ export class UsersComponent implements OnInit {
 
       //console.log('this.users', response.data);
       this.users_o = JSON.parse(JSON.stringify(this.users));
+
+      if (this.page_memory){
+        this.search_query = this.page_memory.search;
+        this.onSearch();
+      }
+
     })
   }
 
@@ -103,7 +116,7 @@ export class UsersComponent implements OnInit {
       this.users = this.users_o;
     }
 
-    console.log('users', this.users);
+    //console.log('users', this.users);
   }
 
   clearSearch(){
@@ -112,6 +125,7 @@ export class UsersComponent implements OnInit {
   }
 
   gotoUserDetails(user:any){
+    this.navigationService.savePage( this.router.url, this.search_query, '/u/user-details/'+ user.user_id);
     this.router.navigate(['u/user-details/'+ user.user_id]);
   }
 

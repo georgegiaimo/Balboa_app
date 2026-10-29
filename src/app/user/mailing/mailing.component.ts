@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApisService } from '../../services/apis.service';
 import { Router } from '@angular/router';
+import { NavigationService } from '../../services/navigation.service';
 
 @Component({
   selector: 'app-mailing',
@@ -18,12 +19,19 @@ export class MailingComponent implements OnInit {
   emails!:any[];
   emails_o!:any[];
 
+  page_memory:any;
+
+
   constructor(
     public apisService: ApisService,
-    private router: Router
+    private router: Router,
+    public navigationService: NavigationService
   ){}
 
   ngOnInit(): void {
+    
+    this.page_memory = this.navigationService.getPageMemory(this.router.url);
+
     this.loadData();
   }
 
@@ -33,6 +41,12 @@ export class MailingComponent implements OnInit {
       this.is_loading = false;
       this.emails = response.data;
       this.emails_o = JSON.parse(JSON.stringify(this.emails));
+
+      if (this.page_memory){
+        this.search_query = this.page_memory.search;
+        this.onSearch();
+      }
+
     });
   }
 
@@ -55,6 +69,7 @@ export class MailingComponent implements OnInit {
       return;
     }
     else {
+      this.navigationService.savePage( this.router.url, this.search_query, '/u/user-details/' + item.user_id);
       this.router.navigate(['u/user-details/' + item.user_id]);
     }
   }

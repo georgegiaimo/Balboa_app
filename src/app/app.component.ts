@@ -12,6 +12,7 @@ import { GoogleService } from './services/google.service';
 import { MessagingService } from './services/messaging.service';
 import { LogsService } from './services/logs.service';
 import { InactivityService } from './services/inactivity.service';
+import { NavigationService } from './services/navigation.service';
 
 
 @Component({
@@ -20,7 +21,7 @@ import { InactivityService } from './services/inactivity.service';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   providers: [ChatService, SocketService, CommonService, SystemService, ReportsService, ApisService, AuthService, DocsService, 
-    GoogleService, MessagingService, LogsService]
+    GoogleService, MessagingService, LogsService, NavigationService]
 })
 export class AppComponent implements OnInit{
   title = 'balboa';
