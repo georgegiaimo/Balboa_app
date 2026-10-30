@@ -143,6 +143,7 @@
                                     <span class="sr-only">Details</span>
                                 </th>
                                 -->
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
@@ -163,9 +164,9 @@
                                     <div class="text-sm font-medium text-gray-900">{{ x.personal_email }}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <span [class]="getStatusClass(x.status)"
+                                    <span [class]="getStatusClass(x.assignment_status)"
                                         class="px-2.5 py-0.5 rounded-full text-xs font-medium border">
-                                        {{ x.status }}
+                                        {{ x.assignment_status }}
                                     </span>
                                 </td>
                                 <!--
@@ -211,6 +212,18 @@
                                     </a>
                                 </td>
                                 -->
+                                <td>
+                                  @if(x.assignment_status == 'active'){
+                                <button type="button" (click)="confirmDelete(x)"
+                                  class="group inline-flex items-center rounded-md p-2 text-gray-400 hover:bg-red-50 hover:text-red-600 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 float-right">
+                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                    class="size-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                  </svg>
+                                </button>
+                                }
+                                </td>
                             </tr>
                             } @empty {
                             <tr>
@@ -422,6 +435,100 @@
       <p class="text-sm text-gray-500 mt-1">Please wait while we sync the application data with the Google Directories. This process takes about 2-3 minutes.</p>
     </div>
 
+  </div>
+</div>
+}
+
+@if(show_confirm_delete){
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm">
+  
+  <div class="w-full max-w-md overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black/5 animate-in fade-in zoom-in duration-200">
+    
+    <div class="p-6">
+      <div class="flex items-center gap-4">
+        <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-red-100 text-red-600">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+          </svg>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold text-gray-900">Offboard User</h3>
+          <p class="mt-1 text-sm text-gray-500">Are you sure you want to offboard this account? <br><br>
+            <strong>Name:</strong>&nbsp;{{ itemx.first_name }}&nbsp; {{ itemx.last_name }}<br>
+            <strong>Production Email:</strong>&nbsp;{{ itemx.production_email }}<br>
+            <strong>Personal Email:</strong>&nbsp;{{ itemx.personal_email }}<br>
+            <br>
+            
+            This will permanently remove the user from the Google Directory. 
+            Be aware that offboarding a user is permanent. If you need to preserve their Drive or Calendar data, you must transfer it before or during the deletion process via the Admin Console or specific transfer APIs.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-gray-50 px-6 py-4 flex flex-col-reverse sm:flex-row sm:justify-end gap-3">
+      <button type="button" (click)="show_confirm_delete = false"
+        class="inline-flex justify-center rounded-lg px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-200 transition-colors">
+        Cancel
+      </button>
+      <button type="button" (click)="deleteUser()"
+        class="inline-flex justify-center rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2 transition-all">
+        Delete User
+      </button>
+    </div>
+  </div>
+</div>
+}
+
+@if(show_user_deleted_succesfully){
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm">
+  
+  <div class="w-full max-w-md overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black/5 animate-in fade-in zoom-in duration-200">
+    
+    <div class="p-6">
+      <div class="flex items-center gap-4">
+        
+        <div>
+          <h3 class="text-lg font-semibold text-gray-900">Success</h3>
+          <p class="mt-1 text-sm text-gray-500">User was deleted succesfully
+            </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-gray-50 px-6 py-4 flex flex-col-reverse sm:flex-row sm:justify-end gap-3">
+      <button type="button" (click)="show_user_deleted_succesfully = false;"
+        class="inline-flex justify-center rounded-lg px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-200 transition-colors">
+        Ok
+      </button>
+    </div>
+  </div>
+</div>
+}
+
+@if(show_user_deleted_error){
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm">
+  
+  <div class="w-full max-w-md overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black/5 animate-in fade-in zoom-in duration-200">
+    
+    <div class="p-6">
+      <div class="flex items-center gap-4">
+        
+        <div>
+          <h3 class="text-lg font-semibold text-gray-900">Error</h3>
+          <p class="mt-1 text-sm text-gray-500">User could not be deleted.
+            </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-gray-50 px-6 py-4 flex flex-col-reverse sm:flex-row sm:justify-end gap-3">
+      <button type="button" (click)="show_user_deleted_error = false;"
+        class="inline-flex justify-center rounded-lg px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-200 transition-colors">
+        Ok
+      </button>
+    </div>
   </div>
 </div>
 }

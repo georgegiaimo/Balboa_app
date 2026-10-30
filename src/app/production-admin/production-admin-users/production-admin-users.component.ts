@@ -39,6 +39,13 @@ export class ProductionAdminUsersComponent implements OnInit, OnDestroy {
   show_syncing_data:boolean = false;
   production:any;
 
+  show_confirm_delete:boolean = false;
+
+  show_user_deleted_succesfully:boolean = false;
+  show_user_deleted_error:boolean = false;
+
+  itemx:any;
+
   constructor(
     public apisService:ApisService,
     public docsService:DocsService,
@@ -74,7 +81,7 @@ export class ProductionAdminUsersComponent implements OnInit, OnDestroy {
       //this.coordinators = data.data.coordinators;
       //this.activity = data.data.activity;
       //this.processActivityData();
-      //console.log('users', this.users);
+      console.log('users', this.users);
       //console.log('coordinators', this.coordinators);
       //console.log('production', this.production);
 
@@ -105,7 +112,7 @@ export class ProductionAdminUsersComponent implements OnInit, OnDestroy {
         }
       });
 
-      //console.log('this.users', response.data);
+      console.log('this.users', response.data);
       this.users_o = JSON.parse(JSON.stringify(this.users));
     })
   }
@@ -185,7 +192,7 @@ export class ProductionAdminUsersComponent implements OnInit, OnDestroy {
 
       //this.fileUploaded.emit(this.selectedFile);
       console.log('send');
-      this.docsService.uploadUsersFromCSV(this.selected_file, run_id, this.selected_type, this.production.org_unit_path).subscribe({
+      this.docsService.uploadUsersFromCSV(this.selected_file, run_id, 'current', this.production.org_unit_path).subscribe({
         next: (response) => {
           console.log('response', response);
           this.show_file_upload = false;
@@ -240,6 +247,22 @@ export class ProductionAdminUsersComponent implements OnInit, OnDestroy {
   showFileUpload(){
     this.show_upload_options = false;
     this.show_file_upload = true;
+  }
+
+  confirmDelete(item:any){
+    this.itemx = item;
+    this.show_confirm_delete = true;
+  }
+
+  deleteUser(){
+    this.show_confirm_delete = false;
+    //console.log('delete user');
+    this.googleService.DeleteUserInGoogle(this.itemx).subscribe((response:any) => {
+      
+      //console.log('response', response);
+      if (response.message == 'success') this.show_user_deleted_succesfully = true;
+      else this.show_user_deleted_error = true;
+    });
   }
 
   
